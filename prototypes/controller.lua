@@ -3,11 +3,11 @@ emptyAnimations =       {
     priority = "medium",
     width = 0,
     height = 0,
-    direction_count = 1,
+    direction_count = 18,
     frame_count = 1,
     animation_speed = 0.15,
     shift = {0, 0},
-    axially_symmetrical = true
+    axially_symmetrical = false
 }
 
 emptyLevel = {

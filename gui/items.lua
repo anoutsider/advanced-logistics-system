@@ -1,11 +1,11 @@
 --- Show search frame
 function showSearch(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
-    local currentTab = glob.currentTab[index]
-    local searchText = glob.searchText[index][currentTab]
+    local currentTab = global.currentTab[index]
+    local searchText = global.searchText[index][currentTab]
 
-    for _,tab in pairs(glob.guiTabs) do
+    for _,tab in pairs(global.guiTabs) do
         if tab ~= currentTab and contentFrame[tab .. "SearchFrame"] ~= nil then
            contentFrame[tab .. "SearchFrame"].style = "lv_search_frame_hidden"
         end
@@ -29,18 +29,18 @@ end
 
 --- Show items info frame
 function updateItemsInfo(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local force = player.force.name
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
     local infoFlow = contentFrame["infoFlow"]
-    local currentTab = glob.currentTab[index]
-    local total = currentTab == "logistics" and glob.logisticsItemsTotal[force] or glob.normalItemsTotal[force]
+    local currentTab = global.currentTab[index]
+    local total = currentTab == "logistics" and global.logisticsItemsTotal[force] or global.normalItemsTotal[force]
 
     if infoFlow == nil then
         infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
     end
 
-    for _,tab in pairs(glob.guiTabs) do
+    for _,tab in pairs(global.guiTabs) do
         if tab ~= currentTab and infoFlow[tab .. "InfoFrame"] ~= nil then
             infoFlow[tab .. "InfoFrame"].style = "lv_frame_hidden"
         end
@@ -59,24 +59,25 @@ end
 
 --- Show disconnected chests info frame
 function updateDisconnectedInfo(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local force = player.force.name
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
     local infoFlow = contentFrame["infoFlow"]
-    local currentTab = glob.currentTab[index]
-    local disconnected = currentTab == "logistics" and glob.disconnectedChests[force] or false
+    local currentTab = global.currentTab[index]
+    local disconnected = currentTab == "logistics" and global.disconnectedChests[force] or false
+    local count = count(disconnected)
 
-    if infoFlow == nil then
-        infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
-    end
-
-    for _,tab in pairs(glob.guiTabs) do
-        if tab ~= currentTab and infoFlow[tab .. "DisconnectedFrame"] ~= nil then
-            infoFlow[tab .. "DisconnectedFrame"].style = "lv_frame_hidden"
+    if count > 0 then
+        if infoFlow == nil then
+            infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
         end
-    end
 
-    if disconnected then
+        for _,tab in pairs(global.guiTabs) do
+            if tab ~= currentTab and infoFlow[tab .. "DisconnectedFrame"] ~= nil then
+                infoFlow[tab .. "DisconnectedFrame"].style = "lv_frame_hidden"
+            end
+        end
+    
         --add disconnected chests info frame
         local disconnectedFrame = infoFlow[currentTab .. "DisconnectedFrame"]
         if disconnectedFrame ~= nil then
@@ -85,7 +86,7 @@ function updateDisconnectedInfo(player, index)
 
         disconnectedFrame = infoFlow.add({type = "frame", name = currentTab .. "DisconnectedFrame", style = "lv_info_frame", direction = "horizontal"})
         disconnectedFrame.add({type = "label", name = "disconnectedFrameLabel", style = "lv_info_label", caption = {"disconnected-chests"}})
-        disconnectedFrame.add({type = "label", name = "disconnectedFrameTotal", style = "label_style", caption = ": " .. count(disconnected)})
+        disconnectedFrame.add({type = "label", name = "disconnectedFrameTotal", style = "label_style", caption = ": " .. count})
         disconnectedFrame.add({type = "button", name = "disconnectedFrameView", caption = {"view"}, style = "lv_button"})
     end
 end
@@ -93,8 +94,8 @@ end
 ---- Update/Show items table
 function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
     if items then
-        local guiPos = glob.settings[index].guiPos
-        local currentTab = glob.currentTab[index]
+        local guiPos = global.settings[index].guiPos
+        local currentTab = global.currentTab[index]
 
         if player.gui[guiPos].logisticsFrame ~= nil and player.gui[guiPos].logisticsFrame.contentFrame ~= nil then
 
@@ -115,9 +116,9 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             local itemsFrame = contentFrame.add({type = "frame", name = "itemsFrame", style = "lv_items_frame", direction = "vertical"})
 
             -- sort settings
-            local sort_by = sort_by or glob.sort[index][currentTab]["by"]
-            local sort_by_code = glob.codeToName[currentTab][sort_by]
-            local sort_dir = sort_dir or glob.sort[index][currentTab]["dir"]
+            local sort_by = sort_by or global.sort[index][currentTab]["by"]
+            local sort_by_code = global.codeToName[currentTab][sort_by]
+            local sort_dir = sort_dir or global.sort[index][currentTab]["dir"]
 
             local orderfunc = function(t,a,b) if t[b][sort_by_code] ~= nil and t[a][sort_by_code] ~= nil then return t[b][sort_by_code] < t[a][sort_by_code] end end
             if sort_dir == "asc" then
@@ -132,7 +133,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             end
 
             -- search settings
-            local searchText = search or glob.searchText[index][currentTab]
+            local searchText = search or global.searchText[index][currentTab]
             if searchText then
                 -- filter items based on search string
                 items = table.filter(items, function(v, k, t) return string.find(k, searchText) ~= nil end)
@@ -142,9 +143,9 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
 
             local itemsCount = count(items)
             -- get page settings
-            local page = page or glob.itemsPage[index][currentTab]
+            local page = page or global.itemsPage[index][currentTab]
             local current = 0
-            local itemsPerPage = glob.settings[index].itemsPerPage
+            local itemsPerPage = global.settings[index].itemsPerPage
             local maxPages = math.ceil(itemsCount/itemsPerPage)
             page = math.min(page, maxPages)
             local start = (page-1) * itemsPerPage + 1
@@ -172,7 +173,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             nameSortFlow.add({type = "frame", name = "name_sort", style = "lv_sort" .. sortDirStyle})
 
             -- add generated table headers
-            for code,field in pairs(glob.codeToName[currentTab]) do
+            for code,field in pairs(global.codeToName[currentTab]) do
                 if code ~= "name" and code ~= "total" then
                     local isSelected = sort_by == code
                     local buttonStyle = isSelected and "_selected" or ""
@@ -205,8 +206,8 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
                 current= current + 1
                 if current >= start and current <= max then
                     itemsTable.add({type = "button", name = "itemIcon_" .. name, style = "item-icon-".. name})
-                    itemsTable.add({type = "label", name = "itemName_" .. name, caption = game.getlocaliseditemname(name)})
-                    for code,field in pairs(glob.codeToName[currentTab]) do
+                    itemsTable.add({type = "label", name = "itemName_" .. name, caption = game.get_localised_item_name(name)})
+                    for code,field in pairs(global.codeToName[currentTab]) do
                         if code ~= "name" and code ~= "total" then
                             itemsTable.add({type = "label", name = "itemCount" .. string.upper(code) .. "_" .. name, caption = number_format(item[field])})
                         end
@@ -234,11 +235,11 @@ end
 
 --- Show item totals info frame
 function updateItemTotalsInfo(info, player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
     local infoFlow = contentFrame["infoFlow"]
-    local currentTab = glob.currentTab[index]
-    local currentItem = glob.currentItem[index]
+    local currentTab = global.currentTab[index]
+    local currentItem = global.currentItem[index]
     local total = info["total"]
     local orderfunc = function(t,a,b) return t[b] < t[a] end
 
@@ -255,7 +256,7 @@ function updateItemTotalsInfo(info, player, index)
     -- all
     infoFrameName = infoFlow.add({type = "frame", name = currentTab .. "infoFrameName", style = "lv_info_frame", direction = "horizontal"})
     infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameIcon", style = "lv_info_label", caption = {"name"}})
-    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameName", style = "label_style", caption = game.getlocaliseditemname(currentItem)})
+    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameName", style = "label_style", caption = game.get_localised_item_name(currentItem)})
 
 
     --add "all" total info frame
@@ -285,11 +286,11 @@ end
 
 --- Show item info filters
 function updateItemFilters(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
     local filtersFlow = contentFrame["filtersFlow"]
-    local currentTab = glob.currentTab[index]
-    local filters = glob.itemInfoFilters[index]
+    local currentTab = global.currentTab[index]
+    local filters = global.itemInfoFilters[index]
 
     if filtersFlow == nil then
         filtersFlow = contentFrame.add({type = "flow", name = "filtersFlow", style = "lv_info_flow", direction = "horizontal"})
@@ -316,7 +317,7 @@ function updateItemFilters(player, index)
     local buttonStyle = filters["chests"]["all"] ~= nil and "_selected" or ""
     chestsFilterFrame = filtersFlow.add({type = "frame", name = "chestsFilterFrame", style = "lv_filters_frame", direction = "horizontal"})
     chestsFilterFrame.add({type = "button", name = "itemInfoFilter_all", caption = "All", style = "lv_button_all" .. buttonStyle})
-    for type,codes in pairs(glob.codeToName) do
+    for type,codes in pairs(global.codeToName) do
         for code,name in pairs(codes) do
             if code ~= "name" and code ~= "total" then
                 local buttonStyle = filters["chests"][code] ~= nil and "_selected" or ""
@@ -330,11 +331,11 @@ end
 ---- Show item info
 function showItemInfo(item, player, index, page, sort_by, sort_dir)
     if item then
-        local guiPos = glob.settings[index].guiPos
-        local exTools = glob.settings[index].exTools
+        local guiPos = global.settings[index].guiPos
+        local exTools = global.settings[index].exTools
         local currentTab = "itemInfo"
-        glob.currentTab[index] = currentTab
-        local filters = glob.itemInfoFilters[index]
+        global.currentTab[index] = currentTab
+        local filters = global.itemInfoFilters[index]
         local info = getItemInfo(item, player, index, filters)
         local chests = info["chests"]
         local total = info["total"]
@@ -355,8 +356,8 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
             local itemInfoFrame = contentFrame.add({type = "frame", name = "itemInfoFrame", style = "lv_items_frame", direction = "vertical"})
 
             -- sort settings
-            local sort_by = sort_by or glob.sort[index][currentTab]["by"]
-            local sort_dir = sort_dir or glob.sort[index][currentTab]["dir"]
+            local sort_by = sort_by or global.sort[index][currentTab]["by"]
+            local sort_dir = sort_dir or global.sort[index][currentTab]["dir"]
 
             local orderfunc = function(t,a,b) return t[b][sort_by] < t[a][sort_by] end
             if sort_dir == "asc" then
@@ -372,9 +373,9 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
 
             local chestsCount = count(chests)
             -- get page settings
-            local page = page or glob.itemsPage[index][currentTab]
+            local page = page or global.itemsPage[index][currentTab]
             local current = 0
-            local itemsPerPage = glob.settings[index].itemsPerPage
+            local itemsPerPage = global.settings[index].itemsPerPage
             local maxPages = math.ceil(chestsCount/itemsPerPage)
             page = math.min(page, maxPages)
             local start = (page-1) * itemsPerPage + 1
@@ -437,14 +438,13 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
                     local pos = chest.pos
                     local code = nameToCode(name)
 
-
-                    local deconstructed = chest.entity.tobedeconstructed(player.force)
+                    local deconstructed = chest.entity.to_be_deconstructed(player.force)
                     local deleteBtnStyle = deconstructed and "_selected" or ""
 
                     current= current + 1
                     if current >= start and current <= max then
                         itemInfoTable.add({type = "button", name = "itemInfoIcon_" .. key, style = "item-icon-".. name})
-                        itemInfoTable.add({type = "label", name = "itemInfoType_" .. key, caption = game.getlocaliseditemname(name)})
+                        itemInfoTable.add({type = "label", name = "itemInfoType_" .. key, caption = game.get_localised_item_name(name)})
                         itemInfoTable.add({type = "label", name = "itemInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         itemInfoTable.add({type = "label", name = "itemInfoCount_" .. key, caption = number_format(count)})
                         local toolsFlow = itemInfoTable["itemInfoTools_" .. key]
@@ -483,15 +483,15 @@ end
 
 ---- Show disconnected chests info
 function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
-    local disconnected = glob.disconnectedChests[player.force.name]
+    local disconnected = global.disconnectedChests[player.force.name]
     local chestsCount = count(disconnected)
 
     if chestsCount > 0 then
 
-        local guiPos = glob.settings[index].guiPos
-        local exTools = glob.settings[index].exTools
+        local guiPos = global.settings[index].guiPos
+        local exTools = global.settings[index].exTools
         local currentTab = "disconnected"
-        glob.currentTab[index] = currentTab
+        global.currentTab[index] = currentTab
         local chests = disconnected
 
         if player.gui[guiPos].logisticsFrame ~= nil and player.gui[guiPos].logisticsFrame.contentFrame ~= nil then
@@ -506,8 +506,8 @@ function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
             local disconnectedFrame = contentFrame.add({type = "frame", name = "disconnectedFrame", style = "lv_items_frame", direction = "vertical"})
 
             -- sort settings
-            local sort_by = sort_by or glob.sort[index][currentTab]["by"]
-            local sort_dir = sort_dir or glob.sort[index][currentTab]["dir"]
+            local sort_by = sort_by or global.sort[index][currentTab]["by"]
+            local sort_dir = sort_dir or global.sort[index][currentTab]["dir"]
 
             local orderfunc = function(t,a,b) return t[b][sort_by] < t[a][sort_by] end
             if sort_dir == "asc" then
@@ -522,16 +522,16 @@ function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
             end
 
             if sort_by == "count" then
-                orderfunc = function(t,a,b) return t[b].getitemcount() < t[a].getitemcount() end
+                orderfunc = function(t,a,b) return t[b].get_item_count() < t[a].get_item_count() end
                 if sort_dir == "asc" then
-                    orderfunc = function(t,a,b) return t[b].getitemcount() > t[a].getitemcount() end
+                    orderfunc = function(t,a,b) return t[b].get_item_count() > t[a].get_item_count() end
                 end
             end
 
             -- get page settings
-            local page = page or glob.itemsPage[index][currentTab]
+            local page = page or global.itemsPage[index][currentTab]
             local current = 0
-            local itemsPerPage = glob.settings[index].itemsPerPage
+            local itemsPerPage = global.settings[index].itemsPerPage
             local maxPages = math.ceil(chestsCount/itemsPerPage)
             page = math.min(page, maxPages)
             local start = (page-1) * itemsPerPage + 1
@@ -588,19 +588,19 @@ function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
 
                 -- get filtered/sorted items
                 for key,chest in spairs(chests, orderfunc) do
-                    local count = chest.getitemcount()
+                    local count = chest.get_item_count()
                     local name = chest.name
                     local pos = chest.position
                     local code = nameToCode(name)
 
 
-                    local deconstructed = chest.tobedeconstructed(player.force)
+                    local deconstructed = chest.to_be_deconstructed(player.force)
                     local deleteBtnStyle = deconstructed and "_selected" or ""
 
                     current= current + 1
                     if current >= start and current <= max then
                         disconnectedTable.add({type = "button", name = "disconnectedInfoIcon_" .. key, style = "item-icon-".. name})
-                        disconnectedTable.add({type = "label", name = "disconnectedInfoType_" .. key, caption = game.getlocaliseditemname(name)})
+                        disconnectedTable.add({type = "label", name = "disconnectedInfoType_" .. key, caption = game.get_localised_item_name(name)})
                         disconnectedTable.add({type = "label", name = "disconnectedInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         disconnectedTable.add({type = "label", name = "disconnectedInfoCount_" .. key, caption = number_format(count)})
                         local toolsFlow = disconnectedTable["disconnectedInfoTools_" .. key]

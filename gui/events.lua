@@ -1,13 +1,13 @@
 --- GUI Events
-game.onevent(defines.events.onguiclick, function(event)
+game.on_event(defines.events.on_gui_click, function(event)
 
-    local index = event.playerindex
+    local index = event.player_index
     local player = game.players[index]
 
     -- main button click event - show/hide gui
     if event.element.name == "logistics-view-button" then
 
-        local visible = glob.guiVisible[index]
+        local visible = global.guiVisible[index]
         
         --- reset player position if in location view mode
         local locationFlow = player.gui.center.locationFlow
@@ -31,23 +31,25 @@ game.onevent(defines.events.onguiclick, function(event)
 
         local name = event.element.name
         local style = event.element.style
-        local currentTab = glob.currentTab[index]
+        local currentTab = global.currentTab[index]
         local newTab = string.gsub(name, "MenuBtn", "")
 
         if event.element.style.name == "lv_button_selected" and newTab == currentTab then
             return
         else
-            local menuFlow = player.gui[glob.settings[index].guiPos].logisticsFrame.menuFlow
-            for _,btnName in pairs(menuFlow.childrennames) do
-                if btnName:find("MenuBtn") ~= nil then
-                    local btnTab = string.gsub(btnName, "MenuBtn", "")
-                    local btn = menuFlow[btnName]
+            local menuFlow = player.gui[global.settings[index].guiPos].logisticsFrame.menuFlow
+            if menuFlow and menuFlow.children_names ~= nil then
+                for _,btnName in pairs(menuFlow.children_names) do
+                    if btnName:find("MenuBtn") ~= nil then
+                        local btnTab = string.gsub(btnName, "MenuBtn", "")
+                        local btn = menuFlow[btnName]
 
-                    if newTab ~= "settings" then
-                        if btnTab == newTab then
-                            btn.style = "lv_button_selected"
-                        else
-                            btn.style = "lv_button"
+                        if newTab ~= "settings" then
+                            if btnTab == newTab then
+                                btn.style = "lv_button_selected"
+                            else
+                                btn.style = "lv_button"
+                            end
                         end
                     end
                 end
@@ -55,7 +57,7 @@ game.onevent(defines.events.onguiclick, function(event)
         end
 
         if newTab ~= "settings" then
-            glob.currentTab[index] = newTab
+            global.currentTab[index] = newTab
         end
 
         if (newTab == "logistics" or newTab == "normal") and (currentTab == "logistics" or currentTab == "normal") then
@@ -64,10 +66,10 @@ game.onevent(defines.events.onguiclick, function(event)
             clearGUI(player, index)
             updateGUI(player, index, newTab)
 
-            local searchFrame = player.gui[glob.settings[index].guiPos].logisticsFrame.contentFrame[newTab .. "SearchFrame"]
+            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame[newTab .. "SearchFrame"]
             local name = newTab == "logistics" and "logistics-search-field" or "normal-search-field"
             local searchTextField = searchFrame[name]
-            local searchText = glob.searchText[index][newTab]
+            local searchText = global.searchText[index][newTab]
             if searchText and searchText ~= ""  then
                 searchTextField.text = searchText
             end
@@ -89,18 +91,20 @@ game.onevent(defines.events.onguiclick, function(event)
     -- guiPos settings checkboxes flow
     elseif event.element.name:find("guiPos_") ~= nil then
 
-        local guiPos = glob.settings[index].guiPos
+        local guiPos = global.settings[index].guiPos
         local name = event.element.name
         local state = event.element.state
         if state then
             local settingsFrame = player.gui[guiPos].settingsFrame
             local settingsTable = settingsFrame.settingsTable
             local guiPosFlow = settingsTable["guiPosFlow"]
-
-            for _,childName in pairs(guiPosFlow.childrennames) do
-                if guiPosFlow[childName] ~= nil then
-                    if childName ~= name then
-                        guiPosFlow[childName].state = false
+            
+            if guiPosFlow and guiPosFlow.children_names ~= nil then
+                for _,childName in pairs(guiPosFlow.children_names) do
+                    if guiPosFlow[childName] ~= nil then
+                        if childName ~= name then
+                            guiPosFlow[childName].state = false
+                        end
                     end
                 end
             end
@@ -111,24 +115,24 @@ game.onevent(defines.events.onguiclick, function(event)
 
         local name = event.element.name
 
-        glob.searchTick[index]["logistics"] = event.tick
+        global.searchTick[index]["logistics"] = event.tick
 
         onLogisticsSearchTick = function(event)
-            local searchTick = glob.searchTick[index]["logistics"]
-            local currentTab = glob.currentTab[index]
+            local searchTick = global.searchTick[index]["logistics"]
+            local currentTab = global.currentTab[index]
 
             if currentTab == "logistics" then
-                if searchTick <= event.tick and glob.guiVisible[index] == 1 then
-                    local searchFrame = player.gui[glob.settings[index].guiPos].logisticsFrame.contentFrame["logisticsSearchFrame"]
+                if searchTick <= event.tick and global.guiVisible[index] == 1 then
+                    local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["logisticsSearchFrame"]
                     local searchText = searchFrame[name].text
 
-                    glob.searchTick[index]["logistics"] = event.tick + 60
+                    global.searchTick[index]["logistics"] = event.tick + 60
                     if searchText ~= nil then
                         if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                            glob.searchText[index]["logistics"] = searchText
+                            global.searchText[index]["logistics"] = searchText
                             updateGUI(player, index)
                         elseif searchText == "" then
-                            glob.searchText[index]["logistics"] = false
+                            global.searchText[index]["logistics"] = false
                             updateGUI(player, index)
                         end
                     end
@@ -140,24 +144,24 @@ game.onevent(defines.events.onguiclick, function(event)
     elseif event.element.name == "normal-search-field" then
 
         local name = event.element.name
-        glob.searchTick[index]["normal"] = event.tick
+        global.searchTick[index]["normal"] = event.tick
 
         onNormalSearchTick = function(event)
-            local searchTick = glob.searchTick[index]["normal"]
-            local currentTab = glob.currentTab[index]
+            local searchTick = global.searchTick[index]["normal"]
+            local currentTab = global.currentTab[index]
 
             if currentTab == "normal" then
-                if searchTick <= event.tick and glob.guiVisible[index] == 1 then
-                    local searchFrame = player.gui[glob.settings[index].guiPos].logisticsFrame.contentFrame["normalSearchFrame"]
+                if searchTick <= event.tick and global.guiVisible[index] == 1 then
+                    local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["normalSearchFrame"]
                     local searchText = searchFrame[name].text
 
-                    glob.searchTick[index]["normal"] = event.tick + 60
+                    global.searchTick[index]["normal"] = event.tick + 60
                     if searchText ~= nil then
                         if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                            glob.searchText[index]["normal"] = searchText
+                            global.searchText[index]["normal"] = searchText
                             updateGUI(player, index)
                         elseif searchText == "" then
-                            glob.searchText[index]["normal"] = false
+                            global.searchText[index]["normal"] = false
                             updateGUI(player, index)
                         end
                     end
@@ -167,12 +171,12 @@ game.onevent(defines.events.onguiclick, function(event)
     -- items table columns sorting event
     elseif event.element.name:find("itemSort_") ~= nil  then
 
-        local currentTab = glob.currentTab[index]
+        local currentTab = global.currentTab[index]
 
         local name = event.element.name
         local style = event.element.style
         local sort_by = string.gsub(name, "itemSort_", "")
-        local itemsTable = player.gui[glob.settings[index].guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable
+        local itemsTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable
         local sortFlow = itemsTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
         local sort_dir = sortFlow[sort_by .. "_sort"].style.name
         sort_dir = string.gsub(sort_dir, "lv_sort_", "")
@@ -182,26 +186,28 @@ game.onevent(defines.events.onguiclick, function(event)
         local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
 
         if isSelected ~= "_selected" then
-            for _,flowName in pairs(itemsTable.childrennames) do
-                if flowName:find("Flow") ~= nil then
-                    local sortBy = string.gsub(flowName, "Flow", "")
-                    local flow = itemsTable[flowName]
-                    local sortFlow = itemsTable[flowName][sortBy .. "SortFlow"]
+            if itemsTable and itemsTable.children_names ~= nil then
+                for _,flowName in pairs(itemsTable.children_names) do
+                    if flowName:find("Flow") ~= nil then
+                        local sortBy = string.gsub(flowName, "Flow", "")
+                        local flow = itemsTable[flowName]
+                        local sortFlow = itemsTable[flowName][sortBy .. "SortFlow"]
 
-                    if sortBy == sort_by then
-                        new_sort_by = sortBy
-                        flow["itemSort_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
-                        sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
-                    else
-                        flow["itemSort_" .. sortBy].style = "lv_button_" .. sortBy
-                        sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                        if sortBy == sort_by then
+                            new_sort_by = sortBy
+                            flow["itemSort_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
+                            sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                        else
+                            flow["itemSort_" .. sortBy].style = "lv_button_" .. sortBy
+                            sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                        end
                     end
                 end
             end
 
         end
 
-        glob.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
+        global.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
 
         updateGUI(player, index)
 
@@ -212,7 +218,7 @@ game.onevent(defines.events.onguiclick, function(event)
 
         local name = event.element.name
         local item = string.gsub(name, "viewItemInfo_", "")
-        glob.currentItem[index] = item
+        global.currentItem[index] = item
 
         if item then
             clearMenu(player, index)
@@ -223,14 +229,14 @@ game.onevent(defines.events.onguiclick, function(event)
     -- item info table columns sorting event
     elseif event.element.name:find("itemInfo_") ~= nil  then
 
-        local currentTab = glob.currentTab[index]
-        local currentItem = glob.currentItem[index]
+        local currentTab = global.currentTab[index]
+        local currentItem = global.currentItem[index]
         if currentItem then
 
             local name = event.element.name
             local style = event.element.style
             local sort_by = string.gsub(name, "itemInfo_", "")
-            local itemInfoTable = player.gui[glob.settings[index].guiPos].logisticsFrame.contentFrame.itemInfoFrame.itemInfoTable
+            local itemInfoTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.itemInfoFrame.itemInfoTable
             local sortFlow = itemInfoTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
             local sort_dir = sortFlow[sort_by .. "_sort"].style.name
             sort_dir = string.gsub(sort_dir, "lv_sort_", "")
@@ -240,26 +246,28 @@ game.onevent(defines.events.onguiclick, function(event)
             local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
 
             if isSelected ~= "_selected" then
-                for _,flowName in pairs(itemInfoTable.childrennames) do
-                    if flowName:find("Flow") ~= nil then
-                        local sortBy = string.gsub(flowName, "Flow", "")
-                        local flow = itemInfoTable[flowName]
-                        local sortFlow = flow[sortBy .. "SortFlow"]
+                if itemInfoTable and itemInfoTable.children_names ~= nil then
+                    for _,flowName in pairs(itemInfoTable.children_names) do
+                        if flowName:find("Flow") ~= nil then
+                            local sortBy = string.gsub(flowName, "Flow", "")
+                            local flow = itemInfoTable[flowName]
+                            local sortFlow = flow[sortBy .. "SortFlow"]
 
-                        if sortBy == sort_by then
-                            new_sort_by = sortBy
-                            flow["itemInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
-                        else
-                            flow["itemInfo_" .. sortBy].style = "lv_button_" .. sortBy
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                            if sortBy == sort_by then
+                                new_sort_by = sortBy
+                                flow["itemInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
+                                sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                            else
+                                flow["itemInfo_" .. sortBy].style = "lv_button_" .. sortBy
+                                sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                            end
                         end
                     end
                 end
 
             end
 
-            glob.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
+            global.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
 
             showItemInfo(currentItem, player, index)
         end
@@ -267,10 +275,10 @@ game.onevent(defines.events.onguiclick, function(event)
     -- item info table filters event
     elseif event.element.name:find("itemInfoFilter_") ~= nil  then
 
-        local guiPos = glob.settings[index].guiPos
-        local currentTab = glob.currentTab[index]
-        local currentItem = glob.currentItem[index]
-        local filters = glob.itemInfoFilters[index]
+        local guiPos = global.settings[index].guiPos
+        local currentTab = global.currentTab[index]
+        local currentItem = global.currentItem[index]
+        local filters = global.itemInfoFilters[index]
 
         if currentItem and currentTab == "itemInfo" then
 
@@ -303,7 +311,7 @@ game.onevent(defines.events.onguiclick, function(event)
                                 end
                                 filterFrame["itemInfoFilter_all"].style = "lv_button_all"
                             else
-                                for _,frameName in pairs(filterFrame.childrennames) do
+                                for _,frameName in pairs(filterFrame.children_names) do
                                     if filterFrame[frameName] ~= nil then
                                         local frameFilter = string.gsub(frameName, "itemInfoFilter_", "")
                                         if frameFilter ~= "all" then
@@ -355,7 +363,7 @@ game.onevent(defines.events.onguiclick, function(event)
                         end
                     end
 
-                    glob.itemInfoFilters[index] = filters
+                    global.itemInfoFilters[index] = filters
                     showItemInfo(currentItem, player, index)
 
                 end
@@ -366,7 +374,8 @@ game.onevent(defines.events.onguiclick, function(event)
     elseif event.element.name:find("itemAction_") ~= nil  then
 
         local force = player.force
-        local itemInfo = glob.currentItemInfo[index]
+        local surface = player.surface
+        local itemInfo = global.currentItemInfo[index]
         local style = event.element.style
 
         local action, key = event.element.name:match("itemAction_([%w%s]*)_([%w_.%s]*)")
@@ -374,7 +383,7 @@ game.onevent(defines.events.onguiclick, function(event)
         if itemInfo["chests"][key] then
             if action == "teleport" then
                 local pos = itemInfo["chests"][key].pos
-                local new_pos = game.findnoncollidingposition("player", {pos.x, pos.y}, 10, 1)
+                local new_pos = surface.find_non_colliding_position("player", {pos.x, pos.y}, 10, 1)
                 if new_pos then
                     player.teleport(new_pos)
                     hideGUI(player, index)
@@ -390,11 +399,11 @@ game.onevent(defines.events.onguiclick, function(event)
                     local entity = itemInfo["chests"][key]["entity"]
                     local isSelected = string.gsub(style.name, "lv_button_" .. action, "") == "_selected"
 
-                    if entity.tobedeconstructed(force) and isSelected then
-                        entity.canceldeconstruction(force)
+                    if entity.to_be_deconstructed(force) and isSelected then
+                        entity.cancel_deconstruction(force)
                         event.element.style = "lv_button_delete"
                     else
-                        entity.orderdeconstruction(force)
+                        entity.order_deconstruction(force)
                         event.element.style = "lv_button_delete_selected"
                     end
                 end
@@ -416,11 +425,11 @@ game.onevent(defines.events.onguiclick, function(event)
     -- disconnected table columns sorting event
     elseif event.element.name:find("disconnectedInfo_") ~= nil  then
 
-        local currentTab = glob.currentTab[index]
+        local currentTab = global.currentTab[index]
         local name = event.element.name
         local style = event.element.style
         local sort_by = string.gsub(name, "disconnectedInfo_", "")
-        local disconnectedTable = player.gui[glob.settings[index].guiPos].logisticsFrame.contentFrame.disconnectedFrame.disconnectedTable
+        local disconnectedTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.disconnectedFrame.disconnectedTable
         local sortFlow = disconnectedTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
         local sort_dir = sortFlow[sort_by .. "_sort"].style.name
         sort_dir = string.gsub(sort_dir, "lv_sort_", "")       
@@ -430,26 +439,28 @@ game.onevent(defines.events.onguiclick, function(event)
         local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'      
 
         if isSelected ~= "_selected" then
-            for _,flowName in pairs(disconnectedTable.childrennames) do
-                if flowName:find("Flow") ~= nil then
-                    local sortBy = string.gsub(flowName, "Flow", "")
-                    local flow = disconnectedTable[flowName]
-                    local sortFlow = flow[sortBy .. "SortFlow"]
+            if disconnectedTable and disconnectedTable.children_names ~= nil then
+                for _,flowName in pairs(disconnectedTable.children_names) do
+                    if flowName:find("Flow") ~= nil then
+                        local sortBy = string.gsub(flowName, "Flow", "")
+                        local flow = disconnectedTable[flowName]
+                        local sortFlow = flow[sortBy .. "SortFlow"]
 
-                    if sortBy == sort_by then
-                        new_sort_by = sortBy
-                        flow["disconnectedInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
-                        sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
-                    else
-                        flow["disconnectedInfo_" .. sortBy].style = "lv_button_" .. sortBy
-                        sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                        if sortBy == sort_by then
+                            new_sort_by = sortBy
+                            flow["disconnectedInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
+                            sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                        else
+                            flow["disconnectedInfo_" .. sortBy].style = "lv_button_" .. sortBy
+                            sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                        end
                     end
                 end
             end
 
         end
 
-        glob.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
+        global.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
 
         showDisconnectedInfo(player, index)
         
@@ -457,7 +468,8 @@ game.onevent(defines.events.onguiclick, function(event)
     elseif event.element.name:find("disconnectedAction_") ~= nil  then
 
         local force = player.force
-        local chests = glob.disconnectedChests[force.name]
+        local surface = player.surface
+        local chests = global.disconnectedChests[force.name]
         local style = event.element.style
 
         local action, key = event.element.name:match("disconnectedAction_([%w%s]*)_([%w_.%s]*)")
@@ -465,7 +477,7 @@ game.onevent(defines.events.onguiclick, function(event)
         if chests[key] then
             if action == "teleport" then
                 local pos = chests[key].position
-                local new_pos = game.findnoncollidingposition("player", {pos.x, pos.y}, 10, 1)
+                local new_pos = surface.find_non_colliding_position("player", {pos.x, pos.y}, 10, 1)
                 if new_pos then
                     player.teleport(new_pos)
                     hideGUI(player, index)
@@ -480,11 +492,11 @@ game.onevent(defines.events.onguiclick, function(event)
                 local entity = chests[key]
                 local isSelected = string.gsub(style.name, "lv_button_" .. action, "") == "_selected"
 
-                if entity.tobedeconstructed(force) and isSelected then
-                    entity.canceldeconstruction(force)
+                if entity.to_be_deconstructed(force) and isSelected then
+                    entity.cancel_deconstruction(force)
                     event.element.style = "lv_button_delete"
                 else
-                    entity.orderdeconstruction(force)
+                    entity.order_deconstruction(force)
                     event.element.style = "lv_button_delete_selected"
                 end
                 
@@ -504,14 +516,14 @@ game.onevent(defines.events.onguiclick, function(event)
     else
 
         local name, page = event.element.name:match("(%w+)_([%w%s]*)")
-        local currentTab = glob.currentTab[index]
+        local currentTab = global.currentTab[index]
         name = name or ""
         page = tonumber(page) or ""
         if name == "nextPage" or name == "prevPage" then
             if page >= 1 then
-                glob.itemsPage[index][currentTab] = page
+                global.itemsPage[index][currentTab] = page
                 if currentTab == "itemInfo" then
-                    local currentItem = glob.currentItem[index]
+                    local currentItem = global.currentItem[index]
                     if currentItem then
                         showItemInfo(currentItem, player, index, page)
                     end

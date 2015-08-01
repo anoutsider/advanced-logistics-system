@@ -8,9 +8,9 @@ end
 
 --- Create the GUI
 function createGUI(player, index)
-    local guiPos = glob.settings[index].guiPos
-    if glob.guiVisible[index] == 0 and player.gui[guiPos].logisticsFrame == nil then
-        local currentTab = glob.currentTab[index] or "logistics"
+    local guiPos = global.settings[index].guiPos
+    if global.guiVisible[index] == 0 and player.gui[guiPos].logisticsFrame == nil then
+        local currentTab = global.currentTab[index] or "logistics"
         local buttonStyle = currentTab == 'logistics' and "_selected" or ""
 
         -- main frame
@@ -36,11 +36,11 @@ end
 
 --- Show the GUI
 function showGUI(player, index)
-    if glob.guiVisible[index] == 0 then
-        local guiPos = glob.settings[index].guiPos
+    if global.guiVisible[index] == 0 then
+        local guiPos = global.settings[index].guiPos
         local logisticsFrame = player.gui[guiPos].logisticsFrame
-        local currentTab = glob.currentTab[index] == "settings" and "logistics" or glob.currentTab[index]
-        glob.currentTab[index] = currentTab
+        local currentTab = global.currentTab[index] == "settings" and "logistics" or global.currentTab[index]
+        global.currentTab[index] = currentTab
 
         if logisticsFrame == nil then
             createGUI(player, index)
@@ -52,34 +52,30 @@ function showGUI(player, index)
         resetMenu(player, index)
         hideSettings(player, index)
 
-        glob.guiVisible[index] = 1
+        global.guiVisible[index] = 1
     end
 end
 
 --- Hide the GUI
 function hideGUI(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     if player.gui[guiPos].logisticsFrame ~= nil then
         player.gui[guiPos].logisticsFrame.style = "lv_frame_hidden"
-        glob.guiVisible[index] = 0
+        global.guiVisible[index] = 0
     end
 end
 
 --- Destroy the GUI
 function destroyGUI(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     if player.gui.top["logistics-view-button"] ~= nil then
         player.gui.top["logistics-view-button"].destroy()
     end   
-    -- if player.gui[guiPos].logisticsFrame ~= nil then
-        -- player.gui[guiPos].logisticsFrame.style = "lv_frame_hidden"
-        -- glob.guiVisible[index] = 0
-    -- end
 end
 
 --- Update main gui content
 function updateGUI(player, index, tab)
-    local currentTab = tab or glob.currentTab[index]
+    local currentTab = tab or global.currentTab[index]
     local force = player.force
 
     if currentTab == "logistics" then
@@ -95,12 +91,14 @@ end
 
 --- Clear main content gui
 function clearGUI(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
 
-    for _,child in pairs(contentFrame.childrennames) do
-        if contentFrame[child] ~= nil then
-            contentFrame[child].destroy()
+    if contentFrame and contentFrame.children_names ~= nil then
+        for _,child in pairs(contentFrame.children_names) do
+            if contentFrame[child] ~= nil then
+                contentFrame[child].destroy()
+            end
         end
     end
 
@@ -108,10 +106,10 @@ end
 
 --- Clear menu selection
 function clearMenu(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local menuFlow = player.gui[guiPos].logisticsFrame.menuFlow
-    if menuFlow ~= nil then
-        for _,btnName in pairs(menuFlow.childrennames) do
+    if menuFlow and menuFlow.children_names ~= nil then
+        for _,btnName in pairs(menuFlow.children_names) do
             if menuFlow[btnName] ~= nil then
                 local btn = menuFlow[btnName]
                 btn.style = "lv_button"
@@ -120,13 +118,13 @@ function clearMenu(player, index)
     end
 end
 
---- Reset menu selection to the specified tab or the current global tab
+--- Reset menu selection to the specified tab or the current globalal tab
 function resetMenu(player, index, tab)
-    local tab = tab or glob.currentTab[index]
-    local guiPos = glob.settings[index].guiPos
+    local tab = tab or global.currentTab[index]
+    local guiPos = global.settings[index].guiPos
     local menuFlow = player.gui[guiPos].logisticsFrame.menuFlow
-    if menuFlow ~= nil then
-        for _,btnName in pairs(menuFlow.childrennames) do
+    if menuFlow and menuFlow.children_names ~= nil then
+        for _,btnName in pairs(menuFlow.children_names) do
             if menuFlow[btnName] ~= nil then
                 local btn = menuFlow[btnName]
                 local btnTab = string.gsub(btnName, "MenuBtn", "")

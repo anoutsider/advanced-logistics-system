@@ -1,7 +1,7 @@
 --- Show the settings GUI
 function showSettings(player, index)
-    local guiPos = glob.settings[index].guiPos
-    if glob.guiVisible[index] == 0 and player.gui[guiPos].logisticsFrame ~= nil then
+    local guiPos = global.settings[index].guiPos
+    if global.guiVisible[index] == 0 and player.gui[guiPos].logisticsFrame ~= nil then
         
         -- add settings frame 
         if player.gui[guiPos].settingsFrame ~= nil then
@@ -23,7 +23,7 @@ function showSettings(player, index)
         
         --- add settings options
         -- gui position
-        local guiPosSettings = glob.settings[index].guiPos
+        local guiPosSettings = global.settings[index].guiPos
         settingsTable.add({type = "label", name = "guiPosLabel", caption = {"settings.gui-pos"}, style = "lv_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "guiPosFlow", direction = "horizontal"})
         settingFlow.add({type = "checkbox", name = "guiPos_left", style = "checkbox_style", caption = "Left", state = guiPosSettings == "left"})        
@@ -32,7 +32,7 @@ function showSettings(player, index)
         settingsTable.add({type = "label", name = "guiPosHelp", caption = {"settings.gui-pos-help"}, style = "lv_settings_info_label"})
         
         -- refresh interval
-        local refreshInterval = glob.settings[index].refreshInterval
+        local refreshInterval = global.settings[index].refreshInterval
         settingsTable.add({type = "label", name = "refreshIntervalLabel", caption = {"settings.refresh-interval"}, style = "lv_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "refreshIntervalFlow", direction = "horizontal"})
         local settingsField = settingFlow.add({type = "textfield", name = "refreshIntervalValue", text = refreshInterval })
@@ -42,14 +42,14 @@ function showSettings(player, index)
         
         
         -- items per page
-        local itemsPerPage = glob.settings[index].itemsPerPage
+        local itemsPerPage = global.settings[index].itemsPerPage
         settingsTable.add({type = "label", name = "itemsPerPageLabel", caption = {"settings.items-per-page"}, style = "lv_info_label"})
         local settingsField = settingsTable.add({type = "textfield", name = "itemsPerPageValue", text = itemsPerPage })
         settingsField.text = itemsPerPage
         settingsTable.add({type = "label", name = "itemsPerPageHelp", caption = {"settings.items-per-page-help"}, style = "lv_settings_info_label"})
         
         -- experimental tools
-        local exToolsSettings = glob.settings[index].exTools
+        local exToolsSettings = global.settings[index].exTools
         settingsTable.add({type = "label", name = "exToolsLabel", caption = {"settings.ex-tools"}, style = "lv_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "exToolsFlow", direction = "horizontal"})
         settingFlow.add({type = "checkbox", name = "exToolsValue", style = "checkbox_style", caption = {"settings.enable"}, state = exToolsSettings})          
@@ -63,7 +63,7 @@ end
 
 --- Hide the settings GUI
 function hideSettings(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     if player.gui[guiPos].settingsFrame ~= nil then
         player.gui[guiPos].settingsFrame.style = "lv_frame_hidden"
     end
@@ -71,33 +71,35 @@ end
 
 --- Save settings
 function saveSettings(player, index)
-    local guiPos = glob.settings[index].guiPos
+    local guiPos = global.settings[index].guiPos
     local settingsFrame = player.gui[guiPos].settingsFrame
     local settingsTable = settingsFrame.settingsTable
     
     if settingsTable ~= nil then
         -- guiPos
-        local guiPosSettings = glob.settings[index].guiPos
+        local guiPosSettings = global.settings[index].guiPos
         local guiPosFlow = settingsTable["guiPosFlow"]
-        for _,childName in pairs(guiPosFlow.childrennames) do
-            if guiPosFlow[childName] ~= nil then
-                local state = guiPosFlow[childName].state                
-                if state then 
-                    local value = string.gsub(childName, "guiPos_", "")
-                    guiPosSettings = value
+        if guiPosFlow and guiPosFlow.children_names ~= nil then
+            for _,childName in pairs(guiPosFlow.children_names) do
+                if guiPosFlow[childName] ~= nil then
+                    local state = guiPosFlow[childName].state                
+                    if state then 
+                        local value = string.gsub(childName, "guiPos_", "")
+                        guiPosSettings = value
+                    end
                 end
-            end
+            end   
         end   
 
         -- refreshInterval
-        local refreshIntervalSettings = glob.settings[index].refreshInterval
+        local refreshIntervalSettings = global.settings[index].refreshInterval
         local refreshIntervalValue = tonumber(settingsTable["refreshIntervalFlow"]["refreshIntervalValue"].text)
         if refreshIntervalValue > 0 then
             refreshIntervalSettings = refreshIntervalValue
         end
         
         -- itemsPerPage
-        local itemsPerPageSettings = glob.settings[index].itemsPerPage
+        local itemsPerPageSettings = global.settings[index].itemsPerPage
         local itemsPerPageValue = tonumber(settingsTable["itemsPerPageValue"].text)
         if itemsPerPageValue > 0 then
             itemsPerPageSettings = itemsPerPageValue
@@ -107,7 +109,7 @@ function saveSettings(player, index)
         local exToolsSettings = settingsTable["exToolsFlow"]["exToolsValue"].state   
 
         -- save settings and close settings gui
-        glob.settings[index] = {
+        global.settings[index] = {
                 guiPos = guiPosSettings,
                 itemsPerPage = itemsPerPageSettings,
                 refreshInterval = refreshIntervalSettings,
