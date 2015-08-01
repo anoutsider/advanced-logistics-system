@@ -3,10 +3,16 @@ Advanced Logistics System
 
 Advanced Logistics System is a mod for factorio, that offers a detailed overview of your logistics network and the items within it.
 
+Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/viewtopic.php?f=92&t=14388)
+
 ![img](http://i.imgur.com/846tLeZ.jpg?1)
 
 Changelog
 -----
+**0.2.1**
+
+ - fix location view tool missing entity bug
+ 
 **0.2.0**
 
  - update for factorio 0.12.x
