@@ -5,5 +5,5 @@
     "author": "anoutsider",
     "description": "Extended Logistics Network View and Monitoring",
     "homepage": "https://github.com/anoutsider/advanced-logistics-system",
-    "dependencies": ["base >= 0.11.0"]
+    "dependencies": ["base >= 0.12.0"]
 }

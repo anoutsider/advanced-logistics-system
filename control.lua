@@ -749,8 +749,7 @@ function upgradeChest(entity, name, player)
 end
 
 --- moves a player ghost to a position and highlights it
-function viewPosition(player, index, position)
-    global.character[index] = player.character
+function viewPosition(player, index, position)    
     local ghost = createGhostController(player, position)
 
     changeCharacter(player, ghost)
@@ -766,7 +765,6 @@ end
 
 --- moves a player back to it's original character and position
 function resetPosition(player, index)
-
     local character = global.character[index]
     if character ~= nil and player.character.name == "ls-controller" then
         local locationFlow = player.gui.center.locationFlow
@@ -774,8 +772,9 @@ function resetPosition(player, index)
             locationFlow.destroy()
         end
 
-        changeCharacter(player, character)
-        global.character[index] = nil
+        if changeCharacter(player, character) then
+            global.character[index] = nil
+        end
         showGUI(player, index)
     end
 end
@@ -790,10 +789,14 @@ end
 
 --- changes the player character
 function changeCharacter(player, character)
-    if player.character ~= nil and player.character.valid and player.character.name == "ls-controller" then
-        player.character.destroy()
-    end
-    player.character = character
+    if player.character ~= nil and character ~= nil and player.character.valid and character.valid then
+        if player.character.name ~= "ls-controller" then
+            global.character[player.index] = player.character
+        end
+        player.character = character
+        return true
+    end    
+    return false
 end
 
 --- Helper function to get an area where a point intersects with a square
