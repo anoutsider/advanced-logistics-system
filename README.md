@@ -9,6 +9,11 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.2**
+
+ - update search functions - fixed a bug with functions not being initialized
+ - fix an issue with playerHasSystem checks when another character controller is being used -- Talguy
+ 
 **0.2.1**
 
  - fix location view tool missing entity bug

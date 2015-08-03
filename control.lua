@@ -212,9 +212,12 @@ function reset()
     end
 end
 
---- Checks if a player has a logistics system in his inventory
+--- Checks if a player has a logistics system in his inventory -- Talguy
 function playerHasSystem(player)
-    return player.character.name == "ls-controller" or player.get_item_count("advanced-logistics-system") > 0
+    return not not player and (
+        player.character and player.character.name == "ls-controller" or 
+        player.get_item_count("advanced-logistics-system") > 0
+    )
 end
 
 --- Handles items search
@@ -241,8 +244,8 @@ game.on_event(defines.events.on_tick, function(event)
                 end
 
                 -- check search field tick
-                if global.searchTick[i]["logistics"] ~= nil then onLogisticsSearchTick(event) end
-                if global.searchTick[i]["normal"] ~= nil then onNormalSearchTick(event) end
+                if global.searchTick[i]["logistics"] ~= nil then onLogisticsSearchTick(event, i) end
+                if global.searchTick[i]["normal"] ~= nil then onNormalSearchTick(event, i) end
             elseif global.settings[i] then
                 destroyGUI(p, i)
             end
@@ -257,7 +260,7 @@ end)
 
 --- init new players
 function playerCreated(event)
-    local player = game.players[event.player_index]    
+    local player = game.players[event.player_index]
     initPlayers()
 end
 
@@ -333,8 +336,8 @@ function entityBuilt(event, entity)
         local roboports = global.roboports[force]
         local key = string.gsub(pos.x.."A"..pos.y, "-", "_")
         local radius = global.roboradius[entity.name]
-        
-        if not roboports[key] and radius then            
+
+        if not roboports[key] and radius then
             debugLog("Added Roboport # " .. key)
             roboports[key] = {}
             roboports[key]["name"] = entity.name
@@ -663,6 +666,55 @@ function getItemInfo(item, player, index, filters)
 
 end
 
+--- Search update functions
+function onLogisticsSearchTick(event, index)
+    local player = game.players[index]
+    local searchTick = global.searchTick[index]["logistics"]
+    local currentTab = global.currentTab[index]
+
+    if currentTab == "logistics" then
+        if searchTick <= event.tick and global.guiVisible[index] == 1 then
+            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["logisticsSearchFrame"]
+            local searchText = searchFrame["logistics-search-field"].text
+
+            global.searchTick[index]["logistics"] = event.tick + 60
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["logistics"] = searchText
+                    updateGUI(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["logistics"] = false
+                    updateGUI(player, index)
+                end
+            end
+        end
+    end
+end
+
+function onNormalSearchTick(event, index)
+    local player = game.players[index]
+    local searchTick = global.searchTick[index]["normal"]
+    local currentTab = global.currentTab[index]
+
+    if currentTab == "normal" then
+        if searchTick <= event.tick and global.guiVisible[index] == 1 then
+            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["normalSearchFrame"]
+            local searchText = searchFrame["normal-search-field"].text
+
+            global.searchTick[index]["normal"] = event.tick + 60
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["normal"] = searchText
+                    updateGUI(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["normal"] = false
+                    updateGUI(player, index)
+                end
+            end
+        end
+    end
+end
+
 --- Convert chest names to gui codes
 function nameToCode(name)
     for type,codes in pairs(global.codeToName) do
@@ -749,7 +801,7 @@ function upgradeChest(entity, name, player)
 end
 
 --- moves a player ghost to a position and highlights it
-function viewPosition(player, index, position)    
+function viewPosition(player, index, position)
     local ghost = createGhostController(player, position)
 
     changeCharacter(player, ghost)
@@ -795,7 +847,7 @@ function changeCharacter(player, character)
         end
         player.character = character
         return true
-    end    
+    end
     return false
 end
 

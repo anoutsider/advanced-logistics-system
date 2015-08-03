@@ -46,7 +46,7 @@ function showGUI(player, index)
             createGUI(player, index)
         else
             logisticsFrame.style = "lv_frame"
-        end
+        end        
 
         -- hide settings gui and reset menu
         resetMenu(player, index)
@@ -70,7 +70,7 @@ function destroyGUI(player, index)
     local guiPos = global.settings[index].guiPos
     if player.gui.top["logistics-view-button"] ~= nil then
         player.gui.top["logistics-view-button"].destroy()
-    end   
+    end
 end
 
 --- Update main gui content
@@ -83,7 +83,7 @@ function updateGUI(player, index, tab)
         updateItemsTable(items, player, index)
     elseif currentTab == "normal" then
         local items = getNormalItems(force)
-        updateItemsTable(items, player, index)    
+        updateItemsTable(items, player, index)
     elseif currentTab == "disconnected" then
         showDisconnectedInfo(player, index)
     end

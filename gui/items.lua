@@ -64,27 +64,29 @@ function updateDisconnectedInfo(player, index)
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
     local infoFlow = contentFrame["infoFlow"]
     local currentTab = global.currentTab[index]
-    local disconnected = currentTab == "logistics" and global.disconnectedChests[force] or false
+    local disconnected = global.disconnectedChests[force]
     local count = count(disconnected)
-
-    if count > 0 then
-        if infoFlow == nil then
-            infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
-        end
-
-        for _,tab in pairs(global.guiTabs) do
-            if tab ~= currentTab and infoFlow[tab .. "DisconnectedFrame"] ~= nil then
-                infoFlow[tab .. "DisconnectedFrame"].style = "lv_frame_hidden"
-            end
-        end
     
-        --add disconnected chests info frame
-        local disconnectedFrame = infoFlow[currentTab .. "DisconnectedFrame"]
-        if disconnectedFrame ~= nil then
-            disconnectedFrame.destroy()
+    if infoFlow == nil then
+        infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
+    end   
+    
+    -- remove old disconnected frames
+    for _,tab in pairs(global.guiTabs) do
+        if tab ~= currentTab and infoFlow[tab .. "DisconnectedFrame"] ~= nil then
+            infoFlow[tab .. "DisconnectedFrame"].destroy()
         end
-
-        disconnectedFrame = infoFlow.add({type = "frame", name = currentTab .. "DisconnectedFrame", style = "lv_info_frame", direction = "horizontal"})
+    end    
+    
+    -- remove disconnected chests info frame
+    local disconnectedFrame = infoFlow["disconnectedFrame"]
+    if disconnectedFrame ~= nil then
+        disconnectedFrame.destroy()
+    end
+    
+    -- add disconnected chests info frame
+    if currentTab == "logistics" and count > 0 then
+        disconnectedFrame = infoFlow.add({type = "frame", name = "disconnectedFrame", style = "lv_info_frame", direction = "horizontal"})
         disconnectedFrame.add({type = "label", name = "disconnectedFrameLabel", style = "lv_info_label", caption = {"disconnected-chests"}})
         disconnectedFrame.add({type = "label", name = "disconnectedFrameTotal", style = "label_style", caption = ": " .. count})
         disconnectedFrame.add({type = "button", name = "disconnectedFrameView", caption = {"view"}, style = "lv_button"})

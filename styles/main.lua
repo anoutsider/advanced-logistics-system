@@ -57,7 +57,7 @@ data.raw["gui-style"].default["lv_settings_table"] =
         priority = "extra-high-no-scale",
         corner_size = {3, 3},
         position = {8, 0}
-    }    
+    }
 }
 
 data.raw["gui-style"].default["lv_settings_info_label"] =
@@ -172,7 +172,7 @@ data.raw["gui-style"].default["lv_items_table"] =
 {
     type = "table_style",
     minimal_width = 576,
-    minimal_height = 420,    
+    minimal_height = 420,
     cell_padding = 2,
     horizontal_spacing=0,
     vertical_spacing=4,
@@ -186,7 +186,7 @@ data.raw["gui-style"].default["lv_items_table"] =
     }
 }
 
--- search 
+-- search
 data.raw["gui-style"].default["lv_search_frame"] =
 {
     type = "frame_style",
@@ -194,7 +194,7 @@ data.raw["gui-style"].default["lv_search_frame"] =
     right_padding = 5,
     bottom_padding = 5,
     left_padding = 5,
-    minimal_height = 40,    
+    minimal_height = 40,
     align = "center",
 }
 
@@ -255,7 +255,7 @@ data.raw["gui-style"].default["lv_filters_frame"] =
     minimal_height = 50
 }
 
--- items table headers 
+-- items table headers
 data.raw["gui-style"].default["lv_table_flow"] =
 {
     type = "flow_style",

@@ -8,7 +8,7 @@ game.on_event(defines.events.on_gui_click, function(event)
     if event.element.name == "logistics-view-button" then
 
         local visible = global.guiVisible[index]
-        
+
         --- reset player position if in location view mode
         local locationFlow = player.gui.center.locationFlow
         if locationFlow ~= nil and player.character.name == "ls-controller" then
@@ -98,7 +98,7 @@ game.on_event(defines.events.on_gui_click, function(event)
             local settingsFrame = player.gui[guiPos].settingsFrame
             local settingsTable = settingsFrame.settingsTable
             local guiPosFlow = settingsTable["guiPosFlow"]
-            
+
             if guiPosFlow and guiPosFlow.children_names ~= nil then
                 for _,childName in pairs(guiPosFlow.children_names) do
                     if guiPosFlow[childName] ~= nil then
@@ -113,61 +113,13 @@ game.on_event(defines.events.on_gui_click, function(event)
     -- search field ticking event
     elseif event.element.name == "logistics-search-field" then
 
-        local name = event.element.name
-
         global.searchTick[index]["logistics"] = event.tick
-
-        onLogisticsSearchTick = function(event)
-            local searchTick = global.searchTick[index]["logistics"]
-            local currentTab = global.currentTab[index]
-
-            if currentTab == "logistics" then
-                if searchTick <= event.tick and global.guiVisible[index] == 1 then
-                    local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["logisticsSearchFrame"]
-                    local searchText = searchFrame[name].text
-
-                    global.searchTick[index]["logistics"] = event.tick + 60
-                    if searchText ~= nil then
-                        if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                            global.searchText[index]["logistics"] = searchText
-                            updateGUI(player, index)
-                        elseif searchText == "" then
-                            global.searchText[index]["logistics"] = false
-                            updateGUI(player, index)
-                        end
-                    end
-                end
-            end
-        end
 
     -- search field ticking event
     elseif event.element.name == "normal-search-field" then
 
-        local name = event.element.name
         global.searchTick[index]["normal"] = event.tick
 
-        onNormalSearchTick = function(event)
-            local searchTick = global.searchTick[index]["normal"]
-            local currentTab = global.currentTab[index]
-
-            if currentTab == "normal" then
-                if searchTick <= event.tick and global.guiVisible[index] == 1 then
-                    local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["normalSearchFrame"]
-                    local searchText = searchFrame[name].text
-
-                    global.searchTick[index]["normal"] = event.tick + 60
-                    if searchText ~= nil then
-                        if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                            global.searchText[index]["normal"] = searchText
-                            updateGUI(player, index)
-                        elseif searchText == "" then
-                            global.searchText[index]["normal"] = false
-                            updateGUI(player, index)
-                        end
-                    end
-                end
-            end
-        end
     -- items table columns sorting event
     elseif event.element.name:find("itemSort_") ~= nil  then
 
@@ -388,12 +340,12 @@ game.on_event(defines.events.on_gui_click, function(event)
                     player.teleport(new_pos)
                     hideGUI(player, index)
                 end
-                
+
             elseif action == "location" then
-            
+
                 local pos = itemInfo["chests"][key].pos
                 viewPosition(player, index, pos)
-                
+
             elseif action == "delete" then
                 if itemInfo["chests"][key]["entity"] then
                     local entity = itemInfo["chests"][key]["entity"]
@@ -432,11 +384,11 @@ game.on_event(defines.events.on_gui_click, function(event)
         local disconnectedTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.disconnectedFrame.disconnectedTable
         local sortFlow = disconnectedTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
         local sort_dir = sortFlow[sort_by .. "_sort"].style.name
-        sort_dir = string.gsub(sort_dir, "lv_sort_", "")       
+        sort_dir = string.gsub(sort_dir, "lv_sort_", "")
 
         local isSelected = string.gsub(style.name, "lv_button_" .. sort_by, "")
         local new_sort_by = sort_by
-        local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'      
+        local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
 
         if isSelected ~= "_selected" then
             if disconnectedTable and disconnectedTable.children_names ~= nil then
@@ -463,7 +415,7 @@ game.on_event(defines.events.on_gui_click, function(event)
         global.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
 
         showDisconnectedInfo(player, index)
-        
+
     -- disconnected table tools/action events
     elseif event.element.name:find("disconnectedAction_") ~= nil  then
 
@@ -482,12 +434,12 @@ game.on_event(defines.events.on_gui_click, function(event)
                     player.teleport(new_pos)
                     hideGUI(player, index)
                 end
-                
+
             elseif action == "location" then
-            
+
                 local pos = chests[key].position
                 viewPosition(player, index, pos)
-                
+
             elseif action == "delete" then
                 local entity = chests[key]
                 local isSelected = string.gsub(style.name, "lv_button_" .. action, "") == "_selected"
@@ -499,19 +451,19 @@ game.on_event(defines.events.on_gui_click, function(event)
                     entity.order_deconstruction(force)
                     event.element.style = "lv_button_delete_selected"
                 end
-                
+
             elseif action == "apc" or action == "ppc" or action == "sc" or action == "rc" then
                 local entity = chests[key]
                 local name = codeToName(action)
                 upgradeChest(entity, name, player)
             end
-        end        
-        
+        end
+
     -- location view back button event
     elseif event.element.name == "locationViewBack" then
-        
+
         resetPosition(player, index)
-        
+
     -- pagination event
     else
 
