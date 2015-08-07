@@ -54,6 +54,12 @@ function showSettings(player, index)
         local settingFlow = settingsTable.add({type = "flow", name = "exToolsFlow", direction = "horizontal"})
         settingFlow.add({type = "checkbox", name = "exToolsValue", style = "checkbox_style", caption = {"settings.enable"}, state = exToolsSettings})          
         settingsTable.add({type = "label", name = "exToolsHelp", caption = {"settings.ex-tools-help"}, style = "lv_settings_info_label"}) 
+                
+        -- logistics data        
+        settingsTable.add({type = "label", name = "logDataLabel", caption = {"settings.log-data"}, style = "lv_info_label"})
+        local settingFlow = settingsTable.add({type = "flow", name = "logDataFlow", direction = "horizontal"})
+        settingFlow.add({type = "button", name = "updateLogisticsData", caption = {"settings.log-data-update"}, style = "lv_button"})         
+        settingsTable.add({type = "label", name = "logDataHelp", caption = {"settings.log-data-help"}, style = "lv_settings_info_label"}) 
         
         -- Save settings
         settingsFrame.add({type = "button", name = "cancelSettingsBtn", caption = {"settings.cancel"}, style = "lv_button"})

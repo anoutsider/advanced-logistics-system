@@ -9,6 +9,11 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.4**
+
+ - fixed an issue where entity.valid wasn't working for all roboports
+ - added an option under "Settings" to Update the logistics data, fixes issues with faulty logistics network data being displayed
+ 
 **0.2.3**
 
  - add checks for invalid chests

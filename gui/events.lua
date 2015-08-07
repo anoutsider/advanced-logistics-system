@@ -88,6 +88,13 @@ game.on_event(defines.events.on_gui_click, function(event)
 
         showGUI(player, index)
 
+    -- update logistics data button
+    elseif event.element.name == "updateLogisticsData" then
+
+        getRoboPorts(player.force)
+        getLogisticsChests(player.force)
+        showGUI(player, index)
+
     -- guiPos settings checkboxes flow
     elseif event.element.name:find("guiPos_") ~= nil then
 

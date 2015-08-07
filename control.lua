@@ -511,7 +511,7 @@ function inLogisticsNetwork(entity, force)
     local roboports = global.roboports[force]
     for _,roboport in pairs(roboports) do
 
-        if roboport.valid and roboport.active then
+        if roboport.active then
             local coverage = roboport.coverage
             local A = {x = coverage.x1, y = coverage.y1}
             local B = {x = coverage.x2, y = coverage.y1}
