@@ -124,13 +124,12 @@ data.raw["gui-style"].default["lv_frame"] =
 {
     type = "frame_style",
     font = "font-m",
-    minimal_width = 580,
-    minimal_height = 625,
+    minimal_width = 740,
     top_padding = 2,
     right_padding = 2,
     bottom_padding = 10,
     left_padding = 2,
-    scalable = false,
+    scalable = false, 
 }
 
 data.raw["gui-style"].default["lv_frame_hidden"] =
@@ -144,7 +143,7 @@ data.raw["gui-style"].default["lv_title_label"] =
 {
     type = "label_style",
     parent = "label_style",
-    width = 568,
+    width = 724,
     align = "center",
     font = "font-lb",
     font_color = {r=0.98, g=0.66, b=0.22}
@@ -171,8 +170,7 @@ data.raw["gui-style"].default["lv_items_frame"] =
 data.raw["gui-style"].default["lv_items_table"] =
 {
     type = "table_style",
-    minimal_width = 576,
-    minimal_height = 420,
+    minimal_height = 400,
     cell_padding = 2,
     horizontal_spacing=0,
     vertical_spacing=4,
@@ -194,7 +192,7 @@ data.raw["gui-style"].default["lv_search_frame"] =
     right_padding = 5,
     bottom_padding = 5,
     left_padding = 5,
-    minimal_height = 40,
+    minimal_height = 50,
     align = "center",
 }
 
@@ -215,13 +213,19 @@ data.raw["gui-style"].default["lv_search_label"] =
     font_color = {r=0.98, g=0.66, b=0.22}
 }
 
+data.raw["gui-style"].default["lv_searchfield_style"] =
+{
+    type = "textfield_style",
+    parent = "textfield_style",
+}
+
 -- item info
 data.raw["gui-style"].default["lv_info_flow"] =
 {
     type = "flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
-    width = 588,
+    width = 736,
     scalable = false,
 }
 
@@ -261,7 +265,7 @@ data.raw["gui-style"].default["lv_table_flow"] =
     type = "flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-    width = 52,
+    width = 72,
     scalable = false,
 }
 
@@ -270,7 +274,7 @@ data.raw["gui-style"].default["lv_total_flow"] =
     type = "flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-    width = 60,
+    width = 82,
     scalable = false,
 }
 
@@ -279,7 +283,7 @@ data.raw["gui-style"].default["lv_pos_flow"] =
     type = "flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-    width = 80,
+    width = 82,
     scalable = false,
 }
 
@@ -288,7 +292,7 @@ data.raw["gui-style"].default["lv_sort_flow"] =
     type = "flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
-    width = 16,
+    width = 14,
     scalable = false,
 }
 
@@ -297,7 +301,7 @@ data.raw["gui-style"].default["lv_name_flow"] =
     type = "flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-    width = 180,
+    width = 252,
     scalable = false,
 }
 
@@ -306,7 +310,7 @@ data.raw["gui-style"].default["lv_items_info_flow"] =
     type = "flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
-    width = 36,
+    width = 26,
     scalable = false,
 }
 
@@ -315,7 +319,7 @@ data.raw["gui-style"].default["lv_tools_flow"] =
     type = "flow_style",
     horizontal_spacing = 6,
     vertical_spacing = 0,
-    width = 190,
+    width = 252,
     scalable = false,
 }
 
@@ -534,6 +538,7 @@ data.raw["gui-style"].default["lv_button_info"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -585,6 +590,7 @@ data.raw["gui-style"].default["lv_button_location"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -636,6 +642,7 @@ data.raw["gui-style"].default["lv_button_teleport"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -687,6 +694,7 @@ data.raw["gui-style"].default["lv_button_delete"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -738,6 +746,7 @@ data.raw["gui-style"].default["lv_button_delete_selected"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -789,6 +798,7 @@ data.raw["gui-style"].default["lv_button_up_apc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -840,6 +850,7 @@ data.raw["gui-style"].default["lv_button_up_ppc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -891,6 +902,7 @@ data.raw["gui-style"].default["lv_button_up_sc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -943,6 +955,7 @@ data.raw["gui-style"].default["lv_button_up_rc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -993,9 +1006,10 @@ data.raw["gui-style"].default["lv_button_name"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
-    width = 160,
+    width = 230,
     height = 32,
     hovered_font_color = {r=0.1, g=0.1, b=0.1},
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1084,9 +1098,10 @@ data.raw["gui-style"].default["lv_button_total"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
-    width = 40,
+    width = 60,
     height = 32,
     hovered_font_color = {r=0.1, g=0.1, b=0.1},
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1243,6 +1258,7 @@ data.raw["gui-style"].default["lv_button_apc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1332,6 +1348,7 @@ data.raw["gui-style"].default["lv_button_ppc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1421,6 +1438,7 @@ data.raw["gui-style"].default["lv_button_sc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1510,6 +1528,7 @@ data.raw["gui-style"].default["lv_button_rc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1599,6 +1618,7 @@ data.raw["gui-style"].default["lv_button_woc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1694,6 +1714,7 @@ data.raw["gui-style"].default["lv_button_irc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1789,6 +1810,7 @@ data.raw["gui-style"].default["lv_button_stc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",
@@ -1884,6 +1906,7 @@ data.raw["gui-style"].default["lv_button_smc"] =
     bottom_padding = 0,
     left_padding = 0,
     font = "font-m",
+    scalable = false,
     default_graphical_set =
     {
         type = "monolith",

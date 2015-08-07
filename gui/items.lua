@@ -22,7 +22,7 @@ function showSearch(player, index)
     --add search field
     local searchField = contentFrame[currentTab .. "SearchFrame"][currentTab .. "-search-field"]
     if searchField == nil then
-        searchField = searchFrame.add({type = "textfield", name = currentTab .. "-search-field", style = "textfield_style", text = searchText })
+        searchField = searchFrame.add({type = "textfield", name = currentTab .. "-search-field", style = "lv_searchfield_style", text = searchText })
     end
 
 end
@@ -159,6 +159,9 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
                 player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable.destroy()
             end
             itemsTable = itemsFrame.add({type ="table", name = "itemsTable", colspan = 8, style = "lv_items_table"})
+            
+            -- set items table dynamic height
+            itemsTable.style.minimal_height = itemsPerPage * 42
 
             -- item image column
             itemsTable.add({type = "label", name = "itemImage", caption = " "})

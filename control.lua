@@ -34,6 +34,7 @@ function init()
     -- roboports radius, manually set because there is no way to get the data right now
     global.roboradius = {}
     global.roboradius["roboport"] = 25
+        -- bobs mods
     global.roboradius["bob-roboport-2"] = 50
     global.roboradius["bob-roboport-3"] = 75
     global.roboradius["bob-roboport-4"] = 100
@@ -41,13 +42,19 @@ function init()
     global.roboradius["bob-logistic-zone-expander-2"] = 30
     global.roboradius["bob-logistic-zone-expander-3"] = 45
     global.roboradius["bob-logistic-zone-expander-4"] = 60
+        -- Dytech mods
+    global.roboradius["roboport-1"] = 50
+    global.roboradius["roboport-2"] = 100
+    global.roboradius["robot-charger-1"] = 10
+    global.roboradius["robot-charger-2"] = 20
+        -- 5dim mods
+    global.roboradius["5d-roboport-2"] = 50
 
     global.roboports = global.roboports or {}
 
     global.logisticsChests = global.logisticsChests or {}
     global.logisticsChestsNames = global.logisticsChestsNames or getLogisticsChestNames()
     global.disconnectedChests = global.disconnectedChests or {}
-
 
     global.normalChests = global.normalChests or {}
     global.normalChestsNames = global.normalChestsNames or getNormalChestNames()
@@ -215,7 +222,7 @@ end
 --- Checks if a player has a logistics system in his inventory -- Talguy
 function playerHasSystem(player)
     return not not player and (
-        player.character and player.character.name == "ls-controller" or 
+        player.character and player.character.name == "ls-controller" or
         player.get_item_count("advanced-logistics-system") > 0
     )
 end
@@ -344,6 +351,7 @@ function entityBuilt(event, entity)
             roboports[key]["position"] = pos
             roboports[key]["coverage"] = {x1 = (pos.x-radius), x2 = (pos.x+radius), y1 = (pos.y-radius), y2 = (pos.y+radius)}
             roboports[key]["active"] = entity.energy > 0
+
             global.roboports[force] = roboports
             checkChestsCoverage(true, force, entity)
         end
@@ -467,7 +475,7 @@ function getLogisticsItems(force)
     local total = 0
 
     for _,chest in pairs(chests) do
-        if chest and chest.name ~= nil then
+        if chest and chest.valid and chest.name ~= nil then
             local inventory = chest.get_inventory(1)
             for n,v in pairs(inventory.get_contents()) do
                 if not items[n] then
@@ -503,7 +511,7 @@ function inLogisticsNetwork(entity, force)
     local roboports = global.roboports[force]
     for _,roboport in pairs(roboports) do
 
-        if roboport.active then
+        if roboport.valid and roboport.active then
             local coverage = roboport.coverage
             local A = {x = coverage.x1, y = coverage.y1}
             local B = {x = coverage.x2, y = coverage.y1}
@@ -594,7 +602,7 @@ function getNormalItems(force)
     local total = 0
 
     for _,chest in pairs(chests) do
-        if chest and chest.name ~= nil then
+        if chest and chest.valid and chest.name ~= nil then
             local inventory = chest.get_inventory(1)
             for n,v in pairs(inventory.get_contents()) do
                 if not items[n] then
@@ -635,7 +643,7 @@ function getItemInfo(item, player, index, filters)
     for type,chests in pairs(types) do
         if filters["group"][type] then
             for key,chest in pairs(chests) do
-                if chest and chest.name ~= nil then
+                if chest and chest.valid and chest.name ~= nil then
                     if filters["chests"][nameToCode(chest.name)] or filters["chests"]["all"] then
                         local count = chest.get_item_count(item)
 

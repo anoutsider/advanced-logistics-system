@@ -9,6 +9,12 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.3**
+
+ - add checks for invalid chests
+ - fix compatibility issues with other mods 
+ - UI scale adjustments
+ 
 **0.2.2**
 
  - update search functions - fixed a bug with functions not being initialized
