@@ -4,13 +4,7 @@ data:extend(
         type = "technology",
         name = "advanced-logistics-systems",
         icon = "__advanced-logistics-system__/graphics/technology/advanced-ls.png",
-        effects =
-        {
-            {
-                type = "unlock-recipe",
-                recipe = "advanced-logistics-system"
-            }
-        },
+        effects ={},
         prerequisites =
         {
             "logistic-robotics",

@@ -1,5 +1,6 @@
 require "defines"
 require "gui"
+require "config"
 
 ---  Enable/Disable Debugging
 local DEV = false
@@ -19,6 +20,7 @@ function init()
     global.guiLoaded = global.guiLoaded or {}
     global.guiVisible = global.guiVisible or {}
     global.currentTab = global.currentTab or {}
+    global.hasSystem = global.hasSystem or {}
 
     global.itemsPage = global.itemsPage or {}
     global.searchText = global.searchText or {}
@@ -135,6 +137,10 @@ function initPlayer(player)
     if not global.settings[i].exTools then
         global.settings[i].exTools = false
     end
+    -- hasSystem
+    if not global.hasSystem[name] then
+        global.hasSystem[name] = nil
+    end       
     -- gui loaded
     if not global.guiLoaded[i] and playerHasSystem(player) and not player.gui.top["logistics-view-button"] then
         initGUI(player)
@@ -219,12 +225,27 @@ function reset()
     end
 end
 
---- Checks if a player has a logistics system in his inventory -- Talguy
-function playerHasSystem(player)
-    return not not player and (
-        player.character and player.character.name == "ls-controller" or
-        player.get_item_count("advanced-logistics-system") > 0
-    )
+--- Checks if a player has the required research or has a logistics system in his inventory
+-- Depends on itemRequired config option
+function playerHasSystem(player)    
+    if player and player.character and player.force then
+
+        local name = player.force.name
+        local hasSystem = global.hasSystem[name]
+        
+        if not itemRequired and hasSystem ~= nil then
+            return hasSystem
+        end
+        
+        if itemRequired then
+            hasSystem = player.character.name == "ls-controller" or player.get_item_count("advanced-logistics-system") > 0
+        else
+            hasSystem = player.force and player.force.technologies["advanced-logistics-systems"].researched
+        end
+        
+        if hasSystem then global.hasSystem[name] = hasSystem end
+        return hasSystem          
+    end
 end
 
 --- Handles items search

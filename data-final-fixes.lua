@@ -4,43 +4,38 @@ for _,entitytype in pairs(data.raw) do
       if entity.stack_size and entity.icon then
         local style =
         {
-            type = "button_style",
+            type = "checkbox_style",
             parent = "item-icon-style",
-            default_graphical_set =
+            default_background =
             {
-                type = "monolith",
-                monolith_image =
-                {
-                    filename = entity.icon,
-                    priority = "extra-high-no-scale",
-                    width = 32,
-                    height = 32,
-                }
+                filename = entity.icon,
+                priority = "extra-high-no-scale",
+                width = 32,
+                height = 32,
+                x = 0,
+                y = 0
             },
-            hovered_graphical_set =
+            hovered_background =
             {
-                type = "monolith",
-                monolith_image =
-                {
-                    filename = entity.icon,
-                    priority = "extra-high-no-scale",
-                    width = 32,
-                    height = 32,
-                }
+                filename = entity.icon,
+                priority = "extra-high-no-scale",
+                width = 32,
+                height = 32,
+                x = 0,
+                y = 0
             },
-            clicked_graphical_set =
+            clicked_background =
             {
-                type = "monolith",
-                monolith_image =
-                {
-                    filename = entity.icon,
-                    priority = "extra-high-no-scale",
-                    width = 32,
-                    height = 32,
-                }
+                filename = entity.icon,
+                priority = "extra-high-no-scale",
+                width = 32,
+                height = 32,
+                x = 0,
+                y = 0
+
             }
         }
-        data.raw["gui-style"].default["item-icon-" .. entity.name] = style
+        data.raw["gui-style"].default["item-icons-" .. entity.name] = style
       end
    end
 end

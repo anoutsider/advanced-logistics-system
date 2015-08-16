@@ -161,7 +161,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             itemsTable = itemsFrame.add({type ="table", name = "itemsTable", colspan = 8, style = "lv_items_table"})
             
             -- set items table dynamic height
-            itemsTable.style.minimal_height = itemsPerPage * 42
+            itemsTable.style.minimal_height = itemsPerPage * 48
 
             -- item image column
             itemsTable.add({type = "label", name = "itemImage", caption = " "})
@@ -210,7 +210,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             for name,item in spairs(items, orderfunc) do
                 current= current + 1
                 if current >= start and current <= max then
-                    itemsTable.add({type = "button", name = "itemIcon_" .. name, style = "item-icon-".. name})
+                    itemsTable.add({type = "checkbox", name = "itemIcon_" .. name, style = "item-icons-".. name, state = false})
                     itemsTable.add({type = "label", name = "itemName_" .. name, caption = game.get_localised_item_name(name)})
                     for code,field in pairs(global.codeToName[currentTab]) do
                         if code ~= "name" and code ~= "total" then
@@ -448,7 +448,7 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
 
                     current= current + 1
                     if current >= start and current <= max then
-                        itemInfoTable.add({type = "button", name = "itemInfoIcon_" .. key, style = "item-icon-".. name})
+                        itemInfoTable.add({type = "checkbox", name = "itemInfoIcon_" .. key, style = "item-icons-".. name, state = false})
                         itemInfoTable.add({type = "label", name = "itemInfoType_" .. key, caption = game.get_localised_item_name(name)})
                         itemInfoTable.add({type = "label", name = "itemInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         itemInfoTable.add({type = "label", name = "itemInfoCount_" .. key, caption = number_format(count)})
@@ -604,7 +604,7 @@ function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
 
                     current= current + 1
                     if current >= start and current <= max then
-                        disconnectedTable.add({type = "button", name = "disconnectedInfoIcon_" .. key, style = "item-icon-".. name})
+                        disconnectedTable.add({type = "checkbox", name = "disconnectedInfoIcon_" .. key, style = "item-icons-".. name, state = false})
                         disconnectedTable.add({type = "label", name = "disconnectedInfoType_" .. key, caption = game.get_localised_item_name(name)})
                         disconnectedTable.add({type = "label", name = "disconnectedInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         disconnectedTable.add({type = "label", name = "disconnectedInfoCount_" .. key, caption = number_format(count)})

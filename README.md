@@ -9,6 +9,11 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.5**
+
+ - Added a config option for the item requirement, with "no item required" being the default.
+ - Fix item icons scale 
+ 
 **0.2.4**
 
  - fixed an issue where entity.valid wasn't working for all roboports

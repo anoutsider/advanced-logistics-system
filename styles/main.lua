@@ -143,7 +143,7 @@ data.raw["gui-style"].default["lv_title_label"] =
 {
     type = "label_style",
     parent = "label_style",
-    width = 724,
+    width = 730,
     align = "center",
     font = "font-lb",
     font_color = {r=0.98, g=0.66, b=0.22}
@@ -2099,49 +2099,33 @@ data.raw["gui-style"].default["lv_sort_holder"] =
 -- Item icons base styles
 data.raw["gui-style"].default["item-icon-style"] =
 {
-    type = "button_style",
-    parent = "button_style",
-    width = 32,
-    height = 32,
-    top_padding = 0,
-    right_padding = 0,
-    bottom_padding = 0,
-    left_padding = 0,
-    font = "font-m",
+    type = "checkbox_style",
+    parent = "checkbox_style",
+    width = 38,
+    height = 38,
+    left_padding = 1,
     scalable = false,
-    default_graphical_set =
+    default_background =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
-            priority = "extra-high-no-scale",
-            width = 32,
-            height = 32,
-            x = 0
-        }
+        filename = "__advanced-logistics-system__/graphics/gui.png",
+        priority = "extra-high-no-scale",
+        width = 32,
+        height = 32,
+        x = 0
     },
-    hovered_graphical_set =
+    hovered_background =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
-            priority = "extra-high-no-scale",
-            width = 32,
-            height = 32,
-            x = 32
-        }
+        filename = "__advanced-logistics-system__/graphics/gui.png",
+        priority = "extra-high-no-scale",
+        width = 32,
+        height = 32,
+        x = 32
     },
-    clicked_graphical_set =
+    clicked_background =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
-            width = 32,
-            height = 32,
-            x = 32
-        }
+        filename = "__advanced-logistics-system__/graphics/gui.png",
+        width = 32,
+        height = 32,
+        x = 32
     }
 }
