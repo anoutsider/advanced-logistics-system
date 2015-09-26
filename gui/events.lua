@@ -16,6 +16,7 @@ game.on_event(defines.events.on_gui_click, function(event)
         end
 
         if visible == 0 then
+            getLogisticNetworks(player.force)
             showGUI(player, index)
         else
             hideGUI(player, index)
@@ -62,7 +63,7 @@ game.on_event(defines.events.on_gui_click, function(event)
 
         if (newTab == "logistics" or newTab == "normal") and (currentTab == "logistics" or currentTab == "normal") then
             updateGUI(player, index, newTab)
-        elseif (currentTab == "itemInfo" or currentTab == "disconnected") and (newTab == "logistics" or newTab == "normal") then
+        elseif (currentTab ~= "logistics" or currentTab ~= "normal") and (newTab == "logistics" or newTab == "normal") then
             clearGUI(player, index)
             updateGUI(player, index, newTab)
 
@@ -76,6 +77,9 @@ game.on_event(defines.events.on_gui_click, function(event)
         elseif newTab == "settings" then
             hideGUI(player, index)
             showSettings(player, index)
+        elseif newTab == "networks" then
+            clearGUI(player, index)
+            showNetworksInfo(player, index)
         end
 
     -- save settings
@@ -91,8 +95,9 @@ game.on_event(defines.events.on_gui_click, function(event)
     -- update logistics data button
     elseif event.element.name == "updateLogisticsData" then
 
-        getRoboPorts(player.force)
-        getLogisticsChests(player.force)
+        getLogisticNetworks(player.force, true)
+        getDisconnectedChests(player.force)
+
         showGUI(player, index)
 
     -- guiPos settings checkboxes flow
@@ -173,13 +178,12 @@ game.on_event(defines.events.on_gui_click, function(event)
     -- items table view info event
     elseif event.element.name:find("viewItemInfo_") ~= nil  then
 
-        local info = {}
-
         local name = event.element.name
         local item = string.gsub(name, "viewItemInfo_", "")
         global.currentItem[index] = item
 
         if item then
+            global.itemsPage[index]["itemInfo"] = 1
             clearMenu(player, index)
             clearGUI(player, index)
             showItemInfo(item, player, index)
@@ -471,6 +475,232 @@ game.on_event(defines.events.on_gui_click, function(event)
 
         resetPosition(player, index)
 
+    -- networks view button event
+    elseif event.element.name == "netwroksFrameView" then
+
+        global.currentTab[index] = "networks"
+        resetMenu(player, index)
+        clearGUI(player, index)
+        showNetworksInfo(player, index)
+        
+    -- networks filter button event
+    elseif event.element.name == "networkFiltersFrameView" then
+
+        hideGUI(player, index)
+        showNetworksFilter(player, index)
+
+    -- networks table columns sorting event
+    elseif event.element.name:find("networkInfo_") ~= nil  then
+
+        local currentTab = global.currentTab[index]
+        local currentNetwork = global.currentNetwork[index]
+        local name = event.element.name
+        local style = event.element.style
+        local sort_by = string.gsub(name, "networkInfo_", "")
+        local frameName = currentTab == "networks" and "networksFrame" or "networkFrame"
+        local tableName = currentTab == "networks" and "networksTable" or "networkTable"
+        local networksTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame[frameName][tableName]
+        local sortFlow = networksTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
+        local sort_dir = sortFlow[sort_by .. "_sort"].style.name
+        sort_dir = string.gsub(sort_dir, "lv_sort_", "")
+
+        local isSelected = string.gsub(style.name, "lv_button_" .. sort_by, "")
+        local new_sort_by = sort_by
+        local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
+
+        if isSelected ~= "_selected" then
+            if networksTable and networksTable.children_names ~= nil then
+                for _,flowName in pairs(networksTable.children_names) do
+                    if flowName:find("Flow") ~= nil then
+                        local sortBy = string.gsub(flowName, "Flow", "")
+                        local flow = networksTable[flowName]
+                        local sortFlow = flow[sortBy .. "SortFlow"]
+
+                        if sortBy == sort_by then
+                            new_sort_by = sortBy
+                            flow["networkInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
+                            sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                        else
+                            flow["networkInfo_" .. sortBy].style = "lv_button_" .. sortBy
+                            sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                        end
+                    end
+                end
+            end
+
+        end
+
+        global.sort[index][currentTab] = {by = new_sort_by, dir = new_sort_dir}
+
+        if currentTab == "networks" then
+            showNetworksInfo(player, index)
+        else
+            showNetworkInfo(currentNetwork, player, index)
+        end
+
+
+    -- networks table name column edit event
+    elseif event.element.name:find("networkInfoNameEdit_") ~= nil  then
+
+        global.networkEdit[index] = true
+        event.element.style = "lv_button_hidden"
+
+        local name = event.element.name
+        local key = string.gsub(name, "networkInfoNameEdit_", "")
+        local networksTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.networksFrame.networksTable
+        local nameFlow = networksTable["networkInfoName_" .. key]
+        local nameLabel = nameFlow["networkInfoNameValueFL_" .. key]["networkInfoNameLabel_" .. key]
+        local confirmBtn = nameFlow["networkInfoNameEditFL_" .. key]["networkInfoNameConfirm_" .. key]
+        local value = nameLabel.caption
+
+
+        nameLabel.style = "lv_network_name_hidden"
+        local nameEdit = nameFlow["networkInfoNameValueFL_" .. key].add({type = "textfield", name = "networkInfoNameValue_" .. key, text = value })
+        nameEdit.text = value
+        confirmBtn.style = "lv_button_confirm"
+
+    -- networks table name column save event
+    elseif event.element.name:find("networkInfoNameConfirm_") ~= nil  then
+
+        local names = global.networksNames[player.force.name]
+        local name = event.element.name
+        local key = string.gsub(name, "networkInfoNameConfirm_", "")
+        local networksTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.networksFrame.networksTable
+        local nameFlow = networksTable["networkInfoName_" .. key]
+        local nameLabel = nameFlow["networkInfoNameValueFL_" .. key]["networkInfoNameLabel_" .. key]
+        local nameEdit = nameFlow["networkInfoNameValueFL_" .. key]["networkInfoNameValue_" .. key]
+        local editBtn = nameFlow["networkInfoNameEditFL_" .. key]["networkInfoNameEdit_" .. key]
+        local value = nameEdit.text
+
+        nameLabel.caption = value
+        nameEdit.destroy()
+        nameLabel.style = "label_style"
+
+        event.element.style = "lv_button_hidden"
+        editBtn.style = "lv_button_edit"
+        names[tonumber(key)] = value
+        global.networksNames[player.force.name] = names
+        global.networkEdit[index] = false
+
+    -- network info view event
+    elseif event.element.name:find("networkInfoView_") ~= nil  then
+
+        local name = event.element.name
+        local network = string.gsub(name, "networkInfoView_", "")
+        global.currentNetwork[index] = network
+
+        if network then
+            clearGUI(player, index)
+            showNetworkInfo(network, player, index)
+        end
+
+
+    -- network info table tools/action events
+    elseif event.element.name:find("networkAction_") ~= nil  then
+
+        local force = player.force
+        local surface = player.surface
+        local networks = global.networks[force.name]
+        local net = tonumber(global.currentNetwork[index])
+        local network = networks[net]
+
+        if network then
+            local style = event.element.style
+
+            local action, key = event.element.name:match("networkAction_([%w%s]*)_([%w_.%s]*)")
+            key = tonumber(key)
+            if network["cells"][key] then
+                if action == "teleport" then
+                    local pos = network["cells"][key].pos
+                    local new_pos = surface.find_non_colliding_position("player", {pos.x, pos.y}, 10, 1)
+                    if new_pos then
+                        player.teleport(new_pos)
+                        hideGUI(player, index)
+                    end
+
+                elseif action == "location" then
+
+                    local pos = network["cells"][key].pos
+                    viewPosition(player, index, pos)
+                end
+            end
+        end
+        
+    -- network filters apply
+    elseif event.element.name == "applyFiltersBtn" then
+
+        applyNetworkFilters(player, index)
+
+    -- network filters cancel
+    elseif event.element.name == "cancelFiltersBtn" then
+        local guiPos = global.settings[index].guiPos
+        local networksFilterFrame = player.gui[guiPos].networksFilterFrame
+        if networksFilterFrame ~= nil then
+            networksFilterFrame.destroy()
+        end
+        showGUI(player, index)        
+
+    -- network filters checkboxes flow
+    elseif event.element.name:find("networksFilter_") ~= nil then
+
+        local guiPos = global.settings[index].guiPos
+        local name = event.element.name
+        local key = string.gsub(name, "networksFilter_", "")
+        local state = event.element.state
+        local networksFilterFrame = player.gui[guiPos].networksFilterFrame
+        local networksTable = networksFilterFrame.networksTable
+        
+        
+        if networksTable and networksTable.children_names ~= nil then
+            if key == "all" and state then
+                for _,childName in pairs(networksTable.children_names) do
+                    if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                        if childName ~= name then                        
+                            networksTable[childName].state = false
+                        end
+                    end
+                end
+            elseif key ~= "all" and not state then        
+                local checkAll = true
+                for _,childName in pairs(networksTable.children_names) do
+                    if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                        if networksTable[childName].state then                        
+                            checkAll = false
+                        end
+                    end
+                end 
+                if checkAll then
+                    networksTable["networksFilter_all"].state = true
+                end
+            elseif (key ~= "all" and state) then
+                local checkAll = true
+                for _,childName in pairs(networksTable.children_names) do
+                    if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                        local checkKey = string.gsub(childName, "networksFilter_", "")
+                        if not networksTable[childName].state and checkKey ~= "all" then                        
+                            checkAll = false
+                        end
+                    end
+                end            
+                
+                if checkAll then
+                    -- uncheck other checkboxes
+                    for _,childName in pairs(networksTable.children_names) do
+                        if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                            if childName ~= "networksFilter_all" then                        
+                                networksTable[childName].state = false
+                            end
+                        end
+                    end           
+                    -- check select all checkbox
+                    networksTable["networksFilter_all"].state = true
+                else 
+                    -- uncheck select all checkbox
+                    networksTable["networksFilter_all"].state = false
+                end
+            end
+        end
+        
     -- pagination event
     else
 
@@ -486,6 +716,11 @@ game.on_event(defines.events.on_gui_click, function(event)
                     if currentItem then
                         showItemInfo(currentItem, player, index, page)
                     end
+                elseif currentTab == "networkInfo" then
+                    local currentNetwork = global.currentNetwork[index]
+                    if currentNetwork then
+                        showNetworkInfo(currentNetwork, player, index, page)
+                    end                
                 else
                     updateGUI(player, index)
                 end

@@ -1,9 +1,9 @@
 {
     "name": "advanced-logistics-system",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "title": "Advanced Logistics System",
     "author": "anoutsider",
     "description": "Extended Logistics Network View and Monitoring",
     "homepage": "https://github.com/anoutsider/advanced-logistics-system",
-    "dependencies": ["base >= 0.12.0"]
+    "dependencies": ["base >= 0.12.5"]
 }

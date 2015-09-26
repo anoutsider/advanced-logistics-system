@@ -9,6 +9,18 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.6**
+
+ - Code refactoring and optimization - using the new Lua/LogisticNetwork / Lua/LogisticCell API
+ - Added compatibility for mods that use hidden containers as proxies - mainly 5dim-trains
+ - Added a "Networks" and a "Network Info" view that shows a list of your logistic networks with detailed info on each
+ - Added the ability to rename your networks, the names are shared per force not per player
+ - Added a a filter by "Networks" option to the "Network Items" and the "Item Info" views.
+ - Added a new settings option "Auto Filter" when Enabled automatically filter "Item Info" views based on the previous tab whether it's "Logistics/Normal" - Enabled by default
+ - Added a new settings option "Exclude Requesters" when Enabled items in requester chests will not be included in the totals calculation - Enabled by default
+ - Remove item requirement - no longer a config option
+ - Added a remote interface function "ShowSettings" to force open the settings panel, ex: remote.call("advanced-logistics-system","showSettings",game.local_player)
+ 
 **0.2.5**
 
  - Added a config option for the item requirement, with "no item required" being the default.

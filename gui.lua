@@ -1,4 +1,6 @@
 require "gui.main"
+require "gui.widgets"
 require "gui.events"
 require "gui.items"
+require "gui.network"
 require "gui.settings"

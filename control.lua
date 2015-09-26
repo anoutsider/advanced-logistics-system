@@ -1,6 +1,6 @@
 require "defines"
 require "gui"
-require "config"
+require "interface"
 
 ---  Enable/Disable Debugging
 local DEV = false
@@ -19,6 +19,7 @@ end)
 function init()
     global.guiLoaded = global.guiLoaded or {}
     global.guiVisible = global.guiVisible or {}
+    global.guiReset = global.guiReset or {}
     global.currentTab = global.currentTab or {}
     global.hasSystem = global.hasSystem or {}
 
@@ -32,27 +33,18 @@ function init()
     global.settings.itemsPerPage = global.settings.itemsPerPage or {}
     global.settings.refreshInterval = global.settings.refreshInterval or {}
     global.settings.exTools = global.settings.exTools or {}
+    global.settings.autoFilter = global.settings.autoFilter or {}
+    global.settings.excludeReq = global.settings.excludeReq or {}
 
-    -- roboports radius, manually set because there is no way to get the data right now
-    global.roboradius = {}
-    global.roboradius["roboport"] = 25
-        -- bobs mods
-    global.roboradius["bob-roboport-2"] = 50
-    global.roboradius["bob-roboport-3"] = 75
-    global.roboradius["bob-roboport-4"] = 100
-    global.roboradius["bob-logistic-zone-expander"] = 15
-    global.roboradius["bob-logistic-zone-expander-2"] = 30
-    global.roboradius["bob-logistic-zone-expander-3"] = 45
-    global.roboradius["bob-logistic-zone-expander-4"] = 60
-        -- Dytech mods
-    global.roboradius["roboport-1"] = 50
-    global.roboradius["roboport-2"] = 100
-    global.roboradius["robot-charger-1"] = 10
-    global.roboradius["robot-charger-2"] = 20
-        -- 5dim mods
-    global.roboradius["5d-roboport-2"] = 50
+    global.roboports =  {} -- Deprecated
 
-    global.roboports = global.roboports or {}
+    global.networks = global.networks or {}
+    global.networksCount = global.networksCount or {}
+    global.networkEdit = global.networkEdit or {}
+    global.networksNames = global.networksNames or {}
+    global.networksFilter = global.networksFilter or {}
+    global.currentNetwork = global.currentNetwork or {}
+   
 
     global.logisticsChests = global.logisticsChests or {}
     global.logisticsChestsNames = global.logisticsChestsNames or getLogisticsChestNames()
@@ -74,23 +66,32 @@ function init()
     global.chestsUpgrade = global.chestsUpgrade or {}
 
     global.codeToName = {
-            logistics = {
-                name = "name",
-                total = "total",
-                ppc = "logistic-chest-passive-provider",
-                sc = "logistic-chest-storage",
-                rc = "logistic-chest-requester",
-                apc = "logistic-chest-active-provider",
-            },
-            normal = {
-                name = "name",
-                total = "total",
-                woc = "wooden-chest",
-                irc = "iron-chest",
-                stc = "steel-chest",
-                smc = "smart-chest",
-            }
+        logistics = {
+            name = "name",
+            total = "total",
+            ppc = "logistic-chest-passive-provider",
+            sc = "logistic-chest-storage",
+            rc = "logistic-chest-requester",
+            apc = "logistic-chest-active-provider",
+        },
+        normal = {
+            name = "name",
+            total = "total",
+            woc = "wooden-chest",
+            irc = "iron-chest",
+            stc = "steel-chest",
+            smc = "smart-chest",
+        }
     }
+    
+    global.compNames = {}
+    -- 5dim trains
+    global.compNames["logistic-chest-passive-provider-trans"] = "cargo-wagon-passive"
+    global.compNames["logistic-chest-active-provider-trans"] = "cargo-wagon-active"
+    global.compNames["logistic-chest-storage-provider-trans"] = "cargo-wagon-storage"
+    global.compNames["logistic-chest-storage-provider-trans"] = "cargo-wagon-storage"
+    global.compNames["logistic-chest-requester-trans"] = "cargo-wagon-requester"   
+    global.compNames["roboport-trans"] = "cargo-wagon-roboport"   
 
     global.guiTabs = {"logistics", "normal", "itemInfo"}
     global.character = global.character or {}
@@ -136,26 +137,50 @@ function initPlayer(player)
     -- experimental tools - teleport, upgrade chests / too powerfull or not fully tested
     if not global.settings[i].exTools then
         global.settings[i].exTools = false
+    end    
+    -- auto filter settings, automatically filters chest list based on the  previous tab logistics/normal
+    if not global.settings[i].autoFilter then
+        global.settings[i].autoFilter = true
+    end    
+    -- exclude requesters settings, excludes items in requesters from the totals calculations
+    if not global.settings[i].excludeReq then
+        global.settings[i].excludeReq = true
     end
     -- hasSystem
     if not global.hasSystem[name] then
         global.hasSystem[name] = nil
-    end       
+    end
     -- gui loaded
     if not global.guiLoaded[i] and playerHasSystem(player) and not player.gui.top["logistics-view-button"] then
         initGUI(player)
+    end    
+    -- gui reset
+    if global.guiReset[i] == nil then
+        global.guiReset[i] = true
     end
-    -- roboports table
-    if not global.roboports[name] then
-        global.roboports[name] = getRoboPorts(force)
+    -- networks data table
+    if not global.networks[name] then
+        global.networks[name] = getLogisticNetworks(force, true)
+    end    
+    -- networks count table
+    if not global.networksCount[name] then
+        global.networksCount[name] = 0
+    end    
+    -- networks edit table
+    if not global.networkEdit[i] then
+        global.networkEdit[i] = false
+    end   
+    -- networks names table
+    if not global.networksNames[name] then
+        global.networksNames[name] = {}
     end
-    -- logistic containers
-    if not global.logisticsChests[name] then
-        global.logisticsChests[name] = getLogisticsChests(force)
-    end
+    -- networks filter table
+    if not global.networksFilter[i] then
+        global.networksFilter[i] = {}
+    end    
     -- out of coverage logistic containers
     if not global.disconnectedChests[name] then
-        global.disconnectedChests[name] = {}
+        global.disconnectedChests[name] = getDisconnectedChests(force)
     end
     -- normal and smart containers
     if not global.normalChests[name] then
@@ -163,7 +188,7 @@ function initPlayer(player)
     end
     -- items in logistic containers
     if not global.logisticsItems[name] then
-        global.logisticsItems[name] = getLogisticsItems(force)
+        global.logisticsItems[name] = getLogisticsItems(force, i)
     end
     -- total number of items in logistic containers
     if not global.logisticsItemsTotal[name] then
@@ -189,7 +214,15 @@ function initPlayer(player)
         global.itemsPage[i]["normal"] = 1
         global.itemsPage[i]["disconnected"] = 1
         global.itemsPage[i]["itemInfo"] = 1
+        global.itemsPage[i]["networks"] = 1
+        global.itemsPage[i]["networkInfo"] = 1
     end
+    if not global.itemsPage[i]["networks"] then
+        global.itemsPage[i]["networks"] = 1
+    end       
+    if not global.itemsPage[i]["networkInfo"] then
+        global.itemsPage[i]["networkInfo"] = 1
+    end    
     -- current active sort per view type
     if not global.sort[i] then
         global.sort[i] = {}
@@ -197,6 +230,14 @@ function initPlayer(player)
         global.sort[i]["normal"] = {by = "total", dir = "desc"}
         global.sort[i]["disconnected"] = {by = "count", dir = "desc"}
         global.sort[i]["itemInfo"] = {by = "count", dir = "desc"}
+        global.sort[i]["networks"] = {by = "waiting", dir = "desc"}
+        global.sort[i]["networkInfo"] = {by = "pos", dir = "desc"}
+    end
+    if not global.sort[i]["networks"] then
+        global.sort[i]["networks"] = {by = "waiting", dir = "desc"}
+    end    
+    if not global.sort[i]["networkInfo"] then
+        global.sort[i]["networkInfo"] = {by = "pos", dir = "desc"}
     end
     -- current search text per table type
     if not global.searchText[i] then
@@ -225,59 +266,39 @@ function reset()
     end
 end
 
---- Checks if a player has the required research or has a logistics system in his inventory
--- Depends on itemRequired config option
-function playerHasSystem(player)    
-    if player and player.character and player.force then
-
-        local name = player.force.name
-        local hasSystem = global.hasSystem[name]
-        
-        if not itemRequired and hasSystem ~= nil then
-            return hasSystem
-        end
-        
-        if itemRequired then
-            hasSystem = player.character.name == "ls-controller" or player.get_item_count("advanced-logistics-system") > 0
-        else
-            hasSystem = player.force and player.force.technologies["advanced-logistics-systems"].researched
-        end
-        
-        if hasSystem then global.hasSystem[name] = hasSystem end
-        return hasSystem          
+--- Checks if the player has the system enabled
+function playerHasSystem(player)
+    local force = player.force.name
+    local hasSystem = global.hasSystem[force]
+    if hasSystem == nil then
+        hasSystem = player.force and player.force.technologies["advanced-logistics-systems"].researched
     end
+    return hasSystem
 end
 
 --- Handles items search
 game.on_event(defines.events.on_tick, function(event)
-        for i,p in ipairs(game.players) do
-            if playerHasSystem(p) then
-                if (not p.gui.top["logistics-view-button"]) then
-                    initGUI(p)
-                end
-                local refresh = global.settings[i].refreshInterval * 60
-                if event.tick % refresh == 0  then
-                    if global.guiVisible[i] == 1 then
-                        local currentTab = global.currentTab[i]
-                        if currentTab == "itemInfo" then
-                            local currentItem = global.currentItem[i]
-                            if currentItem then
-                                clearGUI(p, i)
-                                showItemInfo(currentItem, p, i)
-                            end
-                        else
+        if event.tick % 60 == 0  then
+            for i,p in ipairs(game.players) do
+                local hasSystem = playerHasSystem(p)
+                if hasSystem then
+                    if (not p.gui.top["logistics-view-button"]) then
+                        initGUI(p)
+                    end
+                    local refresh = global.settings[i].refreshInterval * 60
+                    if event.tick % refresh == 0  then
+                        if global.guiVisible[i] == 1 then
                             updateGUI(p, i)
                         end
                     end
+
+                    -- check search field tick
+                    if global.searchTick[i]["logistics"] ~= nil then onLogisticsSearchTick(event, i) end
+                    if global.searchTick[i]["normal"] ~= nil then onNormalSearchTick(event, i) end
+                elseif global.settings[i] then
+                    destroyGUI(p, i)
                 end
-
-                -- check search field tick
-                if global.searchTick[i]["logistics"] ~= nil then onLogisticsSearchTick(event, i) end
-                if global.searchTick[i]["normal"] ~= nil then onNormalSearchTick(event, i) end
-            elseif global.settings[i] then
-                destroyGUI(p, i)
             end
-
         end
 end)
 
@@ -325,11 +346,22 @@ function entityBuilt(event, entity)
         local disconnected = global.disconnectedChests[force]
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
         local upgrades = global.chestsUpgrade[key]
-
-        if inLogisticsNetwork(entity, force) then
+        local networks = entity.force.logistic_networks
+        local network = inLogisticsNetwork(entity, entity.force, true)
+        
+        if network ~= nil then
             if not chests[key] then
-                debugLog("Added Chest # " .. key .. "To Logistics Chests List")
-                chests[key] = entity
+                -- find the container network
+                for i,net in pairs(networks) do
+                    if net == network then
+                        debugLog("Added Chest # " .. key .. "To Logistics Chests List")
+                        chests[key] = {}
+                        chests[key]["entity"] = entity                    
+                        chests[key]["network"] = i
+                        break
+                    end
+                end            
+                
                 global.logisticsChests[force] = chests
             end
         else
@@ -352,30 +384,15 @@ function entityBuilt(event, entity)
     elseif entity.type == "container" or entity.type == "smart-container" then
         local chests = global.normalChests[force]
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
-
         if not chests[key] then
             debugLog("Added Chest # " .. key .. "To Normal Chests List")
             chests[key] = entity
             global.normalChests[force] = chests
         end
 
-    elseif entity.type == "roboport" and global.roboradius[entity.name] ~= nil then
-        local pos = entity.position
-        local roboports = global.roboports[force]
-        local key = string.gsub(pos.x.."A"..pos.y, "-", "_")
-        local radius = global.roboradius[entity.name]
-
-        if not roboports[key] and radius then
-            debugLog("Added Roboport # " .. key)
-            roboports[key] = {}
-            roboports[key]["name"] = entity.name
-            roboports[key]["position"] = pos
-            roboports[key]["coverage"] = {x1 = (pos.x-radius), x2 = (pos.x+radius), y1 = (pos.y-radius), y2 = (pos.y+radius)}
-            roboports[key]["active"] = entity.energy > 0
-
-            global.roboports[force] = roboports
-            checkChestsCoverage(true, force, entity)
-        end
+    elseif entity.type == "roboport" then
+        getLogisticNetworks(entity.force, true)
+        checkDisconnectedChests(entity.force)
     end
 end
 
@@ -414,53 +431,138 @@ function entityMined(event, entity)
             global.normalChests[force] = chests
         end
 
-    elseif entity.type == "roboport" and global.roboradius[entity.name] ~= nil then
-        local roboports = global.roboports[force]
-        local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
-        if roboports[key] then
-            debugLog("Removed Roboport # " .. key)
-            roboports[key] = nil
-            global.roboports[force] = roboports
-            checkChestsCoverage(false, force)
-        end
+    elseif entity.type == "roboport" then
+        local pos = entity.position
+        local cell = entity.logistic_cell
+        local radius = cell.logistic_radius
+        getLogisticNetworks(entity.force, true)
+        findDisconnectedChests(pos, radius, entity.force)
     end
 end
 
---- Get all active roboports and their logistics coverage box
--- We check if a roboport is active by checking it's energy value
-function getRoboPorts(force)
-    local type = "roboport"
-    local roboports = {}
-    local surface = game.get_surface(1)
+--- Get all logistics networks that belong to a force
+-- takes a player force as a parameter
+-- takes a second optional parameter to exclude/include containers data
+function getLogisticNetworks(force, full)
+    local networksData = {}
+    local chests = {}
+    local networks =  force.logistic_networks
+    local names = global.networksNames[force.name] or {}
+    local networksCount = 0
 
-    for coord in surface.get_chunks() do
-        local X,Y = coord.x, coord.y
-        if surface.is_chunk_generated{X,Y} then
-            local area = {{X*32, Y*32}, {X*32 + 32, Y*32 + 32}}
-            for _,roboport in pairs(surface.find_entities_filtered{area=area, type=type}) do
-                if roboport.name ~= "roboport-pocket" and global.roboradius[roboport.name] then
-                    local key = string.gsub(roboport.position.x.."A"..roboport.position.y, "-", "_")
-                    local radius = global.roboradius[roboport.name]
-                    local pos = roboport.position
 
-                    if not roboports[key] then roboports[key] = {} end
-                    roboports[key]["name"] = roboport.name
-                    roboports[key]["position"] = pos
-                    roboports[key]["coverage"] = {x1 = (pos.x-radius), x2 = (pos.x+radius), y1 = (pos.y-radius), y2 = (pos.y+radius)}
-                    roboports[key]["active"] = roboport.energy > 0
+    for surface,nets in pairs(networks) do
+        for i,net in pairs(nets) do              
+            local name = names[tonumber(i)] and names[tonumber(i)] or "Network " .. i
+            networksData[i] = {}
+            networksData[i]["name"] = name
+            networksData[i]["items"] = net.get_item_count()
+
+            networksData[i]["bots"] = {}
+            networksData[i]["bots"]["log"] = {}
+            networksData[i]["bots"]["log"]["total"] = net.all_logistic_robots
+            networksData[i]["bots"]["log"]["available"] = net.available_logistic_robots
+            networksData[i]["log"] = net.all_logistic_robots
+
+            networksData[i]["bots"]["con"] = {}
+            networksData[i]["bots"]["con"]["total"] = net.all_construction_robots
+            networksData[i]["bots"]["con"]["available"] = net.available_construction_robots
+            networksData[i]["con"] = net.all_construction_robots
+
+            networksData[i]["cells"] = {}            
+            local size = 0
+            local port = 0
+            local charging = 0
+            local waiting = 0            
+            for cei,cell in pairs(net.cells) do                
+                networksData[i]["cells"][cei] = {}
+                networksData[i]["cells"][cei]["name"] = cell.owner.name
+                networksData[i]["cells"][cei]["pos"] = cell.owner.position
+                networksData[i]["cells"][cei]["radius"] = cell.logistic_radius
+
+                networksData[i]["cells"][cei]["bots"] = {}
+                networksData[i]["cells"][cei]["bots"]["idle_log"] = cell.stationed_logistic_robot_count
+                networksData[i]["cells"][cei]["bots"]["idle_con"] = cell.stationed_construction_robot_count
+                networksData[i]["cells"][cei]["bots"]["charging"] = cell.charging_robot_count
+                networksData[i]["cells"][cei]["bots"]["waiting"] = cell.to_charge_robot_count
+                size = size + cell.logistic_radius
+                port = port + 1
+                charging = charging + cell.charging_robot_count
+                waiting = waiting + cell.to_charge_robot_count
+            end
+            networksData[i]["size"] = size * 2
+            networksData[i]["port"] = port
+            networksData[i]["charging"] = charging
+            networksData[i]["waiting"] = waiting
+
+            -- check if full data is required
+            if full then
+                for x,chest in pairs(net.providers) do
+                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    if not chests[key] and chest.type == "logistic-container" then
+                        chests[key] = {}
+                        chests[key]["entity"] = chest
+                        chests[key]["network"] = i
+                        chests[key]["type"] = "provider"
+                    end
+                end
+
+                for x,chest in pairs(net.empty_providers) do
+                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    if not chests[key] and chest.type == "logistic-container" then
+                        chests[key] = {}
+                        chests[key]["entity"] = chest
+                        chests[key]["network"] = i
+                        chests[key]["type"] = "provider"
+                    end
+                end
+
+                for x,chest in pairs(net.storages) do
+                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    if not chests[key] and chest.type == "logistic-container" then
+                        chests[key] = {}
+                        chests[key]["entity"] = chest
+                        chests[key]["network"] = i
+                        chests[key]["type"] = "storage"
+                    end
+                end
+
+                for x,chest in pairs(net.requesters) do
+                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    if not chests[key] and chest.type == "logistic-container" then
+                        chests[key] = {}
+                        chests[key]["entity"] = chest
+                        chests[key]["network"] = i
+                        chests[key]["type"] = "requester"
+                    end
+                end
+
+                for x,chest in pairs(net.full_or_satisfied_requesters) do
+                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    if not chests[key] and chest.type == "logistic-container" then
+                        chests[key] = {}
+                        chests[key]["entity"] = chest
+                        chests[key]["network"] = i
+                        chests[key]["type"] = "requester"
+                    end
                 end
             end
+            networksCount = networksCount + 1
         end
     end
-    global.roboports[force.name] = roboports
-    return roboports
+    
+    if full then
+        global.logisticsChests[force.name] = chests
+    end    
+    global.networks[force.name] = networksData
+    global.networksCount[force.name] = networksCount    
+    return networksData
 end
 
---- Get all logistics containers that are within the logistics network
+--- Get all logistics containers that are not within a logistics network
 -- takes a force as a parameter
-function getLogisticsChests(force)
+function getDisconnectedChests(force)
     local type = "logistic-container"
-    local chests = {}
     local disconnected = {}
     local surface = game.get_surface(1)
 
@@ -470,33 +572,66 @@ function getLogisticsChests(force)
         if surface.is_chunk_generated{X,Y} then
             local area = {{X*32, Y*32}, {X*32 + 32, Y*32 + 32}}
             for _,chest in pairs(surface.find_entities_filtered{area=area, type=type, force=force.name}) do
-                --if chest.force.name == force.name then
-                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
-                    if inLogisticsNetwork(chest, force.name) then
-                        chests[key] = chest
-                    else
-                        disconnected[key] = chest
-                    end
-                --end
+                local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                if not inLogisticsNetwork(chest, force) then
+                    disconnected[key] = chest
+                end
             end
         end
     end
-    global.logisticsChests[force.name] = chests
     global.disconnectedChests[force.name] = disconnected
-    return chests
+    return disconnected
+end
+
+--- Updates the list of all logistics containers that are not within a logistics network
+-- takes a force as a parameter
+function checkDisconnectedChests(force)
+    local disconnected = global.disconnectedChests[force.name]
+
+    for key,chest in pairs(disconnected) do
+        if inLogisticsNetwork(chest, force) then
+            disconnected[key] = nil
+        end
+    end
+    global.disconnectedChests[force.name] = disconnected    
+end
+
+--- Checks all logistics containers that are not within a logistics network within a given radius
+-- takes an entity position, an int radius and force as parameters
+function findDisconnectedChests(pos, radius, force)
+    local type = "logistic-container"
+    local surface = game.get_surface(1)
+    local disconnected = global.disconnectedChests[force.name]
+
+    local area = {{pos.x-radius, pos.y-radius}, {pos.x+radius, pos.y+radius}}
+    for _,chest in pairs(surface.find_entities_filtered{area=area, type=type, force=force.name}) do
+        local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+        if not disconnected[key] and not inLogisticsNetwork(chest, force) then
+            disconnected[key] = chest
+        end
+    end
+    global.disconnectedChests[force.name] = disconnected    
 end
 
 --- Get all items in logistics containers
 -- We also record the individual totals for each logistics container type
--- takes a force as a parameter
-function getLogisticsItems(force)
+-- takes a force and a player index as parameters
+function getLogisticsItems(force, index)
     local items = {}
     local chests = global.logisticsChests[force.name]
     local names = global.logisticsChestsNames
+    local networksFilter = global.networksFilter[index]
+    local networksFilterCount = count(networksFilter)
+    local excludeReq = global.settings[index].excludeReq
     local total = 0
 
     for _,chest in pairs(chests) do
-        if chest and chest.valid and chest.name ~= nil then
+        local network = tonumber(chest.network)
+        local type = chest.type
+        local chest = chest.entity
+        -- check if chest is valid and check for network filters
+        if chest and chest.valid and chest.name ~= nil and (networksFilter[network] or networksFilterCount == 0) then
+            
             local inventory = chest.get_inventory(1)
             for n,v in pairs(inventory.get_contents()) do
                 if not items[n] then
@@ -512,10 +647,15 @@ function getLogisticsItems(force)
                 if not items[n][chest.name] then
                     items[n][chest.name] = 0
                 end
-
-                items[n]["total"] = items[n]["total"] + v
+                
+                -- check exclude requesters
+                if (excludeReq and type ~= "requester") or not excludeReq then                
+                    items[n]["total"] = items[n]["total"] + v
+                    total = total + v
+                end
+                
                 items[n][chest.name] = items[n][chest.name] + v
-                total = total + v
+                
             end
         end
     end
@@ -527,64 +667,12 @@ end
 --- Check if an entity is within the logistics network coverage
 -- Only actively powered roboports are considered
 -- takes entity and force name as parameters
-function inLogisticsNetwork(entity, force)
+function inLogisticsNetwork(entity, force, ret)
     local pos = entity.position
-    local roboports = global.roboports[force]
-    for _,roboport in pairs(roboports) do
+    local surface = entity.surface and entity.surface or game.get_surface(1)
+    local network = surface.find_logistic_network_by_position(pos, force)
 
-        if roboport.active then
-            local coverage = roboport.coverage
-            local A = {x = coverage.x1, y = coverage.y1}
-            local B = {x = coverage.x2, y = coverage.y1}
-            local C = {x = coverage.x2, y = coverage.y2}
-            local D = {x = coverage.x1, y = coverage.y2}
-
-            if isInsideSquare(A, B, C, D, pos) then
-                return true
-            end
-        end
-    end
-    return false
-end
-
---- Check if recorded chests are still within the logistics network
--- This check runs after a roboport has been built/removed
-function checkChestsCoverage(add, force, roboport)
-    local chests = global.logisticsChests[force]
-    local disconnected = global.disconnectedChests[force]
-    local surface = game.get_surface(1)
-
-    if add then
-        if roboport and roboport.energy > 0 then
-            local type = "logistic-container"
-            local radius = global.roboradius[roboport.name]
-            local pos = roboport.position
-            local area = {{(pos.x-radius), (pos.y-radius)}, {(pos.x+radius), (pos.y+radius)}}
-
-            for _,chest in pairs(surface.find_entities_filtered{area=area, type=type, force=force}) do
-                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
-                    chests[key] = chest
-                    debugLog("Added Chest # " .. key .. " New Coverage")
-                    if disconnected[key] then
-                        disconnected[key] = nil
-                        debugLog("Removed Chest # " .. key .. " From Disconnected Chests list")
-                    end
-            end
-        end
-    else
-        for key,chest in pairs(chests) do
-            if not inLogisticsNetwork(chest, force) then
-                chests[key] = nil
-                debugLog("Removed Chest # " .. key .. " No Coverage")
-                if not disconnected[key] then
-                    disconnected[key] = chest
-                    debugLog("Added Chest # " .. key .. " To Disconnected Chests list")
-                end
-            end
-        end
-    end
-    global.logisticsChests[force] = chests
-    global.disconnectedChests[force] = disconnected
+    return not ret and network ~= nil or ret and network
 end
 
 --- Get all normal containers
@@ -601,10 +689,8 @@ function getNormalChests(force)
             local area = {{X*32, Y*32}, {X*32 + 32, Y*32 + 32}}
             for _,type in pairs(types) do
                 for _,chest in pairs(surface.find_entities_filtered{area=area, type=type, force=force.name}) do
-                    --if chest.force.name == force.name then -- no longer needed in 0.12
-                        local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
-                        chests[key] = chest
-                    --end
+                    local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    chests[key] = chest
                 end
             end
         end
@@ -659,19 +745,28 @@ function getItemInfo(item, player, index, filters)
     local types = {logistics = global.logisticsChests[force], normal = global.normalChests[force], disconnected = global.disconnectedChests[force]}
     local total = {logistics = 0, normal = 0, disconnected = 0, all = 0}
     local info = {chests = {}, total = total}
+    local networksFilter = global.networksFilter[index]
+    local networksFilterCount = count(networksFilter)    
 
     -- get item info
     for type,chests in pairs(types) do
         if filters["group"][type] then
             for key,chest in pairs(chests) do
-                if chest and chest.valid and chest.name ~= nil then
+                local network = false
+                if type == "logistics" then
+                    network = chest.network
+                    chest = chest.entity
+                end
+                
+                if chest and chest.valid and chest.name ~= nil and ((type == "logistics" and (networksFilter[network] or networksFilterCount == 0)) or type ~= "logistics") then
+                    
                     if filters["chests"][nameToCode(chest.name)] or filters["chests"]["all"] then
-                        local count = chest.get_item_count(item)
+                        local itemCount = chest.get_item_count(item)                   
 
-                        total[type] = total[type] + count
-                        total["all"] = total["all"] + count
+                        total[type] = total[type] + itemCount
+                        total["all"] = total["all"] + itemCount
 
-                        if count > 0 then
+                        if itemCount > 0 then
                             if not info["chests"][key] then
                                 info["chests"][key] = {}
                             end
@@ -679,7 +774,7 @@ function getItemInfo(item, player, index, filters)
                             info["chests"][key]["entity"] = chest
                             info["chests"][key]["name"] = chest.name
                             info["chests"][key]["pos"] = chest.position
-                            info["chests"][key]["count"] = count
+                            info["chests"][key]["count"] = itemCount
                             info["chests"][key]["type"] = type
                         end
                     end
@@ -762,6 +857,16 @@ function codeToName(code)
     end
 end
 
+--- Gets compatible names for mod entities that use invisible proxy containers
+function getCompName(name)
+    local compNames = global.compNames
+    for k,n in pairs(compNames) do 
+        if name == k then
+            return n
+        end
+    end
+    return false
+end
 --- Get normal chest names
 function getNormalChestNames()
     local normalChestNames = {}

@@ -1,98 +1,3 @@
---- Show search frame
-function showSearch(player, index)
-    local guiPos = global.settings[index].guiPos
-    local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
-    local currentTab = global.currentTab[index]
-    local searchText = global.searchText[index][currentTab]
-
-    for _,tab in pairs(global.guiTabs) do
-        if tab ~= currentTab and contentFrame[tab .. "SearchFrame"] ~= nil then
-           contentFrame[tab .. "SearchFrame"].style = "lv_search_frame_hidden"
-        end
-    end
-
-    --add search frame
-    local searchFrame = contentFrame[currentTab .. "SearchFrame"]
-    if searchFrame == nil then
-        searchFrame = contentFrame.add({type = "frame", name = currentTab .. "SearchFrame", style = "lv_search_frame", direction = "horizontal"})
-        searchFrame.add({type = "label", name = currentTab .. "SearchFrameLabel", style = "lv_search_label", caption = {"search-label"}})
-    end
-    searchFrame.style = "lv_search_frame"
-
-    --add search field
-    local searchField = contentFrame[currentTab .. "SearchFrame"][currentTab .. "-search-field"]
-    if searchField == nil then
-        searchField = searchFrame.add({type = "textfield", name = currentTab .. "-search-field", style = "lv_searchfield_style", text = searchText })
-    end
-
-end
-
---- Show items info frame
-function updateItemsInfo(player, index)
-    local guiPos = global.settings[index].guiPos
-    local force = player.force.name
-    local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
-    local infoFlow = contentFrame["infoFlow"]
-    local currentTab = global.currentTab[index]
-    local total = currentTab == "logistics" and global.logisticsItemsTotal[force] or global.normalItemsTotal[force]
-
-    if infoFlow == nil then
-        infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
-    end
-
-    for _,tab in pairs(global.guiTabs) do
-        if tab ~= currentTab and infoFlow[tab .. "InfoFrame"] ~= nil then
-            infoFlow[tab .. "InfoFrame"].style = "lv_frame_hidden"
-        end
-    end
-
-    --add info frame
-    local infoFrame = infoFlow[currentTab .. "InfoFrame"]
-    if infoFrame ~= nil then
-        infoFrame.destroy()
-    end
-
-    infoFrame = infoFlow.add({type = "frame", name = currentTab .. "InfoFrame", style = "lv_info_frame", direction = "horizontal"})
-    infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotalLabel", style = "lv_info_label", caption = {"info-total"}})
-    infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotal", style = "label_style", caption = ": " .. number_format(total)})
-end
-
---- Show disconnected chests info frame
-function updateDisconnectedInfo(player, index)
-    local guiPos = global.settings[index].guiPos
-    local force = player.force.name
-    local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
-    local infoFlow = contentFrame["infoFlow"]
-    local currentTab = global.currentTab[index]
-    local disconnected = global.disconnectedChests[force]
-    local count = count(disconnected)
-    
-    if infoFlow == nil then
-        infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
-    end   
-    
-    -- remove old disconnected frames
-    for _,tab in pairs(global.guiTabs) do
-        if tab ~= currentTab and infoFlow[tab .. "DisconnectedFrame"] ~= nil then
-            infoFlow[tab .. "DisconnectedFrame"].destroy()
-        end
-    end    
-    
-    -- remove disconnected chests info frame
-    local disconnectedFrame = infoFlow["disconnectedFrame"]
-    if disconnectedFrame ~= nil then
-        disconnectedFrame.destroy()
-    end
-    
-    -- add disconnected chests info frame
-    if currentTab == "logistics" and count > 0 then
-        disconnectedFrame = infoFlow.add({type = "frame", name = "disconnectedFrame", style = "lv_info_frame", direction = "horizontal"})
-        disconnectedFrame.add({type = "label", name = "disconnectedFrameLabel", style = "lv_info_label", caption = {"disconnected-chests"}})
-        disconnectedFrame.add({type = "label", name = "disconnectedFrameTotal", style = "label_style", caption = ": " .. count})
-        disconnectedFrame.add({type = "button", name = "disconnectedFrameView", caption = {"view"}, style = "lv_button"})
-    end
-end
-
 ---- Update/Show items table
 function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
     if items then
@@ -103,12 +8,16 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
 
             local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
 
-            -- add info
-                updateItemsInfo(player, index)
-                updateDisconnectedInfo(player, index)
+            -- add info widget
+                addItemsInfoWidget(player, index)
+                addDisconnectedInfoWidget(player, index)
+                addNetwroksInfoWidget(player, index)
 
-            -- add search
-                showSearch(player, index)
+            -- add search widget
+                addSearchWidget(player, index)
+                
+            -- add network filters widget    
+                addNetworkFiltersWidget(player, index)
 
             -- create items frame
             if player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame ~= nil then
@@ -158,10 +67,10 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             if player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable ~= nil then
                 player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable.destroy()
             end
-            itemsTable = itemsFrame.add({type ="table", name = "itemsTable", colspan = 8, style = "lv_items_table"})
+            itemsTable = itemsFrame.add({type = "table", name = "itemsTable", colspan = 8, style = "lv_items_table"})
             
             -- set items table dynamic height
-            itemsTable.style.minimal_height = itemsPerPage * 48
+            itemsTable.style.minimal_height = itemsPerPage * 49
 
             -- item image column
             itemsTable.add({type = "label", name = "itemImage", caption = " "})
@@ -238,120 +147,45 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
 
 end
 
---- Show item totals info frame
-function updateItemTotalsInfo(info, player, index)
-    local guiPos = global.settings[index].guiPos
-    local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
-    local infoFlow = contentFrame["infoFlow"]
-    local currentTab = global.currentTab[index]
-    local currentItem = global.currentItem[index]
-    local total = info["total"]
-    local orderfunc = function(t,a,b) return t[b] < t[a] end
-
-    if infoFlow == nil then
-        infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
-    end
-
-    --add item name info frame
-    local infoFrameName = infoFlow[currentTab .. "infoFrameName"]
-    if infoFrameName ~= nil then
-        infoFrameName.destroy()
-    end
-
-    -- all
-    infoFrameName = infoFlow.add({type = "frame", name = currentTab .. "infoFrameName", style = "lv_info_frame", direction = "horizontal"})
-    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameIcon", style = "lv_info_label", caption = {"name"}})
-    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameName", style = "label_style", caption = game.get_localised_item_name(currentItem)})
-
-
-    --add "all" total info frame
-    local infoFrameAll = infoFlow[currentTab .. "InfoFrameAll"]
-    if infoFrameAll ~= nil then
-        infoFrameAll.destroy()
-    end
-
-    -- all
-    infoFrameAll = infoFlow.add({type = "frame", name = currentTab .. "InfoFrameAll", style = "lv_info_frame", direction = "horizontal"})
-    infoFrameAll.add({type = "label", name = currentTab .. "InfoFrameTotalLabel", style = "lv_info_label", caption = {"info-total"}})
-    infoFrameAll.add({type = "label", name = currentTab .. "InfoFrameTotal", style = "label_style", caption = ": " .. number_format(total.all)})
-
-    for k,v in spairs(total, orderfunc) do
-        if v > 0 and k ~= "all" then
-            local key = k:gsub("^%l", string.upper)
-            local infoFrame = infoFlow[currentTab .. "InfoFrame" .. key]
-            if infoFrame ~= nil then
-                infoFrame.destroy()
-            end
-            infoFrame = infoFlow.add({type = "frame", name = currentTab .. "InfoFrame" .. key, style = "lv_info_frame", direction = "horizontal"})
-            infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotalLabel", style = "lv_info_label", caption = {"info-" .. k}})
-            infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotal", style = "label_style", caption = ": " .. number_format(v)})
-        end
-    end
-end
-
---- Show item info filters
-function updateItemFilters(player, index)
-    local guiPos = global.settings[index].guiPos
-    local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
-    local filtersFlow = contentFrame["filtersFlow"]
-    local currentTab = global.currentTab[index]
-    local filters = global.itemInfoFilters[index]
-
-    if filtersFlow == nil then
-        filtersFlow = contentFrame.add({type = "flow", name = "filtersFlow", style = "lv_info_flow", direction = "horizontal"})
-    end
-
-    local typeFilterFrame = filtersFlow["typeFilterFrame"]
-    if typeFilterFrame ~= nil then
-        typeFilterFrame.destroy()
-    end
-
-    local logisticsState = filters["group"]["logistics"] ~= nil
-    local normalState = filters["group"]["normal"] ~= nil
-    typeFilterFrame = filtersFlow.add({type = "frame", name = "typeFilterFrame", style = "lv_filters_frame", direction = "horizontal"})
-    typeFilterFrame.add({type = "label", name = "typeFilterFrameLabel", style = "lv_info_label", caption = {"filters"}})
-    typeFilterFrame.add({type = "checkbox", name = "itemInfoFilter_logistics", style = "checkbox_style", caption = "Logistics", state = logisticsState})
-    typeFilterFrame.add({type = "checkbox", name = "itemInfoFilter_normal", style = "checkbox_style", caption = "Normal", state = normalState})
-
-
-    local chestsFilterFrame = filtersFlow["chestsFilterFrame"]
-    if chestsFilterFrame ~= nil then
-        chestsFilterFrame.destroy()
-    end
-
-    local buttonStyle = filters["chests"]["all"] ~= nil and "_selected" or ""
-    chestsFilterFrame = filtersFlow.add({type = "frame", name = "chestsFilterFrame", style = "lv_filters_frame", direction = "horizontal"})
-    chestsFilterFrame.add({type = "button", name = "itemInfoFilter_all", caption = "All", style = "lv_button_all" .. buttonStyle})
-    for type,codes in pairs(global.codeToName) do
-        for code,name in pairs(codes) do
-            if code ~= "name" and code ~= "total" then
-                local buttonStyle = filters["chests"][code] ~= nil and "_selected" or ""
-                chestsFilterFrame.add({type = "button", name = "itemInfoFilter_" .. code, style = "lv_button_" .. code .. buttonStyle})
-            end
-        end
-    end
-
-end
-
 ---- Show item info
 function showItemInfo(item, player, index, page, sort_by, sort_dir)
     if item then
         local guiPos = global.settings[index].guiPos
         local exTools = global.settings[index].exTools
+        local autoFilter = global.settings[index].autoFilter
         local currentTab = "itemInfo"
+        local prevTab = global.currentTab[index]
         global.currentTab[index] = currentTab
         local filters = global.itemInfoFilters[index]
+        
+        -- check for default filters based on previous table
+        if autoFilter and prevTab ~= currentTab then
+            if prevTab == "logistics" then
+                filters["group"]["normal"] = nil
+                filters["group"]["logistics"] = true
+            elseif prevTab == "normal" then
+                filters["group"]["logistics"] = nil
+                filters["group"]["normal"] = true
+            end   
+            global.itemInfoFilters[index] = filters
+        end
+        
         local info = getItemInfo(item, player, index, filters)
         local chests = info["chests"]
         local total = info["total"]
+        
+
 
         if player.gui[guiPos].logisticsFrame ~= nil and player.gui[guiPos].logisticsFrame.contentFrame ~= nil then
 
             local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
-
+           
             -- show item totals info
-                updateItemTotalsInfo(info, player, index)
-                updateItemFilters(player, index)
+                addItemTotalsInfoWidget(info, player, index)                            
+                addItemFiltersWidget(player, index)
+                
+            -- add network filters widget    
+                addNetworkFiltersWidget(player, index)                    
 
             -- create chests frame
             if player.gui[guiPos].logisticsFrame.contentFrame.itemInfoFrame ~= nil then
@@ -438,8 +272,9 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
 
                 -- get filtered/sorted items
                 for key,chest in spairs(chests, orderfunc) do
-                    local count = chest.count
-                    local name = chest.name
+                    local itemsCount = chest.count
+                    local name = getCompName(chest.name)
+                    name = name and name or chest.name
                     local pos = chest.pos
                     local code = nameToCode(name)
 
@@ -451,7 +286,7 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
                         itemInfoTable.add({type = "checkbox", name = "itemInfoIcon_" .. key, style = "item-icons-".. name, state = false})
                         itemInfoTable.add({type = "label", name = "itemInfoType_" .. key, caption = game.get_localised_item_name(name)})
                         itemInfoTable.add({type = "label", name = "itemInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
-                        itemInfoTable.add({type = "label", name = "itemInfoCount_" .. key, caption = number_format(count)})
+                        itemInfoTable.add({type = "label", name = "itemInfoCount_" .. key, caption = number_format(itemsCount)})
                         local toolsFlow = itemInfoTable["itemInfoTools_" .. key]
                         if toolsFlow == nil then
                             toolsFlow = itemInfoTable.add({type = "flow", name = "itemInfoTools_" .. key, direction = "horizontal", style = "lv_tools_flow"})
@@ -548,94 +383,94 @@ function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
                 player.gui[guiPos].logisticsFrame.contentFrame.disconnectedFrame.disconnectedTable.destroy()
             end
 
-            if chestsCount > 0 then
-                disconnectedTable = disconnectedFrame.add({type ="table", name = "disconnectedTable", colspan = 5, style = "lv_items_table"})
+            disconnectedTable = disconnectedFrame.add({type ="table", name = "disconnectedTable", colspan = 5, style = "lv_items_table"})
 
-                -- chest image column
+            -- chest image column
 
-                disconnectedTable.add({type = "label", name = "disconnectedInfo_icon", caption = " "})
+            disconnectedTable.add({type = "label", name = "disconnectedInfo_icon", caption = " "})
 
-                -- chest name column
-                local isSelected = sort_by == 'name'
-                local buttonStyle = isSelected and "_selected" or ""
-                local sortDirStyle = (isSelected and sort_dir) and "_" .. sort_dir or ""
+            -- chest name column
+            local isSelected = sort_by == 'name'
+            local buttonStyle = isSelected and "_selected" or ""
+            local sortDirStyle = (isSelected and sort_dir) and "_" .. sort_dir or ""
 
-                local nameFlow = disconnectedTable.add({type = "flow", name = "nameFlow", direction = "horizontal", style = "lv_name_flow"})
-                nameFlow.add({type = "button", name = "disconnectedInfo_name", caption = {"chest-type"}, style = "lv_button_name" .. buttonStyle})
-                local nameSortFlow = nameFlow.add({type = "flow", name = "nameSortFlow", direction = "vertical", style = "lv_sort_flow"})
-                nameSortFlow.add({type = "frame", name = "nameSortHolder", style = "lv_sort_holder"})
-                nameSortFlow.add({type = "frame", name = "name_sort", style = "lv_sort" .. sortDirStyle})
+            local nameFlow = disconnectedTable.add({type = "flow", name = "nameFlow", direction = "horizontal", style = "lv_name_flow"})
+            nameFlow.add({type = "button", name = "disconnectedInfo_name", caption = {"chest-type"}, style = "lv_button_name" .. buttonStyle})
+            local nameSortFlow = nameFlow.add({type = "flow", name = "nameSortFlow", direction = "vertical", style = "lv_sort_flow"})
+            nameSortFlow.add({type = "frame", name = "nameSortHolder", style = "lv_sort_holder"})
+            nameSortFlow.add({type = "frame", name = "name_sort", style = "lv_sort" .. sortDirStyle})
 
-                -- chest position column
-                local isSelected = sort_by == 'position'
-                local buttonStyle = isSelected and "_selected" or ""
-                local sortDirStyle = (isSelected and sort_dir) and "_" .. sort_dir or ""
+            -- chest position column
+            local isSelected = sort_by == 'position'
+            local buttonStyle = isSelected and "_selected" or ""
+            local sortDirStyle = (isSelected and sort_dir) and "_" .. sort_dir or ""
 
-                local posFlow = disconnectedTable.add({type = "flow", name = "positionFlow", direction = "horizontal", style = "lv_pos_flow"})
-                posFlow.add({type = "button", name = "disconnectedInfo_position", caption = {"chest-pos"}, style = "lv_button_position" .. buttonStyle})
-                local posSortFlow = posFlow.add({type = "flow", name = "positionSortFlow", direction = "vertical", style = "lv_sort_flow"})
-                posSortFlow.add({type = "frame", name = "positionSortHolder", style = "lv_sort_holder"})
-                posSortFlow.add({type = "frame", name = "position_sort", style = "lv_sort" .. sortDirStyle})
+            local posFlow = disconnectedTable.add({type = "flow", name = "positionFlow", direction = "horizontal", style = "lv_pos_flow"})
+            posFlow.add({type = "button", name = "disconnectedInfo_position", caption = {"chest-pos"}, style = "lv_button_position" .. buttonStyle})
+            local posSortFlow = posFlow.add({type = "flow", name = "positionSortFlow", direction = "vertical", style = "lv_sort_flow"})
+            posSortFlow.add({type = "frame", name = "positionSortHolder", style = "lv_sort_holder"})
+            posSortFlow.add({type = "frame", name = "position_sort", style = "lv_sort" .. sortDirStyle})
 
-                -- chest count column
-                local isSelected = sort_by == 'count'
-                local buttonStyle = isSelected and "_selected" or ""
-                local sortDirStyle = (isSelected and sort_dir) and "_" .. sort_dir or ""
+            -- chest count column
+            local isSelected = sort_by == 'count'
+            local buttonStyle = isSelected and "_selected" or ""
+            local sortDirStyle = (isSelected and sort_dir) and "_" .. sort_dir or ""
 
-                local countFlow = disconnectedTable.add({type = "flow", name = "countFlow", direction = "horizontal", style = "lv_total_flow"})
-                countFlow.add({type = "button", name = "disconnectedInfo_count", caption = {"chest-count"}, style = "lv_button_total" .. buttonStyle})
-                local countSortFlow = countFlow.add({type = "flow", name = "countSortFlow", direction = "vertical", style = "lv_sort_flow"})
-                countSortFlow.add({type = "frame", name = "countSortHolder", style = "lv_sort_holder"})
-                countSortFlow.add({type = "frame", name = "count_sort", style = "lv_sort" .. sortDirStyle})
+            local countFlow = disconnectedTable.add({type = "flow", name = "countFlow", direction = "horizontal", style = "lv_total_flow"})
+            countFlow.add({type = "button", name = "disconnectedInfo_count", caption = {"chest-count"}, style = "lv_button_total" .. buttonStyle})
+            local countSortFlow = countFlow.add({type = "flow", name = "countSortFlow", direction = "vertical", style = "lv_sort_flow"})
+            countSortFlow.add({type = "frame", name = "countSortHolder", style = "lv_sort_holder"})
+            countSortFlow.add({type = "frame", name = "count_sort", style = "lv_sort" .. sortDirStyle})
 
-                -- tools column
-                disconnectedTable.add({type = "label", name = "disconnectedInfo_tools", caption = {"chest-tools"}})
+            -- tools column
+            disconnectedTable.add({type = "label", name = "disconnectedInfo_tools", caption = {"chest-tools"}})
 
-                -- get filtered/sorted items
-                for key,chest in spairs(chests, orderfunc) do
-                    local count = chest.get_item_count()
-                    local name = chest.name
-                    local pos = chest.position
-                    local code = nameToCode(name)
+            -- get filtered/sorted items
+            for key,chest in spairs(chests, orderfunc) do
+                local itemsCount = chest.get_item_count()
+                local name = getCompName(chest.name)
+                name = name and name or chest.name
+                local pos = chest.position
+                local code = nameToCode(name)
 
 
-                    local deconstructed = chest.to_be_deconstructed(player.force)
-                    local deleteBtnStyle = deconstructed and "_selected" or ""
+                local deconstructed = chest.to_be_deconstructed(player.force)
+                local deleteBtnStyle = deconstructed and "_selected" or ""
 
-                    current= current + 1
-                    if current >= start and current <= max then
-                        disconnectedTable.add({type = "checkbox", name = "disconnectedInfoIcon_" .. key, style = "item-icons-".. name, state = false})
-                        disconnectedTable.add({type = "label", name = "disconnectedInfoType_" .. key, caption = game.get_localised_item_name(name)})
-                        disconnectedTable.add({type = "label", name = "disconnectedInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
-                        disconnectedTable.add({type = "label", name = "disconnectedInfoCount_" .. key, caption = number_format(count)})
-                        local toolsFlow = disconnectedTable["disconnectedInfoTools_" .. key]
-                        if toolsFlow == nil then
-                            toolsFlow = disconnectedTable.add({type = "flow", name = "disconnectedInfoTools_" .. key, direction = "horizontal", style = "lv_tools_flow"})
-                        end
-                        toolsFlow.add({type = "button", name = "disconnectedAction_location_" .. key, style = "lv_button_location"})
-                        if exTools then toolsFlow.add({type = "button", name = "disconnectedAction_teleport_" .. key, style = "lv_button_teleport"}) end
-                        toolsFlow.add({type = "button", name = "disconnectedAction_delete_" .. key, style = "lv_button_delete" .. deleteBtnStyle})
-                        if exTools then
-                            if code ~= "apc" then toolsFlow.add({type = "button", name = "disconnectedAction_apc_" .. key, style = "lv_button_up_apc"}) end
-                            if code ~= "ppc" then toolsFlow.add({type = "button", name = "disconnectedAction_ppc_" .. key, style = "lv_button_up_ppc"}) end
-                            if code ~= "sc" then toolsFlow.add({type = "button", name = "disconnectedAction_sc_" .. key, style = "lv_button_up_sc"}) end
-                            if code ~= "rc" then toolsFlow.add({type = "button", name = "disconnectedAction_rc_" .. key, style = "lv_button_up_rc"}) end
-                        end
+                current= current + 1
+                if current >= start and current <= max then
+                    disconnectedTable.add({type = "checkbox", name = "disconnectedInfoIcon_" .. key, style = "item-icons-".. name, state = false})
+                    disconnectedTable.add({type = "label", name = "disconnectedInfoType_" .. key, caption = game.get_localised_item_name(name)})
+                    disconnectedTable.add({type = "label", name = "disconnectedInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
+                    disconnectedTable.add({type = "label", name = "disconnectedInfoCount_" .. key, caption = number_format(itemsCount)})
+                    local toolsFlow = disconnectedTable["disconnectedInfoTools_" .. key]
+                    if toolsFlow == nil then
+                        toolsFlow = disconnectedTable.add({type = "flow", name = "disconnectedInfoTools_" .. key, direction = "horizontal", style = "lv_tools_flow"})
+                    end
+                    toolsFlow.add({type = "button", name = "disconnectedAction_location_" .. key, style = "lv_button_location"})
+                    if exTools then toolsFlow.add({type = "button", name = "disconnectedAction_teleport_" .. key, style = "lv_button_teleport"}) end
+                    toolsFlow.add({type = "button", name = "disconnectedAction_delete_" .. key, style = "lv_button_delete" .. deleteBtnStyle})
+                    if exTools then
+                        if code ~= "apc" then toolsFlow.add({type = "button", name = "disconnectedAction_apc_" .. key, style = "lv_button_up_apc"}) end
+                        if code ~= "ppc" then toolsFlow.add({type = "button", name = "disconnectedAction_ppc_" .. key, style = "lv_button_up_ppc"}) end
+                        if code ~= "sc" then toolsFlow.add({type = "button", name = "disconnectedAction_sc_" .. key, style = "lv_button_up_sc"}) end
+                        if code ~= "rc" then toolsFlow.add({type = "button", name = "disconnectedAction_rc_" .. key, style = "lv_button_up_rc"}) end
                     end
                 end
-
-                -- add pager
-                if player.gui[guiPos].logisticsFrame.contentFrame.pagerFlow ~= nil then
-                    player.gui[guiPos].logisticsFrame.contentFrame.pagerFlow.destroy()
-                end
-                local nextPage = math.min((page+1), maxPages)
-                local prevPage = page-1
-                pager = contentFrame.add({type = "flow", name = "pagerFlow", direction="horizontal"})
-                pager.add({type = "label", name = "pagerLabel", caption = "Page:"})
-                pager.add({type = "button", name = "prevPage_" .. prevPage , caption = "<", style = "lv_button"})
-                pager.add({type = "label", name = "pageTotal", caption = page.."/"..maxPages})
-                pager.add({type = "button", name = "nextPage_" .. nextPage , caption = ">", style = "lv_button"})
             end
+
+            -- add pager
+            if player.gui[guiPos].logisticsFrame.contentFrame.pagerFlow ~= nil then
+                player.gui[guiPos].logisticsFrame.contentFrame.pagerFlow.destroy()
+            end
+            local nextPage = math.min((page+1), maxPages)
+            local prevPage = page-1
+            pager = contentFrame.add({type = "flow", name = "pagerFlow", direction="horizontal"})
+            pager.add({type = "label", name = "pagerLabel", caption = "Page:"})
+            pager.add({type = "button", name = "prevPage_" .. prevPage , caption = "<", style = "lv_button"})
+            pager.add({type = "label", name = "pageTotal", caption = page.."/"..maxPages})
+            pager.add({type = "button", name = "nextPage_" .. nextPage , caption = ">", style = "lv_button"})
+
         end
     end
 
