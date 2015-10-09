@@ -3,6 +3,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
     if items then
         local guiPos = global.settings[index].guiPos
         local currentTab = global.currentTab[index]
+        local colspan = 8
 
         if player.gui[guiPos].logisticsFrame ~= nil and player.gui[guiPos].logisticsFrame.contentFrame ~= nil then
 
@@ -67,7 +68,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             if player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable ~= nil then
                 player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable.destroy()
             end
-            itemsTable = itemsFrame.add({type = "table", name = "itemsTable", colspan = 8, style = "lv_items_table"})
+            itemsTable = itemsFrame.add({type = "table", name = "itemsTable", colspan = colspan, style = "lv_items_table"})
             
             -- set items table dynamic height
             itemsTable.style.minimal_height = itemsPerPage * 49

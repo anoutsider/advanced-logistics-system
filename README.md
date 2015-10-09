@@ -9,6 +9,10 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.7**
+
+ - Fixed an issue with the player network showing in the networks list
+ 
 **0.2.6**
 
  - Code refactoring and optimization - using the new Lua/LogisticNetwork / Lua/LogisticCell API

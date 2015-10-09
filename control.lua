@@ -449,6 +449,7 @@ function getLogisticNetworks(force, full)
     local networks =  force.logistic_networks
     local names = global.networksNames[force.name] or {}
     local networksCount = 0
+    local playerNetwork = false
 
 
     for surface,nets in pairs(networks) do
@@ -474,21 +475,26 @@ function getLogisticNetworks(force, full)
             local port = 0
             local charging = 0
             local waiting = 0            
-            for cei,cell in pairs(net.cells) do                
-                networksData[i]["cells"][cei] = {}
-                networksData[i]["cells"][cei]["name"] = cell.owner.name
-                networksData[i]["cells"][cei]["pos"] = cell.owner.position
-                networksData[i]["cells"][cei]["radius"] = cell.logistic_radius
+            for cei,cell in pairs(net.cells) do
+                if not cell.mobile then
+                    networksData[i]["cells"][cei] = {}
+                    networksData[i]["cells"][cei]["name"] = cell.owner.name
+                    networksData[i]["cells"][cei]["pos"] = cell.owner.position
+                    networksData[i]["cells"][cei]["radius"] = cell.logistic_radius
 
-                networksData[i]["cells"][cei]["bots"] = {}
-                networksData[i]["cells"][cei]["bots"]["idle_log"] = cell.stationed_logistic_robot_count
-                networksData[i]["cells"][cei]["bots"]["idle_con"] = cell.stationed_construction_robot_count
-                networksData[i]["cells"][cei]["bots"]["charging"] = cell.charging_robot_count
-                networksData[i]["cells"][cei]["bots"]["waiting"] = cell.to_charge_robot_count
-                size = size + cell.logistic_radius
-                port = port + 1
-                charging = charging + cell.charging_robot_count
-                waiting = waiting + cell.to_charge_robot_count
+                    networksData[i]["cells"][cei]["bots"] = {}
+                    networksData[i]["cells"][cei]["bots"]["idle_log"] = cell.stationed_logistic_robot_count
+                    networksData[i]["cells"][cei]["bots"]["idle_con"] = cell.stationed_construction_robot_count
+                    networksData[i]["cells"][cei]["bots"]["charging"] = cell.charging_robot_count
+                    networksData[i]["cells"][cei]["bots"]["waiting"] = cell.to_charge_robot_count
+                    size = size + cell.logistic_radius
+                    port = port + 1
+                    charging = charging + cell.charging_robot_count
+                    waiting = waiting + cell.to_charge_robot_count
+                else
+                   playerNetwork = true
+                   break
+                end
             end
             networksData[i]["size"] = size * 2
             networksData[i]["port"] = port
@@ -547,7 +553,13 @@ function getLogisticNetworks(force, full)
                     end
                 end
             end
-            networksCount = networksCount + 1
+            
+            if not playerNetwork then
+                networksCount = networksCount + 1
+            else
+                playerNetwork = false
+                networksData[i] = nil
+            end
         end
     end
     
