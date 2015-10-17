@@ -6,16 +6,18 @@ require "interface"
 local DEV = false
 
 --- on_init event
-game.on_init(function()
+script.on_init(function()
     init()
+    -- init player specific globals
+    initPlayers()
 end)
 
 --- on_load event
-game.on_load(function()
+script.on_load(function()
     init()
 end)
 
---- Initiate default and globalal values
+--- Initiate default and global values
 function init()
     global.guiLoaded = global.guiLoaded or {}
     global.guiVisible = global.guiVisible or {}
@@ -95,9 +97,6 @@ function init()
 
     global.guiTabs = {"logistics", "normal", "itemInfo"}
     global.character = global.character or {}
-
-    -- init player specific globalals
-    initPlayers()
 
 end
 
@@ -277,7 +276,7 @@ function playerHasSystem(player)
 end
 
 --- Handles items search
-game.on_event(defines.events.on_tick, function(event)
+script.on_event(defines.events.on_tick, function(event)
         if event.tick % 60 == 0  then
             for i,p in ipairs(game.players) do
                 local hasSystem = playerHasSystem(p)
@@ -303,34 +302,34 @@ game.on_event(defines.events.on_tick, function(event)
 end)
 
 --- Player Related Events
-game.on_event(defines.events.on_player_created, function(event)
+script.on_event(defines.events.on_player_created, function(event)
     playerCreated(event)
 end)
 
 --- init new players
 function playerCreated(event)
     local player = game.players[event.player_index]
-    initPlayers()
+    initPlayer(player)
 end
 
 --- Entity Related Events
-game.on_event(defines.events.on_built_entity, function(event)
+script.on_event(defines.events.on_built_entity, function(event)
     entityBuilt(event, event.created_entity)
 end)
 
-game.on_event(defines.events.on_robot_built_entity, function(event)
+script.on_event(defines.events.on_robot_built_entity, function(event)
     entityBuilt(event, event.created_entity)
 end)
 
-game.on_event(defines.events.on_preplayer_mined_item, function(event)
+script.on_event(defines.events.on_preplayer_mined_item, function(event)
     entityMined(event, event.entity)
 end)
 
-game.on_event(defines.events.on_robot_pre_mined, function(event)
+script.on_event(defines.events.on_robot_pre_mined, function(event)
     entityMined(event, event.entity)
 end)
 
-game.on_event(defines.events.on_entity_died, function(event)
+script.on_event(defines.events.on_entity_died, function(event)
     entityMined(event, event.entity)
 end)
 
@@ -601,7 +600,7 @@ function checkDisconnectedChests(force)
     local disconnected = global.disconnectedChests[force.name]
 
     for key,chest in pairs(disconnected) do
-        if inLogisticsNetwork(chest, force) then
+        if chest.valid and inLogisticsNetwork(chest, force) then
             disconnected[key] = nil
         end
     end

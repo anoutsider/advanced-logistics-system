@@ -9,6 +9,12 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.8**
+
+ - Updated the mod for factorio 0.12.11
+ - Added entity.valid checks to disconnected chests functions
+ - Fixed a bug within the networks view
+ 
 **0.2.7**
 
  - Fixed an issue with the player network showing in the networks list

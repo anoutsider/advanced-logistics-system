@@ -321,7 +321,6 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
 
 end
 
-
 ---- Show disconnected chests info
 function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
     local disconnected = global.disconnectedChests[player.force.name]

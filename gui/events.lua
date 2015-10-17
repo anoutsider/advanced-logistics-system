@@ -1,5 +1,5 @@
 --- GUI Events
-game.on_event(defines.events.on_gui_click, function(event)
+script.on_event(defines.events.on_gui_click, function(event)
 
     local index = event.player_index
     local player = game.players[index]
@@ -383,6 +383,7 @@ game.on_event(defines.events.on_gui_click, function(event)
     elseif event.element.name == "disconnectedFrameView" then
         clearMenu(player, index)
         clearGUI(player, index)
+        checkDisconnectedChests(player.force)
         showDisconnectedInfo(player, index)
 
     -- disconnected table columns sorting event
