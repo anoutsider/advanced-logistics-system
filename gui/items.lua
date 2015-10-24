@@ -285,7 +285,7 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
                     current= current + 1
                     if current >= start and current <= max then
                         itemInfoTable.add({type = "checkbox", name = "itemInfoIcon_" .. key, style = "item-icons-".. name, state = false})
-                        itemInfoTable.add({type = "label", name = "itemInfoType_" .. key, caption = game.get_localised_item_name(name)})
+                        itemInfoTable.add({type = "label", name = "itemInfoType_" .. key, caption = game.item_prototypes[name].localised_name})
                         itemInfoTable.add({type = "label", name = "itemInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         itemInfoTable.add({type = "label", name = "itemInfoCount_" .. key, caption = number_format(itemsCount)})
                         local toolsFlow = itemInfoTable["itemInfoTools_" .. key]
