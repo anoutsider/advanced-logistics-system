@@ -334,7 +334,7 @@ function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
                         local nameFlow = networkTable["networkInfoName_" .. key]
 
                         networkTable.add({type = "checkbox", name = "networkInfoIcon_" .. key, style = "item-icons-".. name, state = false})
-                        networkTable.add({type = "label", name = "networkInfoType_" .. key, caption = game.get_localised_item_name(name)})
+                        networkTable.add({type = "label", name = "networkInfoType_" .. key, caption = game.item_prototypes[name].localised_name})
                         networkTable.add({type = "label", name = "networkInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         networkTable.add({type = "label", name = "networkInfoCharging_" .. key, caption = charging})
                         networkTable.add({type = "label", name = "networkInfoWaiting_" .. key, caption = waiting})
