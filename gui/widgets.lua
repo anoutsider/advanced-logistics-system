@@ -227,7 +227,7 @@ function addItemTotalsInfoWidget(info, player, index)
     -- name
     infoFrameName = infoFlow.add({type = "frame", name = currentTab .. "infoFrameName", style = "lv_info_frame", direction = "horizontal"})
     infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameIcon", style = "lv_info_label", caption = {"name"}})
-    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameName", style = "label_style", caption = game.get_localised_item_name(currentItem)})
+    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameName", style = "label_style", caption = game.item_prototypes[currentItem].localised_name})
 
 
     --add "all" total info frame
