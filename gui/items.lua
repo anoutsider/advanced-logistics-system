@@ -121,7 +121,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
                 current= current + 1
                 if current >= start and current <= max then
                     itemsTable.add({type = "checkbox", name = "itemIcon_" .. name, style = "item-icons-".. name, state = false})
-                    itemsTable.add({type = "label", name = "itemName_" .. name, caption = game.get_localised_item_name(name)})
+                    itemsTable.add({type = "label", name = "itemName_" .. name, caption = game.item_prototypes[name].localised_name})
                     for code,field in pairs(global.codeToName[currentTab]) do
                         if code ~= "name" and code ~= "total" then
                             itemsTable.add({type = "label", name = "itemCount" .. string.upper(code) .. "_" .. name, caption = number_format(item[field])})
