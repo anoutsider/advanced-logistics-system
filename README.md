@@ -9,6 +9,10 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.10**
+
+ - Fixed a bug with network filters using old network indexes
+ 
 **0.2.9**
 
  - Update for factorio 0.12.12

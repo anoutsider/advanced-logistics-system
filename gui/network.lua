@@ -409,7 +409,7 @@ function showNetworksFilter(player, index)
 
         for key,network in pairs(networks) do
             local name = network.name
-            local isFilter = networksFilter[tonumber(key)] and "true" or "false"
+            local isFilter = networksFilter[key] and "true" or "false"
             networksTable.add({type = "checkbox", name = "networksFilter_" .. key, style = "checkbox_style", caption = " ", state = isFilter})
             networksTable.add({type = "label", name = "networksName_" .. key, caption = name, style = "lv_info_label"})
         end
@@ -437,7 +437,7 @@ function applyNetworkFilters(player, index)
                         local key = string.gsub(childName, "networksFilter_", "")
 
                         if key ~= "all" then
-                            networksFilter[tonumber(key)] = true
+                            networksFilter[key] = true
                         end
                     end
                 end

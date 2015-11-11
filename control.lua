@@ -336,8 +336,8 @@ function on_configuration_changed(data)
         local currentVersion = data.mod_changes[modName].new_version
         local oldVersion = data.mod_changes[modName].old_version
 
-        -- reset network names for version 0.2.9
-        if newVersion == "0.2.9" and (oldVersion and oldVersion > "0.2.5") then
+        -- reset network names for version 0.2.10
+        if newVersion == "0.2.10" and (oldVersion and oldVersion > "0.2.5") then
             global.networksNames = {}
         end
     end
@@ -706,7 +706,7 @@ function getLogisticsItems(force, index)
     local total = 0
 
     for _,chest in pairs(chests) do
-        local network = tonumber(chest.network)
+        local network = chest.network
         local type = chest.type
         local chest = chest.entity
         -- check if chest is valid and check for network filters
