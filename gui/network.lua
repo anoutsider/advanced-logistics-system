@@ -126,7 +126,7 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
                 local port_count = number_format(#network.cells)
                 local log_count = number_format(network.bots.log.available) .. "/" .. number_format(network.bots.log.total)
                 local con_count = number_format(network.bots.con.available) .. "/" .. number_format(network.bots.con.total)
-                local name = names[tonumber(key)] and names[tonumber(key)] or network.name
+                local name = names[key] and names[key] or network.name
                 local waiting = number_format(network.waiting)
 
                 current= current + 1
@@ -172,7 +172,7 @@ end
 ---- Show a specific network info
 function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
     local networks = getLogisticNetworks(player.force)
-    local network = networks[tonumber(net)]
+    local network = networks[net]
 
     if network then
         local portsCount = network.port
@@ -334,7 +334,7 @@ function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
                         local nameFlow = networkTable["networkInfoName_" .. key]
 
                         networkTable.add({type = "checkbox", name = "networkInfoIcon_" .. key, style = "item-icons-".. name, state = false})
-                        networkTable.add({type = "label", name = "networkInfoType_" .. key, caption = game.get_localised_item_name(name)})
+                        networkTable.add({type = "label", name = "networkInfoType_" .. key, caption = getLocalisedName(name)})
                         networkTable.add({type = "label", name = "networkInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         networkTable.add({type = "label", name = "networkInfoCharging_" .. key, caption = charging})
                         networkTable.add({type = "label", name = "networkInfoWaiting_" .. key, caption = waiting})

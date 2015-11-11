@@ -579,7 +579,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
         event.element.style = "lv_button_hidden"
         editBtn.style = "lv_button_edit"
-        names[tonumber(key)] = value
+        names[key] = value
         global.networksNames[player.force.name] = names
         global.networkEdit[index] = false
 
@@ -602,7 +602,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         local force = player.force
         local surface = player.surface
         local networks = global.networks[force.name]
-        local net = tonumber(global.currentNetwork[index])
+        local net = global.currentNetwork[index]
         local network = networks[net]
 
         if network then

@@ -9,6 +9,11 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.9**
+
+ - Update for factorio 0.12.12
+ - Reworked the logic for saving network names, using cell position as keys instead of numerical indexes
+ 
 **0.2.8**
 
  - Updated the mod for factorio 0.12.11
