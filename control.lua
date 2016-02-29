@@ -333,11 +333,11 @@ function on_configuration_changed(data)
     local modName = "advanced-logistics-systems"
     
     if data and data.mod_changes[modName] then
-        local currentVersion = data.mod_changes[modName].new_version
+        local newVersion = data.mod_changes[modName].new_version
         local oldVersion = data.mod_changes[modName].old_version
 
         -- reset network names for version 0.2.10
-        if newVersion == "0.2.10" and (oldVersion and oldVersion > "0.2.5") then
+        if newVersion and newVersion == "0.2.10" and (oldVersion and oldVersion > "0.2.5") then
             global.networksNames = {}
         end
     end
@@ -361,8 +361,8 @@ function entityBuilt(event, entity)
     local force = entity.force.name
 
     if entity.type == "logistic-container" then
-        local chests = global.logisticsChests[force]
-        local disconnected = global.disconnectedChests[force]
+        local chests = global.logisticsChests[force] or {}
+        local disconnected = global.disconnectedChests[force] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
         local upgrades = global.chestsUpgrade[key]
         local networks = entity.force.logistic_networks
@@ -401,7 +401,7 @@ function entityBuilt(event, entity)
         end
 
     elseif entity.type == "container" or entity.type == "smart-container" then
-        local chests = global.normalChests[force]
+        local chests = global.normalChests[force] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
         if not chests[key] then
             debugLog("Added Chest # " .. key .. "To Normal Chests List")
@@ -423,8 +423,8 @@ function entityMined(event, entity)
     local force = entity.force.name
 
     if entity.type == "logistic-container" then
-        local chests = global.logisticsChests[force]
-        local disconnected = global.disconnectedChests[force]
+        local chests = global.logisticsChests[force] or {}
+        local disconnected = global.disconnectedChests[force] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
 
         if chests[key] then
@@ -441,7 +441,7 @@ function entityMined(event, entity)
 
     elseif entity.type == "container" or entity.type == "smart-container" then
 
-        local chests = global.normalChests[force]
+        local chests = global.normalChests[force] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
 
         if chests[key] then
@@ -473,14 +473,14 @@ function updateNetworksData(entity, cell)
 
     -- if the removed cell has no neighbours, remove it from the names list
     if #cell.neighbours == 0 then
-        if names[index] then
+        if names and names[index] then
             names[index] = nil
             global.networksNames[force] = names
         end
     -- if the removed cell has neighbours, check if it's owner position was being used as an index for it's network 
      -- and select a new one if it was, will also update the network name index
     else              
-        if networksData[index] then
+        if networksData and networksData[index] then
             for _,netCell in pairs(cell.neighbours) do
                 local cellPos = netCell.owner.position
                 local newIndex = string.gsub(cellPos.x .. "A" .. cellPos.y, "-", "_")
@@ -489,7 +489,7 @@ function updateNetworksData(entity, cell)
                 networksData[index] = nil                
                 
                 -- update the names index if found
-                if names[index] and not names[newIndex] then
+                if names and names[index] and not names[newIndex] then
                     names[newIndex] = names[index]
                     names[index] = nil
                     global.networksNames[force] = names
@@ -530,7 +530,7 @@ function getLogisticNetworks(force, full)
                 i = i + 1
                 local pos = net.cells[1].owner.position
                 local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")             
-                local name = names[index] and names[index] or "Network " .. i                
+                local name = names and names[index] or "Network " .. i                
                 networksData[index] = {}
                 networksData[index]["name"] = name
                 networksData[index]["key"] = index
@@ -705,37 +705,39 @@ function getLogisticsItems(force, index)
     local excludeReq = global.settings[index].excludeReq
     local total = 0
 
-    for _,chest in pairs(chests) do
-        local network = chest.network
-        local type = chest.type
-        local chest = chest.entity
-        -- check if chest is valid and check for network filters
-        if chest and chest.valid and chest.name ~= nil and (networksFilter[network] or networksFilterCount == 0) then
-            
-            local inventory = chest.get_inventory(1)
-            for n,v in pairs(inventory.get_contents()) do
-                if not items[n] then
-                    items[n] = {}
-                    items[n]["total"] = 0
-                    for _,name in pairs(names) do
-                        if not items[n][name] then
-                            items[n][name] = 0
+    if chests then
+        for _,chest in pairs(chests) do
+            local network = chest.network
+            local type = chest.type
+            local chest = chest.entity
+            -- check if chest is valid and check for network filters
+            if chest and chest.valid and chest.name ~= nil and (networksFilter[network] or networksFilterCount == 0) then
+                
+                local inventory = chest.get_inventory(1)
+                for n,v in pairs(inventory.get_contents()) do
+                    if not items[n] then
+                        items[n] = {}
+                        items[n]["total"] = 0
+                        for _,name in pairs(names) do
+                            if not items[n][name] then
+                                items[n][name] = 0
+                            end
                         end
                     end
-                end
 
-                if not items[n][chest.name] then
-                    items[n][chest.name] = 0
+                    if not items[n][chest.name] then
+                        items[n][chest.name] = 0
+                    end
+                    
+                    -- check exclude requesters
+                    if (excludeReq and type ~= "requester") or not excludeReq then                
+                        items[n]["total"] = items[n]["total"] + v
+                        total = total + v
+                    end
+                    
+                    items[n][chest.name] = items[n][chest.name] + v
+                    
                 end
-                
-                -- check exclude requesters
-                if (excludeReq and type ~= "requester") or not excludeReq then                
-                    items[n]["total"] = items[n]["total"] + v
-                    total = total + v
-                end
-                
-                items[n][chest.name] = items[n][chest.name] + v
-                
             end
         end
     end
@@ -788,27 +790,29 @@ function getNormalItems(force)
     local names = global.normalChestsNames
     local total = 0
 
-    for _,chest in pairs(chests) do
-        if chest and chest.valid and chest.name ~= nil then
-            local inventory = chest.get_inventory(1)
-            for n,v in pairs(inventory.get_contents()) do
-                if not items[n] then
-                    items[n] = {}
-                    items[n]["total"] = 0
-                    for _,name in pairs(names) do
-                        if not items[n][name] then
-                            items[n][name] = 0
+    if chests then
+        for _,chest in pairs(chests) do
+            if chest and chest.valid and chest.name ~= nil then
+                local inventory = chest.get_inventory(1)
+                for n,v in pairs(inventory.get_contents()) do
+                    if not items[n] then
+                        items[n] = {}
+                        items[n]["total"] = 0
+                        for _,name in pairs(names) do
+                            if not items[n][name] then
+                                items[n][name] = 0
+                            end
                         end
                     end
-                end
 
-                if not items[n][chest.name] then
-                    items[n][chest.name] = 0
-                end
+                    if not items[n][chest.name] then
+                        items[n][chest.name] = 0
+                    end
 
-                items[n]["total"] = items[n]["total"] + v
-                items[n][chest.name] = items[n][chest.name] + v
-                total = total + v
+                    items[n]["total"] = items[n]["total"] + v
+                    items[n][chest.name] = items[n][chest.name] + v
+                    total = total + v
+                end
             end
         end
     end
@@ -1000,9 +1004,9 @@ function upgradeChest(entity, name, player)
             content = inventory.get_contents()
         end
 
-        if global.logisticsChests[force][key] then global.logisticsChests[force][key] = nil end
-        if global.normalChests[force][key] then global.normalChests[force][key] = nil end
-        if global.disconnectedChests[force][key] then global.disconnectedChests[force][key] = nil end
+        if global.logisticsChests[force] and global.logisticsChests[force][key] then global.logisticsChests[force][key] = nil end
+        if global.normalChests[force] and global.normalChests[force][key] then global.normalChests[force][key] = nil end
+        if global.disconnectedChests[force] and global.disconnectedChests[force][key] then global.disconnectedChests[force][key] = nil end
 
         entity.destroy()
 
@@ -1067,8 +1071,10 @@ end
 function changeCharacter(player, character)
     if player.character ~= nil and character ~= nil and player.character.valid and character.valid then
         if player.character.name ~= "ls-controller" then
-            global.character[player.index] = player.character
-        end
+            global.character[player.index] = player.character        
+        elseif player.character.name == "ls-controller" then
+            player.character.destroy()
+        end        
         player.character = character
         return true
     end

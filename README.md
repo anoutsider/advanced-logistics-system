@@ -9,6 +9,12 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.11**
+
+ - Fixed an issue with the ghost character controller on remote chest view being attacked by biters.
+ - Added proper destruction to the ghost character controller when exiting remote chest view.
+ - Added chest tables checks to prevent errors on scenario and campaign modes.
+ 
 **0.2.10**
 
  - Fixed a bug with network filters using old network indexes

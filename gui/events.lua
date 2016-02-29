@@ -438,7 +438,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
         local action, key = event.element.name:match("disconnectedAction_([%w%s]*)_([%w_.%s]*)")
 
-        if chests[key] then
+        if chests and chests[key] then
             if action == "teleport" then
                 local pos = chests[key].position
                 local new_pos = surface.find_non_colliding_position("player", {pos.x, pos.y}, 10, 1)
