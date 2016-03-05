@@ -1,7 +1,8 @@
 --- Init GUI and add Logistics View main button
 function initGUI(player)
     if not player.gui.top["logistics-view-button"] then
-        player.gui.top.add({type = "button", name = "logistics-view-button", style = "lv_button_main_icon"})        
+        player.gui.top.add({type = "button", name = "logistics-view-button", style = "lv_button_main_icon"})
+        global.guiLoaded[player.index] = true
     end
 end
 
@@ -64,10 +65,11 @@ function hideGUI(player, index)
 end
 
 --- Destroy the GUI
-function destroyGUI(player, index)
-    local guiPos = global.settings[index].guiPos
+function destroyGUI(player, index)    
     if player.gui.top["logistics-view-button"] ~= nil then
+        hideGUI(player, index)
         player.gui.top["logistics-view-button"].destroy()
+        global.guiLoaded[player.index] = false
     end
 end
 

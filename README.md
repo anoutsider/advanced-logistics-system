@@ -9,6 +9,14 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.12**
+
+ - Fixed an issue with the mod activation code that was causing noticable performance issues even when the mod is idle, Thanks to Tetyron and Rseding91.
+ - Fixed an issue where newly placed logistics chests weren't being added to the proper logistic network data table.
+ - Updated the code used to save Network names, and also added better logic for setting/getting the networks index.
+ - Updated the network filters code, which should now update the filters used whenever a network doesn't exist anymore or when a network's index is changed.
+ - Added a new remote interface function "activateSystem" that takes a "player" parameter, and can be used to activate the mod at any time, without having to rely on research requirments.
+ 
 **0.2.11**
 
  - Fixed an issue with the ghost character controller on remote chest view being attacked by biters.

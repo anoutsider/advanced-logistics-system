@@ -18,8 +18,8 @@ script.on_load(function()
 end)
 
 --- on_configuration_changed event
-script.on_configuration_changed(function()
-    on_configuration_changed()
+script.on_configuration_changed(function(data)
+    on_configuration_changed(data)
 end)
 
 --- Player Related Events
@@ -48,37 +48,93 @@ script.on_event(defines.events.on_entity_died, function(event)
     entityMined(event, event.entity)
 end)
 
---- Handles items search
+--- Research Related Events / Mod Activation
+script.on_event(defines.events.on_research_finished, function(event)
+    if event.research.name == "advanced-logistics-systems" then
+        activateSystem(event)
+    end
+end)
+
+--- Handles items search and gui update
 script.on_event(defines.events.on_tick, function(event)
         if event.tick % 60 == 0  then
-            for i,p in ipairs(game.players) do
-                local hasSystem = playerHasSystem(p)
+            for index,player in ipairs(game.players) do
+                local hasSystem = playerHasSystem(player)
+                
                 if hasSystem then
-                    if (not p.gui.top["logistics-view-button"]) then
-                        initGUI(p)
+                    if (not global.guiLoaded[index]) then
+                        initGUI(player)
                     end
-                    local refresh = global.settings[i].refreshInterval * 60
-                    if event.tick % refresh == 0  then
-                        if global.guiVisible[i] == 1 then
-                            updateGUI(p, i)
+                    
+                    local refresh = global.settings[index].refreshInterval * 60
+                    if event.tick % refresh == 0  then                        
+                        if global.guiVisible[index] == 1 then                            
+                            updateGUI(player, index)
                         end
                     end
 
                     -- check search field tick
-                    if global.searchTick[i]["logistics"] ~= nil then onLogisticsSearchTick(event, i) end
-                    if global.searchTick[i]["normal"] ~= nil then onNormalSearchTick(event, i) end
-                elseif global.settings[i] then
-                    destroyGUI(p, i)
+                    if global.searchTick[index]["logistics"] ~= nil then onLogisticsSearchTick(event, index) end
+                    if global.searchTick[index]["normal"] ~= nil then onNormalSearchTick(event, index) end
                 end
             end
         end
 end)
 
+
+--- Search update functions
+function onLogisticsSearchTick(event, index)
+    local player = game.players[index]
+    local searchTick = global.searchTick[index]["logistics"]
+    local currentTab = global.currentTab[index]
+
+    if currentTab == "logistics" then
+        if searchTick <= event.tick and global.guiVisible[index] == 1 then
+            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["logisticsSearchFrame"]
+            local searchText = searchFrame["logistics-search-field"].text
+
+            global.searchTick[index]["logistics"] = event.tick + 60
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["logistics"] = searchText
+                    updateGUI(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["logistics"] = false
+                    updateGUI(player, index)
+                end
+            end
+        end
+    end
+end
+
+function onNormalSearchTick(event, index)
+    local player = game.players[index]
+    local searchTick = global.searchTick[index]["normal"]
+    local currentTab = global.currentTab[index]
+
+    if currentTab == "normal" then
+        if searchTick <= event.tick and global.guiVisible[index] == 1 then
+            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["normalSearchFrame"]
+            local searchText = searchFrame["normal-search-field"].text
+
+            global.searchTick[index]["normal"] = event.tick + 60
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["normal"] = searchText
+                    updateGUI(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["normal"] = false
+                    updateGUI(player, index)
+                end
+            end
+        end
+    end
+end
+
 --- Initiate default and global values
 function init()
     global.guiLoaded = global.guiLoaded or {}
     global.guiVisible = global.guiVisible or {}
-    global.guiReset = global.guiReset or {}
     global.currentTab = global.currentTab or {}
     global.hasSystem = global.hasSystem or {}
 
@@ -159,8 +215,8 @@ end
 
 --- init all players
 function initPlayers()
-    for i,p in ipairs(game.players) do
-        initPlayer(p)
+    for _,player in ipairs(game.players) do
+        initPlayer(player)
     end
 end
 
@@ -173,151 +229,146 @@ end
 --- init player specific global values
 function initPlayer(player)
     local force = player.force
-    local name = force.name
-    local i = player.index
+    local forceName = force.name
+    local index = player.index
 
     -- gui visibility
-    if not global.guiVisible[i] or global.guiVisible[i] == nil then
-        global.guiVisible[i] = 0
+    if not global.guiVisible[index] or global.guiVisible[index] == nil then
+        global.guiVisible[index] = 0
     end
     -- init settings
-    if not global.settings[i] then
-        global.settings[i] = {}
+    if not global.settings[index] then
+        global.settings[index] = {}
     end
     -- gui position settings
-    if not global.settings[i].guiPos then
-        global.settings[i].guiPos = "center"
+    if not global.settings[index].guiPos then
+        global.settings[index].guiPos = "center"
     end
     -- gui items per page settings
-    if not global.settings[i].itemsPerPage then
-        global.settings[i].itemsPerPage = 10
+    if not global.settings[index].itemsPerPage then
+        global.settings[index].itemsPerPage = 10
     end
     -- gui refresh interval
-    if not global.settings[i].refreshInterval then
-        global.settings[i].refreshInterval = 1
+    if not global.settings[index].refreshInterval then
+        global.settings[index].refreshInterval = 1
     end
     -- experimental tools - teleport, upgrade chests / too powerfull or not fully tested
-    if not global.settings[i].exTools then
-        global.settings[i].exTools = false
+    if not global.settings[index].exTools then
+        global.settings[index].exTools = false
     end    
     -- auto filter settings, automatically filters chest list based on the  previous tab logistics/normal
-    if not global.settings[i].autoFilter then
-        global.settings[i].autoFilter = true
+    if not global.settings[index].autoFilter then
+        global.settings[index].autoFilter = true
     end    
     -- exclude requesters settings, excludes items in requesters from the totals calculations
-    if not global.settings[i].excludeReq then
-        global.settings[i].excludeReq = true
+    if not global.settings[index].excludeReq then
+        global.settings[index].excludeReq = true
     end
     -- hasSystem
-    if not global.hasSystem[name] then
-        global.hasSystem[name] = nil
+    if not global.hasSystem[forceName] then
+        global.hasSystem[forceName] = nil
     end
     -- gui loaded
-    if not global.guiLoaded[i] and playerHasSystem(player) and not player.gui.top["logistics-view-button"] then
+    if playerHasSystem(player) and (not global.guiLoaded[index] or not player.gui.top["logistics-view-button"]) then
         initGUI(player)
     end    
-    -- gui reset
-    if global.guiReset[i] == nil then
-        global.guiReset[i] = true
-    end
     -- networks data table
-    if not global.networks[name] then
-        global.networks[name] = getLogisticNetworks(force, true)
+    if not global.networks[forceName] then
+        global.networks[forceName] = getLogisticNetworks(force, true)
     end    
     -- networks count table
-    if not global.networksCount[name] then
-        global.networksCount[name] = 0
+    if not global.networksCount[forceName] then
+        global.networksCount[forceName] = 0
     end    
     -- networks edit table
-    if not global.networkEdit[i] then
-        global.networkEdit[i] = false
+    if not global.networkEdit[index] then
+        global.networkEdit[index] = false
     end   
     -- networks names table
-    if not global.networksNames[name] then
-        global.networksNames[name] = {}
+    if not global.networksNames[forceName] then
+        global.networksNames[forceName] = {}
     end
     -- networks filter table
-    if not global.networksFilter[i] then
-        global.networksFilter[i] = {}
+    if not global.networksFilter[index] then
+        global.networksFilter[index] = {}
     end    
     -- out of coverage logistic containers
-    if not global.disconnectedChests[name] then
-        global.disconnectedChests[name] = getDisconnectedChests(force)
+    if not global.disconnectedChests[forceName] then
+        global.disconnectedChests[forceName] = getDisconnectedChests(force)
     end
     -- normal and smart containers
-    if not global.normalChests[name] then
-        global.normalChests[name] = getNormalChests(force)
+    if not global.normalChests[forceName] then
+        global.normalChests[forceName] = getNormalChests(force)
     end
     -- items in logistic containers
-    if not global.logisticsItems[name] then
-        global.logisticsItems[name] = getLogisticsItems(force, i)
+    if not global.logisticsItems[forceName] then
+        global.logisticsItems[forceName] = getLogisticsItems(force, index)
     end
     -- total number of items in logistic containers
-    if not global.logisticsItemsTotal[name] then
-        global.logisticsItemsTotal[name] = 0
+    if not global.logisticsItemsTotal[forceName] then
+        global.logisticsItemsTotal[forceName] = 0
     end
     -- items in normal and smart containers
-    if not global.normalItems[name] then
-        global.normalItems[name] = getNormalItems(force)
+    if not global.normalItems[forceName] then
+        global.normalItems[forceName] = getNormalItems(force)
     end
     -- items in normal and smart containers
-    if not global.normalItemsTotal[name] then
-        global.normalItemsTotal[name] = 0
+    if not global.normalItemsTotal[forceName] then
+        global.normalItemsTotal[forceName] = 0
     end
-
     -- current active menu tab
-    if not global.currentTab[i] then
-        global.currentTab[i] = "logistics"
+    if not global.currentTab[index] then
+        global.currentTab[index] = "logistics"
     end
     -- current active page per view type
-    if not global.itemsPage[i] then
-        global.itemsPage[i] = {}
-        global.itemsPage[i]["logistics"] = 1
-        global.itemsPage[i]["normal"] = 1
-        global.itemsPage[i]["disconnected"] = 1
-        global.itemsPage[i]["itemInfo"] = 1
-        global.itemsPage[i]["networks"] = 1
-        global.itemsPage[i]["networkInfo"] = 1
+    if not global.itemsPage[index] then
+        global.itemsPage[index] = {}
+        global.itemsPage[index]["logistics"] = 1
+        global.itemsPage[index]["normal"] = 1
+        global.itemsPage[index]["disconnected"] = 1
+        global.itemsPage[index]["itemInfo"] = 1
+        global.itemsPage[index]["networks"] = 1
+        global.itemsPage[index]["networkInfo"] = 1
     end
-    if not global.itemsPage[i]["networks"] then
-        global.itemsPage[i]["networks"] = 1
+    if not global.itemsPage[index]["networks"] then
+        global.itemsPage[index]["networks"] = 1
     end       
-    if not global.itemsPage[i]["networkInfo"] then
-        global.itemsPage[i]["networkInfo"] = 1
+    if not global.itemsPage[index]["networkInfo"] then
+        global.itemsPage[index]["networkInfo"] = 1
     end    
     -- current active sort per view type
-    if not global.sort[i] then
-        global.sort[i] = {}
-        global.sort[i]["logistics"] = {by = "total", dir = "desc"}
-        global.sort[i]["normal"] = {by = "total", dir = "desc"}
-        global.sort[i]["disconnected"] = {by = "count", dir = "desc"}
-        global.sort[i]["itemInfo"] = {by = "count", dir = "desc"}
-        global.sort[i]["networks"] = {by = "waiting", dir = "desc"}
-        global.sort[i]["networkInfo"] = {by = "pos", dir = "desc"}
+    if not global.sort[index] then
+        global.sort[index] = {}
+        global.sort[index]["logistics"] = {by = "total", dir = "desc"}
+        global.sort[index]["normal"] = {by = "total", dir = "desc"}
+        global.sort[index]["disconnected"] = {by = "count", dir = "desc"}
+        global.sort[index]["itemInfo"] = {by = "count", dir = "desc"}
+        global.sort[index]["networks"] = {by = "waiting", dir = "desc"}
+        global.sort[index]["networkInfo"] = {by = "pos", dir = "desc"}
     end
-    if not global.sort[i]["networks"] then
-        global.sort[i]["networks"] = {by = "waiting", dir = "desc"}
+    if not global.sort[index]["networks"] then
+        global.sort[index]["networks"] = {by = "waiting", dir = "desc"}
     end    
-    if not global.sort[i]["networkInfo"] then
-        global.sort[i]["networkInfo"] = {by = "pos", dir = "desc"}
+    if not global.sort[index]["networkInfo"] then
+        global.sort[index]["networkInfo"] = {by = "pos", dir = "desc"}
     end
     -- current search text per table type
-    if not global.searchText[i] then
-        global.searchText[i] = {}
-        global.searchText[i]["logistics"] = ""
-        global.searchText[i]["normal"] = ""
+    if not global.searchText[index] then
+        global.searchText[index] = {}
+        global.searchText[index]["logistics"] = ""
+        global.searchText[index]["normal"] = ""
     end
     -- used to check the current search text
-    if not global.searchTick[i] then
-        global.searchTick[i] = {}
-        global.searchTick[i]["logistics"] = nil
-        global.searchTick[i]["normal"] = nil
+    if not global.searchTick[index] then
+        global.searchTick[index] = {}
+        global.searchTick[index]["logistics"] = nil
+        global.searchTick[index]["normal"] = nil
     end
     -- filters used in item info view
-    if not global.itemInfoFilters[i] then
-        global.itemInfoFilters[i] = {}
-        global.itemInfoFilters[i]["group"] = {logistics = true, normal = true}
-        global.itemInfoFilters[i]["chests"] = {all = true}
+    if not global.itemInfoFilters[index] then
+        global.itemInfoFilters[index] = {}
+        global.itemInfoFilters[index]["group"] = {logistics = true, normal = true}
+        global.itemInfoFilters[index]["chests"] = {all = true}
     end
 end
 
@@ -330,27 +381,56 @@ end
 
 --- handles mod updates
 function on_configuration_changed(data)
-    local modName = "advanced-logistics-systems"
+    local modName = "advanced-logistics-system"
     
     if data and data.mod_changes[modName] then
         local newVersion = data.mod_changes[modName].new_version
         local oldVersion = data.mod_changes[modName].old_version
+        
+        if oldVersion ~= nil then
+            -- reset network names for version 0.2.10
+            if newVersion and newVersion == "0.2.10" then
+                global.networksNames = {}
+            end
 
-        -- reset network names for version 0.2.10
-        if newVersion and newVersion == "0.2.10" and (oldVersion and oldVersion > "0.2.5") then
-            global.networksNames = {}
+            -- update hasSystem & Logistic data for version 0.2.12
+            if newVersion and newVersion == "0.2.12" then        
+                for _,force in pairs(game.forces) do 
+                    -- update hasSystem
+                    if not global.hasSystem[force.name] and force.technologies["advanced-logistics-systems"].researched then                        
+                        global.hasSystem[force.name] = true
+                    end
+                    -- update Logistic data
+                    if global.hasSystem[force.name] then
+                        getLogisticNetworks(force, true)
+                        getDisconnectedChests(force)
+                    end
+                end
+            end
         end
     end
 end
 
 --- Checks if the player has the system enabled
 function playerHasSystem(player)
-    local force = player.force.name
-    local hasSystem = global.hasSystem[force]
-    if hasSystem == nil then
-        hasSystem = player.force and player.force.technologies["advanced-logistics-systems"].researched
+    local forceName = player.force.name
+    return global.hasSystem[forceName]
+end
+
+--- Activate the system for the force players using the on_research_finished event
+function activateSystem(event)
+    local forceName = event.research.force.name
+    local hasSystem = global.hasSystem[forceName]
+
+    if not hasSystem or hasSystem == nil then
+        global.hasSystem[forceName] = true
+        local players = event.research.force.players
+        for index,player in ipairs(players) do 
+            if (not global.guiLoaded[index]) then
+                initGUI(player)
+            end
+        end
     end
-    return hasSystem
 end
 
 --- Entity built event handler for players & robots constructions
@@ -358,36 +438,38 @@ end
 -- Checks if a roboport has been built and updates the local roboports table accordingly
 -- If a roboport is built a check will run on the logistics chests table for logistics network coverage
 function entityBuilt(event, entity)
-    local force = entity.force.name
+    local forceName = entity.force.name
 
     if entity.type == "logistic-container" then
-        local chests = global.logisticsChests[force] or {}
-        local disconnected = global.disconnectedChests[force] or {}
+        local chests = global.logisticsChests[forceName] or {}
+        local disconnected = global.disconnectedChests[forceName] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
         local upgrades = global.chestsUpgrade[key]
-        local networks = entity.force.logistic_networks
+        local surface = entity.surface
+        local networks = entity.force.logistic_networks[surface.name]
         local network = inLogisticsNetwork(entity, entity.force, true)
-        
+
         if network ~= nil then
-            if not chests[key] then
+            if not chests[key] then           
                 -- find the container network
                 for i,net in pairs(networks) do
                     if net == network then
                         debugLog("Added Chest # " .. key .. "To Logistics Chests List")
+                        local netIndex = getNetworkIndex(entity.force, net)
                         chests[key] = {}
                         chests[key]["entity"] = entity                    
-                        chests[key]["network"] = i
+                        chests[key]["network"] = netIndex
                         break
                     end
                 end            
                 
-                global.logisticsChests[force] = chests
+                global.logisticsChests[forceName] = chests
             end
         else
             if not disconnected[key] then
                 debugLog("Added Chest # " .. key .. "To Disconnected Chests List")
                 disconnected[key] = entity
-                global.disconnectedChests[force] = disconnected
+                global.disconnectedChests[forceName] = disconnected
             end
         end
 
@@ -401,12 +483,12 @@ function entityBuilt(event, entity)
         end
 
     elseif entity.type == "container" or entity.type == "smart-container" then
-        local chests = global.normalChests[force] or {}
+        local chests = global.normalChests[forceName] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
         if not chests[key] then
             debugLog("Added Chest # " .. key .. "To Normal Chests List")
             chests[key] = entity
-            global.normalChests[force] = chests
+            global.normalChests[forceName] = chests
         end
 
     elseif entity.type == "roboport" then
@@ -420,34 +502,34 @@ end
 -- Checks if a roboport has been removed and updates the local roboports table accordingly
 -- If a roboport is removed a check will run on the logistics chests table for logistics network coverage
 function entityMined(event, entity)
-    local force = entity.force.name
+    local forceName = entity.force.name
 
     if entity.type == "logistic-container" then
-        local chests = global.logisticsChests[force] or {}
-        local disconnected = global.disconnectedChests[force] or {}
+        local chests = global.logisticsChests[forceName] or {}
+        local disconnected = global.disconnectedChests[forceName] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
 
         if chests[key] then
             debugLog("Removed Chest # " .. key .. "From Logistics Chests List")
             chests[key] = nil
-            global.logisticsChests[force] = chests
+            global.logisticsChests[forceName] = chests
         end
 
         if disconnected[key] then
             debugLog("Removed Chest # " .. key .. "From Disconnected Chests List")
             disconnected[key] = nil
-            global.disconnectedChests[force] = disconnected
+            global.disconnectedChests[forceName] = disconnected
         end
 
     elseif entity.type == "container" or entity.type == "smart-container" then
 
-        local chests = global.normalChests[force] or {}
+        local chests = global.normalChests[forceName] or {}
         local key = string.gsub(entity.position.x.."A"..entity.position.y, "-", "_")
 
         if chests[key] then
             debugLog("Removed Chest # " .. key .. "From Normal Chests List")
             chests[key] = nil
-            global.normalChests[force] = chests
+            global.normalChests[forceName] = chests
         end
 
     elseif entity.type == "roboport" then
@@ -466,17 +548,30 @@ end
 -- takes an entity and logistic_cell as parameters
 function updateNetworksData(entity, cell)
     local pos = entity.position
-    local force = entity.force.name
-    local networksData = global.networks[force]
-    local names = global.networksNames[force]            
+    local forceName = entity.force.name
+    local networksData = global.networks[forceName]
+    local names = global.networksNames[forceName]      
+    local networksFilter = global.networksFilter or {}
     local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")    
 
     -- if the removed cell has no neighbours, remove it from the names list
     if #cell.neighbours == 0 then
         if names and names[index] then
             names[index] = nil
-            global.networksNames[force] = names
+            global.networksNames[forceName] = names
         end
+        
+        -- Update network filters
+        for i,playerNetworkFilters in pairs(networksFilter) do 
+            if playerNetworkFilters then
+                for key,networkFilter in pairs(playerNetworkFilters) do
+                    if key == index then
+                        networksFilter[i][key] = nil
+                    end
+                end
+            end
+        end
+        global.networksFilter = networksFilter
     -- if the removed cell has neighbours, check if it's owner position was being used as an index for it's network 
      -- and select a new one if it was, will also update the network name index
     else              
@@ -492,10 +587,23 @@ function updateNetworksData(entity, cell)
                 if names and names[index] and not names[newIndex] then
                     names[newIndex] = names[index]
                     names[index] = nil
-                    global.networksNames[force] = names
-                end  
+                    global.networksNames[forceName] = names
+                end
                 
-                global.networks[force] = networksData                
+                -- Update network filters
+                for i,playerNetworkFilters in pairs(networksFilter) do 
+                    if playerNetworkFilters then
+                        for key,networkFilter in pairs(playerNetworkFilters) do
+                            if key == index then
+                                networksFilter[i][newIndex] = networksFilter[i][key]
+                                networksFilter[i][key] = nil
+                            end
+                        end
+                    end
+                end
+                global.networksFilter = networksFilter                
+                
+                global.networks[forceName] = networksData                
             end 
         end     
     end                 
@@ -513,6 +621,39 @@ function isPlayerNetwork(network)
     end
 end
 
+--- Check if a network is active
+-- takes a logistic network as a parameter
+function isNetworkActive(network)
+    local inactive = {}
+    for _,cell in pairs(network.cells) do
+        if not cell.transmitting then
+            table.insert(inactive, true)
+        end
+    end
+    return #network.cells > #inactive
+end
+
+--- Get network index based on saved network names
+-- takes a force and a logistic network as parameters
+function getNetworkIndex(force, net)
+    local names = global.networksNames[force.name] or {}
+    if net and net.cells then
+        for _,cell in pairs(net.cells) do
+            local pos = cell.owner.position
+            local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")             
+            local name = names and names[index]
+            if name then
+                return index
+            end
+        end
+
+        -- if no existing index is found
+        local pos = net.cells[1].owner.position
+        local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")   
+        return index
+    end
+end
+
 --- Get all logistics networks that belong to a force
 -- takes a player force as a parameter
 -- takes a second optional parameter to exclude/include containers data
@@ -526,11 +667,13 @@ function getLogisticNetworks(force, full)
 
     for surface,nets in pairs(networks) do
         for x,net in pairs(nets) do 
+            -- we should be checking if the network is actually active, using isNetworkActive, but need more testing.
             if not isPlayerNetwork(net) then                
                 i = i + 1
-                local pos = net.cells[1].owner.position
-                local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")             
-                local name = names and names[index] or "Network " .. i                
+                
+                local index = getNetworkIndex(force, net)                                
+                local name = names and names[index] or "Network " .. i                      
+
                 networksData[index] = {}
                 networksData[index]["name"] = name
                 networksData[index]["key"] = index
@@ -547,7 +690,8 @@ function getLogisticNetworks(force, full)
                 networksData[index]["bots"]["con"]["available"] = net.available_construction_robots
                 networksData[index]["con"] = net.all_construction_robots
 
-                networksData[index]["cells"] = {}            
+                networksData[index]["cells"] = {} 
+                
                 local size = 0
                 local port = 0
                 local charging = 0
@@ -555,6 +699,7 @@ function getLogisticNetworks(force, full)
                 for cei,cell in pairs(net.cells) do
                     networksData[index]["cells"][cei] = {}
                     networksData[index]["cells"][cei]["name"] = cell.owner.name
+                    networksData[index]["cells"][cei]["active"] = cell.transmitting
                     networksData[index]["cells"][cei]["pos"] = cell.owner.position
                     networksData[index]["cells"][cei]["radius"] = cell.logistic_radius
 
@@ -700,7 +845,7 @@ function getLogisticsItems(force, index)
     local items = {}
     local chests = global.logisticsChests[force.name]
     local names = global.logisticsChestsNames
-    local networksFilter = global.networksFilter[index]
+    local networksFilter = global.networksFilter[index] or {}
     local networksFilterCount = count(networksFilter)
     local excludeReq = global.settings[index].excludeReq
     local total = 0
@@ -825,11 +970,11 @@ end
 -- lists the containers this item is stored in along with other info
 -- takes an item/entity name and a filters table as parameters
 function getItemInfo(item, player, index, filters)
-    local force = player.force.name
-    local types = {logistics = global.logisticsChests[force], normal = global.normalChests[force], disconnected = global.disconnectedChests[force]}
+    local forceName = player.force.name
+    local types = {logistics = global.logisticsChests[forceName], normal = global.normalChests[forceName], disconnected = global.disconnectedChests[forceName]}
     local total = {logistics = 0, normal = 0, disconnected = 0, all = 0}
     local info = {chests = {}, total = total}
-    local networksFilter = global.networksFilter[index]
+    local networksFilter = global.networksFilter[index] or {}
     local networksFilterCount = count(networksFilter)    
 
     -- get item info
@@ -872,55 +1017,6 @@ function getItemInfo(item, player, index, filters)
     global.currentItemInfo[index] = info
     return info
 
-end
-
---- Search update functions
-function onLogisticsSearchTick(event, index)
-    local player = game.players[index]
-    local searchTick = global.searchTick[index]["logistics"]
-    local currentTab = global.currentTab[index]
-
-    if currentTab == "logistics" then
-        if searchTick <= event.tick and global.guiVisible[index] == 1 then
-            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["logisticsSearchFrame"]
-            local searchText = searchFrame["logistics-search-field"].text
-
-            global.searchTick[index]["logistics"] = event.tick + 60
-            if searchText ~= nil then
-                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                    global.searchText[index]["logistics"] = searchText
-                    updateGUI(player, index)
-                elseif searchText == "" then
-                    global.searchText[index]["logistics"] = false
-                    updateGUI(player, index)
-                end
-            end
-        end
-    end
-end
-
-function onNormalSearchTick(event, index)
-    local player = game.players[index]
-    local searchTick = global.searchTick[index]["normal"]
-    local currentTab = global.currentTab[index]
-
-    if currentTab == "normal" then
-        if searchTick <= event.tick and global.guiVisible[index] == 1 then
-            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["normalSearchFrame"]
-            local searchText = searchFrame["normal-search-field"].text
-
-            global.searchTick[index]["normal"] = event.tick + 60
-            if searchText ~= nil then
-                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                    global.searchText[index]["normal"] = searchText
-                    updateGUI(player, index)
-                elseif searchText == "" then
-                    global.searchText[index]["normal"] = false
-                    updateGUI(player, index)
-                end
-            end
-        end
-    end
 end
 
 --- Convert chest names to gui codes
@@ -993,7 +1089,7 @@ end
 -- takes a chest entity and a new entity name as parameters
 function upgradeChest(entity, name, player)
     if entity.name ~= name then
-        local force = player.force.name
+        local forceName = player.force.name
         local pos = entity.position
         local dir = entity.direction
         local key = string.gsub(pos.x .. "A" .. pos.y, "-", "_")
@@ -1004,9 +1100,9 @@ function upgradeChest(entity, name, player)
             content = inventory.get_contents()
         end
 
-        if global.logisticsChests[force] and global.logisticsChests[force][key] then global.logisticsChests[force][key] = nil end
-        if global.normalChests[force] and global.normalChests[force][key] then global.normalChests[force][key] = nil end
-        if global.disconnectedChests[force] and global.disconnectedChests[force][key] then global.disconnectedChests[force][key] = nil end
+        if global.logisticsChests[forceName] and global.logisticsChests[forceName][key] then global.logisticsChests[forceName][key] = nil end
+        if global.normalChests[forceName] and global.normalChests[forceName][key] then global.normalChests[forceName][key] = nil end
+        if global.disconnectedChests[forceName] and global.disconnectedChests[forceName][key] then global.disconnectedChests[forceName][key] = nil end
 
         entity.destroy()
 

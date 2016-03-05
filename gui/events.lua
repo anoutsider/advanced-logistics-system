@@ -133,7 +133,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         global.searchTick[index]["normal"] = event.tick
 
     -- items table columns sorting event
-    elseif event.element.name:find("itemSort_") ~= nil  then
+    elseif event.element.name:find("itemSort_") ~= nil then
 
         local currentTab = global.currentTab[index]
 
