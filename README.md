@@ -9,6 +9,11 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.2.13**
+
+ - Fixed an issue with the on_configuration_changed not properly checking for mod_changes.
+ - Added compatibility for gravestone mod, and other mods that add non craftable items to the the game.
+ 
 **0.2.12**
 
  - Fixed an issue with the mod activation code that was causing noticable performance issues even when the mod is idle, Thanks to Tetyron and Rseding91.

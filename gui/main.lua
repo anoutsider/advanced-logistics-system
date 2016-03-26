@@ -18,7 +18,7 @@ function createGUI(player, index)
         local buttonStyle = currentTab == 'logistics' and "_selected" or ""
 
         -- main frame
-        local logisticsFrame = player.gui[guiPos].add({type = "frame", name = "logisticsFrame", direction = "vertical", style = "lv_frame"})
+        local logisticsFrame = player.gui[guiPos].add({type = "frame", name = "logisticsFrame", direction = "vertical", style = "lv_frame"})        
         local titleFlow = logisticsFrame.add({type = "flow", name = "titleFlow", direction = "horizontal"})
         titleFlow.add({type = "button", name = "logistics-view-close", caption = {"logistics-view-close"}, style = "lv_button_close"})
         titleFlow.add({type = "label", name="titleLabel", style = "lv_title_label", caption = {"logistics-view"}})        

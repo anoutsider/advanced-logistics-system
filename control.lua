@@ -383,7 +383,7 @@ end
 function on_configuration_changed(data)
     local modName = "advanced-logistics-system"
     
-    if data and data.mod_changes[modName] then
+    if data and data.mod_changes and data.mod_changes[modName] then
         local newVersion = data.mod_changes[modName].new_version
         local oldVersion = data.mod_changes[modName].old_version
         

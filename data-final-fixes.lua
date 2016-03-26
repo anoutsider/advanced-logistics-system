@@ -1,7 +1,7 @@
 -- create item icon styles
 for _,entitytype in pairs(data.raw) do
    for _,entity in pairs(entitytype) do
-      if entity.stack_size and entity.icon then
+      if entity.icon then
         local style =
         {
             type = "checkbox_style",
