@@ -1,4 +1,3 @@
-require "defines"
 require "gui"
 require "interface"
 
@@ -789,7 +788,7 @@ end
 function getDisconnectedChests(force)
     local type = "logistic-container"
     local disconnected = {}
-    local surface = game.get_surface(1)
+    local surface = game.surfaces[1]
 
     for coord in surface.get_chunks() do
         local X,Y = coord.x, coord.y
@@ -825,7 +824,7 @@ end
 -- takes an entity position, an int radius and force as parameters
 function findDisconnectedChests(pos, radius, force)
     local type = "logistic-container"
-    local surface = game.get_surface(1)
+    local surface = game.surfaces[1]
     local disconnected = global.disconnectedChests[force.name]
 
     local area = {{pos.x-radius, pos.y-radius}, {pos.x+radius, pos.y+radius}}
@@ -896,7 +895,7 @@ end
 -- takes entity and force name as parameters
 function inLogisticsNetwork(entity, force, ret)
     local pos = entity.position
-    local surface = entity.surface and entity.surface or game.get_surface(1)
+    local surface = entity.surface and entity.surface or game.surfaces[1]
     local network = surface.find_logistic_network_by_position(pos, force)
 
     return not ret and network ~= nil or ret and network
@@ -907,7 +906,7 @@ end
 function getNormalChests(force)
     local types = {"container", "smart-container"}
     local chests = {}
-    local surface = game.get_surface(1)
+    local surface = game.surfaces[1]
 
     for coord in surface.get_chunks() do
         local X,Y = coord.x, coord.y
