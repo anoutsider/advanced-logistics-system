@@ -49,6 +49,8 @@ data:extend({
         inventory_size = 0,
         build_distance = 0,
         drop_item_distance = 0,
+        loot_pickup_distance = 0,
+        item_pickup_distance = 0,
         reach_distance = 0,
         reach_resource_distance = 0,
         ticks_to_keep_gun = 0,
