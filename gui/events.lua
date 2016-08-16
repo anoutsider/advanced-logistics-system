@@ -1,4 +1,114 @@
+--- Custom Input Events
+script.on_event("ls-toggle-gui", function(event)
+
+	local index = event.player_index
+	local player = game.players[index]
+	local visible = global.guiVisible[index]
+
+	--- reset player position if in location view mode
+	local locationFlow = player.gui.center.locationFlow
+	if locationFlow ~= nil and player.character.name == "ls-controller" then
+		resetPosition(player, index)
+	end
+
+	if visible == 0 then
+		getLogisticNetworks(player.force)
+		showGUI(player, index)
+	else
+		hideGUI(player, index)
+	end
+end)
+
+script.on_event("ls-close-gui", function(event)
+
+	local index = event.player_index
+	local player = game.players[index]
+	local visible = global.guiVisible[index]
+
+	if visible ~= 0 then
+		--- reset player position if in location view mode
+		local locationFlow = player.gui.center.locationFlow
+		if locationFlow ~= nil and player.character.name == "ls-controller" then
+			resetPosition(player, index)
+		end	
+		hideGUI(player, index)
+	end
+end)
+
 --- GUI Events
+
+-- Search Events
+script.on_event(defines.events.on_gui_text_changed, function(event)
+
+	local index = event.player_index
+	local player = game.players[index]
+	local visible = global.guiVisible[index]
+	local element = event.element
+
+	if element and element.valid then
+		local elementName = element.name
+		local searchText = element.text		
+		
+		-- logistic items search
+		if elementName == "logistics-search-field" then			
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["logistics"] = string.lower(searchText)
+                    updateGUI(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["logistics"] = false
+                    updateGUI(player, index)
+                end
+            end			
+		-- normal items search
+		elseif elementName == "normal-search-field" then
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["normal"] = string.lower(searchText)
+                    updateGUI(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["normal"] = false
+                    updateGUI(player, index)
+                end
+            end				
+		-- network filters search
+		elseif elementName == "networks-filter-search-field" then
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["networksFilter"] = string.lower(searchText)
+                    updateNetworkFiltersTable(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["networksFilter"] = false
+                    updateNetworkFiltersTable(player, index)
+                end
+            end		
+		-- networks list search
+		elseif elementName == "networks-search-field" then
+            if searchText ~= nil then
+                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
+                    global.searchText[index]["networks"] = string.lower(searchText)
+                    showNetworksInfo(player, index)
+                elseif searchText == "" then
+                    global.searchText[index]["networks"] = false
+                    showNetworksInfo(player, index)
+                end
+            end		
+		end
+	end
+end)
+
+-- network filter events
+-- Search Events
+script.on_event(defines.events.on_gui_checked_state_changed, function(event)
+
+	local index = event.player_index
+	local player = game.players[index]
+	local guiPos = global.settings[index].guiPos
+	local element = event.element
+
+	handleNetworksFilterListEvent(player, index, element, true)
+end)
+
 script.on_event(defines.events.on_gui_click, function(event)
 
     local index = event.player_index
@@ -35,7 +145,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         local currentTab = global.currentTab[index]
         local newTab = string.gsub(name, "MenuBtn", "")
 
-        if event.element.style.name == "lv_button_selected" and newTab == currentTab then
+        if event.element.style.name == "als_button_selected" and newTab == currentTab then
             return
         else
             local menuFlow = player.gui[global.settings[index].guiPos].logisticsFrame.menuFlow
@@ -47,9 +157,9 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                         if newTab ~= "settings" then
                             if btnTab == newTab then
-                                btn.style = "lv_button_selected"
+                                btn.style = "als_button_selected"
                             else
-                                btn.style = "lv_button"
+                                btn.style = "als_button"
                             end
                         end
                     end
@@ -67,11 +177,12 @@ script.on_event(defines.events.on_gui_click, function(event)
             clearGUI(player, index)
             updateGUI(player, index, newTab)
 
-            local searchFrame = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame[newTab .. "SearchFrame"]
+            local searchFlow = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame["searchFlow"]
+            local searchFrame = searchFlow[newTab .. "SearchFrame"]
             local name = newTab == "logistics" and "logistics-search-field" or "normal-search-field"
             local searchTextField = searchFrame[name]
             local searchText = global.searchText[index][newTab]
-            if searchText and searchText ~= ""  then
+            if searchText and searchText ~= "" then
                 searchTextField.text = searchText
             end
         elseif newTab == "settings" then
@@ -122,16 +233,6 @@ script.on_event(defines.events.on_gui_click, function(event)
             end
         end
 
-    -- search field ticking event
-    elseif event.element.name == "logistics-search-field" then
-
-        global.searchTick[index]["logistics"] = event.tick
-
-    -- search field ticking event
-    elseif event.element.name == "normal-search-field" then
-
-        global.searchTick[index]["normal"] = event.tick
-
     -- items table columns sorting event
     elseif event.element.name:find("itemSort_") ~= nil then
 
@@ -143,9 +244,9 @@ script.on_event(defines.events.on_gui_click, function(event)
         local itemsTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable
         local sortFlow = itemsTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
         local sort_dir = sortFlow[sort_by .. "_sort"].style.name
-        sort_dir = string.gsub(sort_dir, "lv_sort_", "")
+        sort_dir = string.gsub(sort_dir, "als_sort_", "")
 
-        local isSelected = string.gsub(style.name, "lv_button_" .. sort_by, "")
+        local isSelected = string.gsub(style.name, "als_button_" .. sort_by, "")
         local new_sort_by = sort_by
         local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
 
@@ -159,11 +260,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                         if sortBy == sort_by then
                             new_sort_by = sortBy
-                            flow["itemSort_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                            flow["itemSort_" .. sortBy].style = "als_button_" .. sortBy .. "_selected"
+                            sortFlow[sortBy .. "_sort"].style = "als_sort_" .. new_sort_dir
                         else
-                            flow["itemSort_" .. sortBy].style = "lv_button_" .. sortBy
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                            flow["itemSort_" .. sortBy].style = "als_button_" .. sortBy
+                            sortFlow[sortBy .. "_sort"].style = "als_sort"
                         end
                     end
                 end
@@ -191,20 +292,22 @@ script.on_event(defines.events.on_gui_click, function(event)
 
     -- item info table columns sorting event
     elseif event.element.name:find("itemInfo_") ~= nil  then
-
+		-- disable sorting on tools/info column
+		if event.element.name == "itemInfo_tools" then
+			return
+		end
         local currentTab = global.currentTab[index]
         local currentItem = global.currentItem[index]
         if currentItem then
-
             local name = event.element.name
             local style = event.element.style
             local sort_by = string.gsub(name, "itemInfo_", "")
             local itemInfoTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.itemInfoFrame.itemInfoTable
             local sortFlow = itemInfoTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
             local sort_dir = sortFlow[sort_by .. "_sort"].style.name
-            sort_dir = string.gsub(sort_dir, "lv_sort_", "")
+            sort_dir = string.gsub(sort_dir, "als_sort_", "")
 
-            local isSelected = string.gsub(style.name, "lv_button_" .. sort_by, "")
+            local isSelected = string.gsub(style.name, "als_button_" .. sort_by, "")
             local new_sort_by = sort_by
             local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
 
@@ -218,11 +321,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                             if sortBy == sort_by then
                                 new_sort_by = sortBy
-                                flow["itemInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
-                                sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                                flow["itemInfo_" .. sortBy].style = "als_button_" .. sortBy .. "_selected"
+                                sortFlow[sortBy .. "_sort"].style = "als_sort_" .. new_sort_dir
                             else
-                                flow["itemInfo_" .. sortBy].style = "lv_button_" .. sortBy
-                                sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                                flow["itemInfo_" .. sortBy].style = "als_button_" .. sortBy
+                                sortFlow[sortBy .. "_sort"].style = "als_sort"
                             end
                         end
                     end
@@ -263,7 +366,11 @@ script.on_event(defines.events.on_gui_click, function(event)
                         isSelected = event.element.state
                         type = "group"
                     else
-                        isSelected = string.gsub(style.name, "lv_button_" .. filter_by, "") == "_selected"
+						if filter_by == "all" then
+							isSelected = style.name == "als_button_selected"
+						else
+							isSelected = style.name == "als_item_icon_small_selected"
+						end
                     end
 
                     if not isSelected then
@@ -272,13 +379,13 @@ script.on_event(defines.events.on_gui_click, function(event)
                                 if filters[type]["all"] then
                                     filters[type]["all"] = nil
                                 end
-                                filterFrame["itemInfoFilter_all"].style = "lv_button_all"
+                                filterFrame["itemInfoFilter_all"].style = "als_button_all"
                             else
                                 for _,frameName in pairs(filterFrame.children_names) do
                                     if filterFrame[frameName] ~= nil then
                                         local frameFilter = string.gsub(frameName, "itemInfoFilter_", "")
-                                        if frameFilter ~= "all" then
-                                            filterFrame[frameName].style = "lv_button_" .. frameFilter
+                                        if frameFilter ~= "all" and frameFilter ~= nil then
+                                            filterFrame[frameName].style = "als_item_icon_small"
                                             filters[type][frameFilter] = nil
                                         end
                                     end
@@ -312,12 +419,12 @@ script.on_event(defines.events.on_gui_click, function(event)
                             if filters[type][filter_by] then
                                 filters[type][filter_by] = nil
                             end
-                            filterFrame["itemInfoFilter_" .. filter_by].style = "lv_button_" .. filter_by
+                            filterFrame["itemInfoFilter_" .. filter_by].style = "als_item_icon_small"
                             if count(filters[type]) == 0 then
                                 if not filters[type]["all"] then
                                     filters[type]["all"] = true
                                 end
-                                filterFrame["itemInfoFilter_all"].style = "lv_button_all_selected"
+                                filterFrame["itemInfoFilter_all"].style = "als_button_all_selected"
                             end
                         else
                             if not filters[type][filter_by] then
@@ -360,14 +467,14 @@ script.on_event(defines.events.on_gui_click, function(event)
             elseif action == "delete" then
                 if itemInfo["chests"][key]["entity"] then
                     local entity = itemInfo["chests"][key]["entity"]
-                    local isSelected = string.gsub(style.name, "lv_button_" .. action, "") == "_selected"
+                    local isSelected = string.gsub(style.name, "als_button_" .. action, "") == "_selected"
 
                     if entity.to_be_deconstructed(force) and isSelected then
                         entity.cancel_deconstruction(force)
-                        event.element.style = "lv_button_delete"
+                        event.element.style = "als_button_delete"
                     else
                         entity.order_deconstruction(force)
-                        event.element.style = "lv_button_delete_selected"
+                        event.element.style = "als_button_delete_selected"
                     end
                 end
             elseif action == "apc" or action == "ppc" or action == "sc" or action == "rc" then
@@ -388,7 +495,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 
     -- disconnected table columns sorting event
     elseif event.element.name:find("disconnectedInfo_") ~= nil  then
-
+		-- disable sorting on tools/info column
+		if event.element.name == "disconnectedInfo_tools" then
+			return
+		end
         local currentTab = global.currentTab[index]
         local name = event.element.name
         local style = event.element.style
@@ -396,9 +506,9 @@ script.on_event(defines.events.on_gui_click, function(event)
         local disconnectedTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame.disconnectedFrame.disconnectedTable
         local sortFlow = disconnectedTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
         local sort_dir = sortFlow[sort_by .. "_sort"].style.name
-        sort_dir = string.gsub(sort_dir, "lv_sort_", "")
+        sort_dir = string.gsub(sort_dir, "als_sort_", "")
 
-        local isSelected = string.gsub(style.name, "lv_button_" .. sort_by, "")
+        local isSelected = string.gsub(style.name, "als_button_" .. sort_by, "")
         local new_sort_by = sort_by
         local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
 
@@ -412,11 +522,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                         if sortBy == sort_by then
                             new_sort_by = sortBy
-                            flow["disconnectedInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                            flow["disconnectedInfo_" .. sortBy].style = "als_button_" .. sortBy .. "_selected"
+                            sortFlow[sortBy .. "_sort"].style = "als_sort_" .. new_sort_dir
                         else
-                            flow["disconnectedInfo_" .. sortBy].style = "lv_button_" .. sortBy
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                            flow["disconnectedInfo_" .. sortBy].style = "als_button_" .. sortBy
+                            sortFlow[sortBy .. "_sort"].style = "als_sort"
                         end
                     end
                 end
@@ -454,14 +564,14 @@ script.on_event(defines.events.on_gui_click, function(event)
 
             elseif action == "delete" then
                 local entity = chests[key]
-                local isSelected = string.gsub(style.name, "lv_button_" .. action, "") == "_selected"
+                local isSelected = string.gsub(style.name, "als_button_" .. action, "") == "_selected"
 
                 if entity.to_be_deconstructed(force) and isSelected then
                     entity.cancel_deconstruction(force)
-                    event.element.style = "lv_button_delete"
+                    event.element.style = "als_button_delete"
                 else
                     entity.order_deconstruction(force)
-                    event.element.style = "lv_button_delete_selected"
+                    event.element.style = "als_button_delete_selected"
                 end
 
             elseif action == "apc" or action == "ppc" or action == "sc" or action == "rc" then
@@ -471,6 +581,79 @@ script.on_event(defines.events.on_gui_click, function(event)
             end
         end
 
+    -- disconnected table filters event
+    elseif event.element.name:find("disconnectedFilter_") ~= nil  then
+		local guiPos = global.settings[index].guiPos
+		local currentTab = global.currentTab[index]       
+		
+		if currentTab == "disconnected" then
+			local filters = global.disconnectedFilters[index]
+            local name = event.element.name
+            local style = event.element.style
+            local filter_by = string.gsub(name, "disconnectedFilter_", "")
+            local isSelected = false
+            local type = "chests"
+
+            local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
+            local filtersFlow = contentFrame["filtersFlow"]
+
+            if filtersFlow ~= nil then
+
+                local filterFrame = filtersFlow.chestsFilterFrame
+                if filterFrame ~= nil then
+					
+					if filter_by == "all" then
+						isSelected = style.name == "als_button_all_selected"
+					else
+						isSelected = style.name == "als_item_icon_small_selected"
+					end
+
+                    if not isSelected then
+                        if type == "chests" then
+                            if filter_by ~= "all" then
+                                if filters[type]["all"] then
+                                    filters[type]["all"] = nil
+                                end
+                                filterFrame["disconnectedFilter_all"].style = "als_button_all"
+                            else
+                                for _,frameName in pairs(filterFrame.children_names) do
+                                    if filterFrame[frameName] ~= nil and frameName:find("disconnectedFilter_") ~= nil then
+                                        local frameFilter = string.gsub(frameName, "disconnectedFilter_", "")
+                                        if frameFilter ~= "all" then
+                                            filterFrame[frameName].style = "als_item_icon_small"
+                                            filters[type][frameFilter] = nil
+                                        end
+                                    end
+                                end
+                            end
+
+                            if not filters[type][filter_by] then
+                                filters[type][filter_by] = true
+                            end
+                            filterFrame["disconnectedFilter_" .. filter_by].style = style.name .. "_selected"
+                        end
+                    else
+                        if type == "chests" then
+                            if filters[type][filter_by] then
+                                filters[type][filter_by] = nil
+                            end
+                            filterFrame["disconnectedFilter_" .. filter_by].style = "als_item_icon_small"
+                            if count(filters[type]) == 0 then
+                                if not filters[type]["all"] then
+                                    filters[type]["all"] = true
+                                end
+                                filterFrame["disconnectedFilter_all"].style = "als_button_all_selected"
+                            end
+                        end
+                    end
+
+                    global.disconnectedFilters[index] = filters
+                    showDisconnectedInfo(player, index)
+
+                end
+            end
+        end
+		
     -- location view back button event
     elseif event.element.name == "locationViewBack" then
 
@@ -492,7 +675,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 
     -- networks table columns sorting event
     elseif event.element.name:find("networkInfo_") ~= nil  then
-
+		-- disable sorting on tools/info column
+		if event.element.name == "networkInfo_tools" then
+			return
+		end
         local currentTab = global.currentTab[index]
         local currentNetwork = global.currentNetwork[index]
         local name = event.element.name
@@ -503,9 +689,9 @@ script.on_event(defines.events.on_gui_click, function(event)
         local networksTable = player.gui[global.settings[index].guiPos].logisticsFrame.contentFrame[frameName][tableName]
         local sortFlow = networksTable[sort_by .. "Flow"][sort_by .. "SortFlow"]
         local sort_dir = sortFlow[sort_by .. "_sort"].style.name
-        sort_dir = string.gsub(sort_dir, "lv_sort_", "")
+        sort_dir = string.gsub(sort_dir, "als_sort_", "")
 
-        local isSelected = string.gsub(style.name, "lv_button_" .. sort_by, "")
+        local isSelected = string.gsub(style.name, "als_button_" .. sort_by, "")
         local new_sort_by = sort_by
         local new_sort_dir = sort_dir == 'asc' and 'desc' or 'asc'
 
@@ -519,11 +705,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                         if sortBy == sort_by then
                             new_sort_by = sortBy
-                            flow["networkInfo_" .. sortBy].style = "lv_button_" .. sortBy .. "_selected"
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort_" .. new_sort_dir
+                            flow["networkInfo_" .. sortBy].style = "als_button_" .. sortBy .. "_selected"
+                            sortFlow[sortBy .. "_sort"].style = "als_sort_" .. new_sort_dir
                         else
-                            flow["networkInfo_" .. sortBy].style = "lv_button_" .. sortBy
-                            sortFlow[sortBy .. "_sort"].style = "lv_sort"
+                            flow["networkInfo_" .. sortBy].style = "als_button_" .. sortBy
+                            sortFlow[sortBy .. "_sort"].style = "als_sort"
                         end
                     end
                 end
@@ -544,7 +730,7 @@ script.on_event(defines.events.on_gui_click, function(event)
     elseif event.element.name:find("networkInfoNameEdit_") ~= nil  then
 
         global.networkEdit[index] = true
-        event.element.style = "lv_button_hidden"
+        event.element.style = "als_button_hidden"
 
         local name = event.element.name
         local key = string.gsub(name, "networkInfoNameEdit_", "")
@@ -555,10 +741,10 @@ script.on_event(defines.events.on_gui_click, function(event)
         local value = nameLabel.caption
 
 
-        nameLabel.style = "lv_network_name_hidden"
+        nameLabel.style = "als_network_name_hidden"
         local nameEdit = nameFlow["networkInfoNameValueFL_" .. key].add({type = "textfield", name = "networkInfoNameValue_" .. key, text = value })
         nameEdit.text = value
-        confirmBtn.style = "lv_button_confirm"
+        confirmBtn.style = "als_button_confirm"
 
     -- networks table name column save event
     elseif event.element.name:find("networkInfoNameConfirm_") ~= nil  then
@@ -577,8 +763,8 @@ script.on_event(defines.events.on_gui_click, function(event)
         nameEdit.destroy()
         nameLabel.style = "label_style"
 
-        event.element.style = "lv_button_hidden"
-        editBtn.style = "lv_button_edit"
+        event.element.style = "als_button_hidden"
+        editBtn.style = "als_button_edit"
         names[key] = value
         global.networksNames[player.force.name] = names
         global.networkEdit[index] = false
@@ -640,68 +826,29 @@ script.on_event(defines.events.on_gui_click, function(event)
             networksFilterFrame.destroy()
         end
         showGUI(player, index)        
-
-    -- network filters checkboxes flow
-    elseif event.element.name:find("networksFilter_") ~= nil then
-
+    
+	-- network filters list name click
+	elseif event.element.name:find("networksName_") ~= nil then	
         local guiPos = global.settings[index].guiPos
         local name = event.element.name
-        local key = string.gsub(name, "networksFilter_", "")
-        local state = event.element.state
-        local networksFilterFrame = player.gui[guiPos].networksFilterFrame
-        local networksTable = networksFilterFrame.networksTable
-        
-        
-        if networksTable and networksTable.children_names ~= nil then
-            if key == "all" and state then
-                for _,childName in pairs(networksTable.children_names) do
-                    if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
-                        if childName ~= name then                        
-                            networksTable[childName].state = false
-                        end
-                    end
-                end
-            elseif key ~= "all" and not state then        
-                local checkAll = true
-                for _,childName in pairs(networksTable.children_names) do
-                    if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
-                        if networksTable[childName].state then                        
-                            checkAll = false
-                        end
-                    end
-                end 
-                if checkAll then
-                    networksTable["networksFilter_all"].state = true
-                end
-            elseif (key ~= "all" and state) then
-                local checkAll = true
-                for _,childName in pairs(networksTable.children_names) do
-                    if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
-                        local checkKey = string.gsub(childName, "networksFilter_", "")
-                        if not networksTable[childName].state and checkKey ~= "all" then                        
-                            checkAll = false
-                        end
-                    end
-                end            
-                
-                if checkAll then
-                    -- uncheck other checkboxes
-                    for _,childName in pairs(networksTable.children_names) do
-                        if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
-                            if childName ~= "networksFilter_all" then                        
-                                networksTable[childName].state = false
-                            end
-                        end
-                    end           
-                    -- check select all checkbox
-                    networksTable["networksFilter_all"].state = true
-                else 
-                    -- uncheck select all checkbox
-                    networksTable["networksFilter_all"].state = false
-                end
-            end
-        end
-        
+        local key = string.gsub(name, "networksName_", "")
+		local networksFilterFrame = player.gui[guiPos].networksFilterFrame
+		local networksTable = networksFilterFrame.networksTableWrapper.networksTable
+		local networksAllCheck = networksFilterFrame.networksAllTable.allFilterFlow["networksFilter_all"]		
+		local checkElementId = "networksFilter_" .. key
+		local checkElement = false
+		
+		if key == "all" then
+			checkElement = networksAllCheck
+		else
+			checkElement = networksTable[checkElementId]
+		end
+		
+		
+		if checkElement and checkElement ~= nil then
+			handleNetworksFilterListEvent(player, index, checkElement, true)
+		end
+		
     -- pagination event
     else
 

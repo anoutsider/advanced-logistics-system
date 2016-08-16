@@ -56,6 +56,8 @@ data:extend({
         running_speed = 0,
         distance_per_frame = 0,
         maximum_corner_sliding_distance = 0,
+		loot_pickup_distance = 0,
+		item_pickup_distance = 0,		
 
         subgroup = "creatures",
         order="z",

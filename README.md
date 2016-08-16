@@ -9,6 +9,19 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.3.0**
+
+ - Compatibility update for factorio 0.13
+ - Use dynamic sprites for all item and GUI icons
+ - Add a custom input/key to toggle the mod view on and off, and another separate custom input to close it - can be customized from the game options menu
+ - Update the networks filter list to be scrollable and searchable, and triggering network selection when clicking a network name in the list
+ - Add search to the main networks view
+ - Add chest filters to the disconnected chests view
+ - Add descriptive and informational tooltips to various GUI elements
+ - Change all search functionality to use "on_gui_text_changed" instead of on_tick and click events
+ - Change checkbox functionality to use "on_gui_checked_state_changed" for network filters instead of click events
+ - Misc GUI and style fixes and updates
+ 
 **0.2.13**
 
  - Fixed an issue with the on_configuration_changed not properly checking for mod_changes.

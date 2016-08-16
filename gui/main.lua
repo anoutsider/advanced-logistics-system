@@ -1,7 +1,12 @@
 --- Init GUI and add Logistics View main button
-function initGUI(player)
+function initGUI(player, force)
+	if force and player.gui.top["logistics-view-button"] ~= nil then
+		if player.gui.top["logistics-view-button"].style ~= "als_button_main_icon" then
+			player.gui.top["logistics-view-button"].style = "als_button_main_icon"
+		end
+	end
     if not player.gui.top["logistics-view-button"] then
-        player.gui.top.add({type = "button", name = "logistics-view-button", style = "lv_button_main_icon"})
+        player.gui.top.add({type = "button", name = "logistics-view-button", style = "als_button_main_icon"})
         global.guiLoaded[player.index] = true
     end
 end
@@ -18,24 +23,25 @@ function createGUI(player, index)
         local buttonStyle = currentTab == 'logistics' and "_selected" or ""
 
         -- main frame
-        local logisticsFrame = player.gui[guiPos].add({type = "frame", name = "logisticsFrame", direction = "vertical", style = "lv_frame"})        
+        local logisticsFrame = player.gui[guiPos].add({type = "frame", name = "logisticsFrame", direction = "vertical", style = "als_frame"})        
         local titleFlow = logisticsFrame.add({type = "flow", name = "titleFlow", direction = "horizontal"})
-        titleFlow.add({type = "button", name = "logistics-view-close", caption = {"logistics-view-close"}, style = "lv_button_close"})
-        titleFlow.add({type = "label", name="titleLabel", style = "lv_title_label", caption = {"logistics-view"}})        
+        titleFlow.add({type = "button", name = "logistics-view-close", caption = {"logistics-view-close"}, style = "als_button_close"})
+        titleFlow.add({type = "label", name="titleLabel", style = "als_title_label", caption = {"logistics-view"}})        
 
         -- menu flow
         local menuFlow = logisticsFrame.add({type = "flow", name = "menuFlow", direction = "horizontal"})
-        menuFlow.add({type = "button", name = "logisticsMenuBtn", caption = {"logistics-items-button"}, style = "lv_button" .. buttonStyle})
+        menuFlow.add({type = "button", name = "logisticsMenuBtn", caption = {"logistics-items-button"}, style = "als_button" .. buttonStyle})
         buttonStyle = currentTab == 'normal' and "_selected" or ""
-        menuFlow.add({type = "button", name = "normalMenuBtn", caption = {"normal-items-button"}, style = "lv_button" .. buttonStyle})
+        menuFlow.add({type = "button", name = "normalMenuBtn", caption = {"normal-items-button"}, style = "als_button" .. buttonStyle})
         buttonStyle = (currentTab == 'networks' or currentTab == 'networkInfo') and "_selected" or ""
-        menuFlow.add({type = "button", name = "networksMenuBtn", caption = {"networks"}, style = "lv_button" .. buttonStyle})        
+        menuFlow.add({type = "button", name = "networksMenuBtn", caption = {"networks"}, style = "als_button" .. buttonStyle})        
         buttonStyle = currentTab == 'settings' and "_selected" or ""
-        menuFlow.add({type = "button", name = "settingsMenuBtn", caption = {"settings-button"}, style = "lv_button" .. buttonStyle})
+        menuFlow.add({type = "button", name = "settingsMenuBtn", caption = {"settings-button"}, style = "als_button" .. buttonStyle})
 
         -- content frame
-        local contentFrame = logisticsFrame.add({type = "frame", name = "contentFrame", style = "lv_items_frame", direction = "vertical"})
-        local infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "lv_info_flow", direction = "horizontal"})
+        local contentFrame = logisticsFrame.add({type = "frame", name = "contentFrame", style = "als_content_frame", direction = "vertical"})
+        local infoFlow = contentFrame.add({type = "flow", name = "infoFlow", style = "als_info_flow", direction = "horizontal"})
+        local searchFlow = contentFrame.add({type = "flow", name = "searchFlow", style = "als_info_flow", direction = "horizontal"})
         updateGUI(player, index, currentTab)
     end
 end
@@ -59,7 +65,7 @@ end
 function hideGUI(player, index)
     local guiPos = global.settings[index].guiPos
     if player.gui[guiPos].logisticsFrame ~= nil then
-        player.gui[guiPos].logisticsFrame.style = "lv_frame_hidden"
+        player.gui[guiPos].logisticsFrame.style = "als_frame_hidden"
         global.guiVisible[index] = 0
     end
 end
@@ -126,7 +132,7 @@ function clearMenu(player, index)
         for _,btnName in pairs(menuFlow.children_names) do
             if menuFlow[btnName] ~= nil then
                 local btn = menuFlow[btnName]
-                btn.style = "lv_button"
+                btn.style = "als_button"
             end
         end
     end
@@ -143,11 +149,21 @@ function resetMenu(player, index, tab)
                 local btn = menuFlow[btnName]
                 local btnTab = string.gsub(btnName, "MenuBtn", "")
                 if btnTab == tab then
-                    btn.style = "lv_button_selected"
+                    btn.style = "als_button_selected"
                 else
-                    btn.style = "lv_button"
+                    btn.style = "als_button"
                 end
             end
         end
     end
+end
+
+--- Get item sprite path
+function getItemSprite(player, name)
+	local gui = player.gui
+	local path = "item/" .. name
+	if gui.is_valid_sprite_path(path) then
+		return path
+	end
+	return false
 end
