@@ -365,7 +365,7 @@ function initForce(force)
     end
     -- items in logistic containers
     if not global.logisticsItems[forceName] then
-        global.logisticsItems[forceName] = getLogisticsItems(force, index)
+        global.logisticsItems[forceName] = {}
     end
     -- total number of items in logistic containers
     if not global.logisticsItemsTotal[forceName] then
@@ -373,7 +373,7 @@ function initForce(force)
     end
     -- items in normal and smart containers
     if not global.normalItems[forceName] then
-        global.normalItems[forceName] = getNormalItems(force)
+        global.normalItems[forceName] = {}
     end
     -- items in normal and smart containers
     if not global.normalItemsTotal[forceName] then
