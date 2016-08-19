@@ -48,6 +48,10 @@ end
 
 --- Show the GUI
 function showGUI(player, index)
+    if not playerHasSystem(player) then
+        return
+    end
+
     if global.guiVisible[index] == 0 then
         local currentTab = (global.currentTab[index] == "settings") and "logistics" or global.currentTab[index]
         global.currentTab[index] = currentTab
