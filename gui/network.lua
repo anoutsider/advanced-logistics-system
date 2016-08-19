@@ -32,7 +32,7 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
 			local searchText = global.searchText[index]["networks"]
 			searchText = searchText and searchText or ""
 			
-			if searchText then
+			if searchText ~= "" then
 				-- filter networks based on search string
 				networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
 			else
@@ -462,8 +462,8 @@ function updateNetworkFiltersTable(player, index)
 
     if networksTableWrapper ~= nil and networksTable ~= nil and networksTable.children_names ~= nil then	
 		-- search settings
-		local searchText = global.searchText[index]["networksFilter"]	
-		if searchText then
+		local searchText = global.searchText[index]["networksFilter"] or ""
+		if searchText ~= "" then
 			-- filter networks based on search string
 			networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
 		else

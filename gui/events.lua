@@ -44,56 +44,29 @@ script.on_event(defines.events.on_gui_text_changed, function(event)
 	local player = game.players[index]
 	local visible = global.guiVisible[index]
 	local element = event.element
+	local search_fields = {
+		["logistics-search-field"]       = { name = "logistics",      update = updateGUI },
+		["normal-search-field"]          = { name = "normal",         update = updateGUI },
+		["networks-filter-search-field"] = { name = "networksFilter", update = updateNetworkFiltersTable },
+		["networks-search-field"]        = { name = "networks",       update = showNetworksInfo }
+	}
 
-	if element and element.valid then
-		local elementName = element.name
-		local searchText = element.text		
-		
-		-- logistic items search
-		if elementName == "logistics-search-field" then			
-            if searchText ~= nil then
-                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                    global.searchText[index]["logistics"] = string.lower(searchText)
-                    updateGUI(player, index)
-                elseif searchText == "" then
-                    global.searchText[index]["logistics"] = false
-                    updateGUI(player, index)
-                end
-            end			
-		-- normal items search
-		elseif elementName == "normal-search-field" then
-            if searchText ~= nil then
-                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                    global.searchText[index]["normal"] = string.lower(searchText)
-                    updateGUI(player, index)
-                elseif searchText == "" then
-                    global.searchText[index]["normal"] = false
-                    updateGUI(player, index)
-                end
-            end				
-		-- network filters search
-		elseif elementName == "networks-filter-search-field" then
-            if searchText ~= nil then
-                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                    global.searchText[index]["networksFilter"] = string.lower(searchText)
-                    updateNetworkFiltersTable(player, index)
-                elseif searchText == "" then
-                    global.searchText[index]["networksFilter"] = false
-                    updateNetworkFiltersTable(player, index)
-                end
-            end		
-		-- networks list search
-		elseif elementName == "networks-search-field" then
-            if searchText ~= nil then
-                if type(searchText) == "string" and searchText ~= "" and string.len(searchText) >= 3 then
-                    global.searchText[index]["networks"] = string.lower(searchText)
-                    showNetworksInfo(player, index)
-                elseif searchText == "" then
-                    global.searchText[index]["networks"] = false
-                    showNetworksInfo(player, index)
-                end
-            end		
-		end
+	if not element or not element.valid then
+		return
+	end
+
+	local elementName = element.name
+	local searchText = element.text or ""
+	local field = search_fields[elementName]
+
+	if not field then
+		return
+	end
+
+	global.searchText[index][field.name] = string.lower(searchText)
+
+	if searchText == "" or string.len(searchText) >= 3 then
+		field.update(player, index)
 	end
 end)
 
