@@ -159,12 +159,6 @@ function init()
     global.sort = global.sort or {}
 
     global.settings = global.settings or {}
-    global.settings.guiPos = global.settings.guiPos or {}
-    global.settings.itemsPerPage = global.settings.itemsPerPage or {}
-    global.settings.refreshInterval = global.settings.refreshInterval or {}
-    global.settings.exTools = global.settings.exTools or {}
-    global.settings.autoFilter = global.settings.autoFilter or {}
-    global.settings.excludeReq = global.settings.excludeReq or {}
 
     global.networks = global.networks or {}
     global.networksCount = global.networksCount or {}
