@@ -1,15 +1,17 @@
+MOD_NAME = "advanced-logistics-system"
+TECH_NAME = "advanced-logistics-systems"
+
 require "gui"
 require "interface"
 
 ---  Enable/Disable Debugging
 local DEV = false
+local initDone = false
 
 --- on_init event
+--- called when the mod is installed into a save
 script.on_init(function()
-    init()
-    -- init player & force specific globals
-    initPlayers()
-	initForces()	
+    initAll()
 end)
 
 --- on_configuration_changed event
@@ -50,7 +52,7 @@ end)
 
 --- Research Related Events / Mod Activation
 script.on_event(defines.events.on_research_finished, function(event)
-    if event.research.name == "advanced-logistics-systems" then
+    if event.research.name == TECH_NAME then
         activateSystem(event)
     end
 end)
@@ -79,72 +81,79 @@ end)
 
 --- handles mod updates
 function on_configuration_changed(data)
-    local modName = "advanced-logistics-system"
-    
-    if data and data.mod_changes and data.mod_changes[modName] then
-        local newVersion = data.mod_changes[modName].new_version
-        local oldVersion = data.mod_changes[modName].old_version
-        
-        if oldVersion ~= nil then
-            -- reset network names for version 0.2.10
-            if newVersion and newVersion == "0.2.10" then
-                global.networksNames = {}
-            end
+    if data.old_version ~= data.new_version then
+        -- Game version changed, we better reset chest names
+        global.normalChestsNames = nil
+        global.logisticChestsNames = nil
 
-            -- update hasSystem & Logistic data for version 0.2.12
-            if newVersion and newVersion == "0.2.12" then        
-                for _,force in pairs(game.forces) do 
-                    -- update hasSystem
-                    if not global.hasSystem[force.name] and force.technologies["advanced-logistics-systems"].researched then                        
-                        global.hasSystem[force.name] = true
-                    end
-                    -- update Logistic data
-                    if global.hasSystem[force.name] then
-                        getLogisticNetworks(force, true)
-                        getDisconnectedChests(force)
-                    end
-                end
-            end
-			
-			-- update for 0.3.0
-			if oldVersion <= "0.3.0" then
-				if global.normalChestsNames ~= nil then
-					global.normalChestsNames = nil
-				end
-				-- init globals
-				init()
-				-- init player specific globals
-				initPlayers()
-				-- init force specific globals
-				initForces()
-				-- reinit gui 
-				for index,player in pairs(game.players) do
-					local hasSystem = playerHasSystem(player)
-					local force = player.force
-										
-					if hasSystem then
-						if player.gui.top["logistics-view-button"] ~= nil then
-							player.gui.top["logistics-view-button"].style = "als_button_main_icon"
-						end
-					else
-						if force and force.technologies["advanced-logistics-systems"].researched then    
-							global.hasSystem[force.name] = true
-							initGUI(player, true)
-						end					
-					end
-				end								
-			end
-        else
-		-- init globals for new installs
-			-- init globals
-			init()
-			-- init player specific globals
-			initPlayers()
-			-- init force specific globals
-			initForces()			
-		
-		end
+        initAll()
     end
+
+    if not data.mod_changes[MOD_NAME] then
+        return
+    end
+
+    local oldVersion = data.mod_changes[MOD_NAME].old_version
+
+    if oldVersion == nil then
+        -- init already done in on_init
+        return
+    end
+
+    initAll()
+
+    -- reset network names for version < 0.2.9
+    if version_compare(oldVersion, "0.2.9") < 0 then
+        global.networksNames = {}
+    end
+
+    for name, force in pairs(game.forces) do
+        -- make sure hasSystem is correctly set accordingly to the researched technologies
+        if not global.hasSystem[name] and force.technologies[TECH_NAME].researched then
+            global.hasSystem[name] = true
+        end
+
+        -- update Logistic data
+        if global.hasSystem[name] then
+            getLogisticNetworks(force, true)
+            getDisconnectedChests(force)
+        end
+    end
+
+    for _, player in pairs(game.players) do
+        local settings = global.settings[player.index]
+        local gui = player.gui[settings.guiPos]
+
+        -- destroy any leftover GUI
+        for _, gui_name in ipairs({"logisticsFrame", "settingsFrame", "networksFilterFrame"}) do
+            if gui[gui_name] then
+                gui[gui_name].destroy()
+            end
+        end
+
+        global.guiVisible[player.index] = 0
+
+        if playerHasSystem(player) then
+            initGUI(player, true)
+        end
+    end
+end
+
+function initAll()
+    if initDone then
+        return
+    end
+
+    -- init globals
+    init()
+
+    -- init player specific globals
+    initPlayers()
+
+    -- init force specific globals
+    initForces()
+
+    initDone = true
 end
 
 --- Initiate default and global values
@@ -1245,6 +1254,40 @@ function split(str, sep)
         i = i + 1
     end
     return t
+end
+
+-- Split a version string such as "0.1.2" into a table {0, 1, 2}
+function version_split(ver)
+    local parts = {}
+    for part in ver:gmatch("%d+") do
+        table.insert(parts, tonumber(part))
+    end
+
+    return parts
+end
+
+
+-- Compare two version strings such as "0.1.2" and "0.3.4"
+--
+-- Returns:
+--   1 if v1 > v2
+--  -1 if v1 < v2
+--   0 if v1 == v2
+function version_compare(v1, v2)
+    local v1 = version_split(v1)
+    local v2 = version_split(v2)
+    local len = (#v1 > #v2) and #v1 or #v2
+
+    for i = 1, len do
+        local p1, p2 = v1[i] or 0, v2[i] or 0
+
+        if p1 > p2 then
+            return 1
+        elseif p1 < p2 then
+            return -1
+        end
+    end
+    return 0
 end
 
 -- debugging tools
