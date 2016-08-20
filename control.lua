@@ -107,7 +107,7 @@ function on_configuration_changed(data)
             end
 			
 			-- update for 0.3.0
-			if oldVersion < "0.3.0" then
+			if oldVersion <= "0.3.0" then
 				if global.normalChestsNames ~= nil then
 					global.normalChestsNames = nil
 				end
@@ -115,19 +115,35 @@ function on_configuration_changed(data)
 				init()
 				-- init player specific globals
 				initPlayers()
+				-- init force specific globals
+				initForces()
 				-- reinit gui 
 				for index,player in pairs(game.players) do
 					local hasSystem = playerHasSystem(player)
-					
+					local force = player.force
+										
 					if hasSystem then
 						if player.gui.top["logistics-view-button"] ~= nil then
 							player.gui.top["logistics-view-button"].style = "als_button_main_icon"
 						end
+					else
+						if force and force.technologies["advanced-logistics-systems"].researched then    
+							global.hasSystem[force.name] = true
+							initGUI(player, true)
+						end					
 					end
-				end				
-				
+				end								
 			end
-        end
+        else
+		-- init globals for new installs
+			-- init globals
+			init()
+			-- init player specific globals
+			initPlayers()
+			-- init force specific globals
+			initForces()			
+		
+		end
     end
 end
 
