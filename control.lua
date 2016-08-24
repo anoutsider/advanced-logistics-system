@@ -429,12 +429,24 @@ function activateSystem(event)
     end
 end
 
+--- Checks if an item is a dummy, that is an item whose type doesn't reflect its actual function
+--- For instance, Factorissimo uses roboports with a 0 radius for its factories
+function isDummyItem(entity)
+    if entity.type == "roboport" and entity.logistic_cell.logistic_radius == 0 then
+        return true
+    end
+end
+
 --- Entity built event handler for players & robots constructions
 -- Checks if a logistics container has been built and updates the local chests table accordingly
 -- Checks if a roboport has been built and updates the local roboports table accordingly
 -- If a roboport is built a check will run on the logistics chests table for logistics network coverage
 function entityBuilt(event, entity)
     local forceName = entity.force.name
+
+    if isDummyItem(entity) then
+        return
+    end
 
     if entity.type == "logistic-container" then
         local chests = global.logisticsChests[forceName] or {}
@@ -500,6 +512,10 @@ end
 -- If a roboport is removed a check will run on the logistics chests table for logistics network coverage
 function entityMined(event, entity)
     local forceName = entity.force.name
+
+    if isDummyItem(entity) then
+        return
+    end
 
     if entity.type == "logistic-container" then
         local chests = global.logisticsChests[forceName] or {}
