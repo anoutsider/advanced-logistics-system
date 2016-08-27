@@ -1146,9 +1146,16 @@ end
 
 --- moves a player ghost to a position and highlights it
 function viewPosition(player, index, position)
-    local ghost = createGhostController(player, position)
+    if player.character then
+        local ghost = createGhostController(player, position)
 
-    changeCharacter(player, ghost)
+        global.character[index] = player.character
+        player.character = ghost
+    else
+        global.character[index] = player.position
+        player.teleport(position)
+    end
+
     hideGUI(player, index)
 
     local locationFlow = player.gui.center.locationFlow
@@ -1161,18 +1168,26 @@ end
 
 --- moves a player back to it's original character and position
 function resetPosition(player, index)
-    local character = global.character[index]
-    if character ~= nil and player.character.name == "ls-controller" then
-        local locationFlow = player.gui.center.locationFlow
-        if locationFlow ~= nil then
-            locationFlow.destroy()
-        end
+    -- this can be a LuaEntity for normal characters or a Position for gods
+    local oldCharacter = global.character[index]
 
-        if changeCharacter(player, character) then
-            global.character[index] = nil
+    if oldCharacter then
+        if player.character and player.character.name == "ls-controller" then
+            player.character.destroy()
+            player.character = oldCharacter
+            showGUI(player, index)
+        elseif player.character == nil then
+            player.teleport(oldCharacter)
         end
-        showGUI(player, index)
     end
+
+    local locationFlow = player.gui.center.locationFlow
+    if locationFlow ~= nil then
+        locationFlow.destroy()
+    end
+
+    global.character[index] = nil
+    showGUI(player, index)
 end
 
 --- creates a new player ghost controller
@@ -1181,20 +1196,6 @@ function createGhostController(player, position)
     local surface = player.surface
     local entity = surface.create_entity({name="ls-controller", position=position, force=player.force})
     return entity
-end
-
---- changes the player character
-function changeCharacter(player, character)
-    if player.character ~= nil and character ~= nil and player.character.valid and character.valid then
-        if player.character.name ~= "ls-controller" then
-            global.character[player.index] = player.character
-        elseif player.character.name == "ls-controller" then
-            player.character.destroy()
-        end
-        player.character = character
-        return true
-    end
-    return false
 end
 
 --- Helper function to get an area where a point intersects with a square
