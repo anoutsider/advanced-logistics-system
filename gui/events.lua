@@ -7,7 +7,7 @@ script.on_event("ls-toggle-gui", function(event)
 
 	--- reset player position if in location view mode
 	local locationFlow = player.gui.center.locationFlow
-	if locationFlow ~= nil and player.character.name == "ls-controller" then
+	if locationFlow ~= nil then
 		resetPosition(player, index)
 	end
 
@@ -28,7 +28,7 @@ script.on_event("ls-close-gui", function(event)
 	if visible ~= 0 then
 		--- reset player position if in location view mode
 		local locationFlow = player.gui.center.locationFlow
-		if locationFlow ~= nil and player.character.name == "ls-controller" then
+		if locationFlow ~= nil then
 			resetPosition(player, index)
 		end	
 		hideGUI(player, index)
@@ -94,7 +94,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
         --- reset player position if in location view mode
         local locationFlow = player.gui.center.locationFlow
-        if locationFlow ~= nil and player.character.name == "ls-controller" then
+        if locationFlow ~= nil then
             resetPosition(player, index)
         end
 

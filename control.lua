@@ -1,15 +1,17 @@
+MOD_NAME = "advanced-logistics-system"
+TECH_NAME = "advanced-logistics-systems"
+
 require "gui"
 require "interface"
 
 ---  Enable/Disable Debugging
 local DEV = false
+local initDone = false
 
 --- on_init event
+--- called when the mod is installed into a save
 script.on_init(function()
-    init()
-    -- init player & force specific globals
-    initPlayers()
-	initForces()	
+    initAll()
 end)
 
 --- on_configuration_changed event
@@ -50,7 +52,7 @@ end)
 
 --- Research Related Events / Mod Activation
 script.on_event(defines.events.on_research_finished, function(event)
-    if event.research.name == "advanced-logistics-systems" then
+    if event.research.name == TECH_NAME then
         activateSystem(event)
     end
 end)
@@ -60,18 +62,18 @@ script.on_event(defines.events.on_tick, function(event)
         if event.tick % 60 == 0  then
             for index,player in pairs(game.players) do
                 local hasSystem = playerHasSystem(player)
-                
+
                 if hasSystem then
                     if (not global.guiLoaded[index]) then
                         initGUI(player)
                     end
-                    
+
                     local refresh = global.settings[index].refreshInterval * 60
-                    if event.tick % refresh == 0  then                        
-                        if global.guiVisible[index] == 1 then                            
+                    if event.tick % refresh == 0  then
+                        if global.guiVisible[index] == 1 then
                             updateGUI(player, index)
                         end
-                    end                   
+                    end
                 end
             end
         end
@@ -79,72 +81,79 @@ end)
 
 --- handles mod updates
 function on_configuration_changed(data)
-    local modName = "advanced-logistics-system"
-    
-    if data and data.mod_changes and data.mod_changes[modName] then
-        local newVersion = data.mod_changes[modName].new_version
-        local oldVersion = data.mod_changes[modName].old_version
-        
-        if oldVersion ~= nil then
-            -- reset network names for version 0.2.10
-            if newVersion and newVersion == "0.2.10" then
-                global.networksNames = {}
-            end
+    if data.old_version ~= data.new_version then
+        -- Game version changed, we better reset chest names
+        global.normalChestsNames = nil
+        global.logisticChestsNames = nil
 
-            -- update hasSystem & Logistic data for version 0.2.12
-            if newVersion and newVersion == "0.2.12" then        
-                for _,force in pairs(game.forces) do 
-                    -- update hasSystem
-                    if not global.hasSystem[force.name] and force.technologies["advanced-logistics-systems"].researched then                        
-                        global.hasSystem[force.name] = true
-                    end
-                    -- update Logistic data
-                    if global.hasSystem[force.name] then
-                        getLogisticNetworks(force, true)
-                        getDisconnectedChests(force)
-                    end
-                end
-            end
-			
-			-- update for 0.3.0
-			if oldVersion <= "0.3.0" then
-				if global.normalChestsNames ~= nil then
-					global.normalChestsNames = nil
-				end
-				-- init globals
-				init()
-				-- init player specific globals
-				initPlayers()
-				-- init force specific globals
-				initForces()
-				-- reinit gui 
-				for index,player in pairs(game.players) do
-					local hasSystem = playerHasSystem(player)
-					local force = player.force
-										
-					if hasSystem then
-						if player.gui.top["logistics-view-button"] ~= nil then
-							player.gui.top["logistics-view-button"].style = "als_button_main_icon"
-						end
-					else
-						if force and force.technologies["advanced-logistics-systems"].researched then    
-							global.hasSystem[force.name] = true
-							initGUI(player, true)
-						end					
-					end
-				end								
-			end
-        else
-		-- init globals for new installs
-			-- init globals
-			init()
-			-- init player specific globals
-			initPlayers()
-			-- init force specific globals
-			initForces()			
-		
-		end
+        initAll()
     end
+
+    if not data.mod_changes[MOD_NAME] then
+        return
+    end
+
+    local oldVersion = data.mod_changes[MOD_NAME].old_version
+
+    if oldVersion == nil then
+        -- init already done in on_init
+        return
+    end
+
+    initAll()
+
+    -- reset network names for version < 0.2.9
+    if version_compare(oldVersion, "0.2.9") < 0 then
+        global.networksNames = {}
+    end
+
+    for name, force in pairs(game.forces) do
+        -- make sure hasSystem is correctly set accordingly to the researched technologies
+        if not global.hasSystem[name] and force.technologies[TECH_NAME].researched then
+            global.hasSystem[name] = true
+        end
+
+        -- update Logistic data
+        if global.hasSystem[name] then
+            getLogisticNetworks(force, true)
+            getDisconnectedChests(force)
+        end
+    end
+
+    for _, player in pairs(game.players) do
+        local settings = global.settings[player.index]
+        local gui = player.gui[settings.guiPos]
+
+        -- destroy any leftover GUI
+        for _, gui_name in ipairs({"logisticsFrame", "settingsFrame", "networksFilterFrame"}) do
+            if gui[gui_name] then
+                gui[gui_name].destroy()
+            end
+        end
+
+        global.guiVisible[player.index] = 0
+
+        if playerHasSystem(player) then
+            initGUI(player, true)
+        end
+    end
+end
+
+function initAll()
+    if initDone then
+        return
+    end
+
+    -- init globals
+    init()
+
+    -- init player specific globals
+    initPlayers()
+
+    -- init force specific globals
+    initForces()
+
+    initDone = true
 end
 
 --- Initiate default and global values
@@ -166,7 +175,7 @@ function init()
     global.networksNames = global.networksNames or {}
     global.networksFilter = global.networksFilter or {}
     global.currentNetwork = global.currentNetwork or {}
-   
+
 
     global.logisticsChests = global.logisticsChests or {}
     global.logisticsChestsNames = global.logisticsChestsNames or getLogisticsChestNames()
@@ -205,15 +214,15 @@ function init()
             stc = "steel-chest",
         }
     }
-    
+
     global.compNames = {}
     -- 5dim trains
     global.compNames["logistic-chest-passive-provider-trans"] = "cargo-wagon-passive"
     global.compNames["logistic-chest-active-provider-trans"] = "cargo-wagon-active"
     global.compNames["logistic-chest-storage-provider-trans"] = "cargo-wagon-storage"
     global.compNames["logistic-chest-storage-provider-trans"] = "cargo-wagon-storage"
-    global.compNames["logistic-chest-requester-trans"] = "cargo-wagon-requester"   
-    global.compNames["roboport-trans"] = "cargo-wagon-roboport"   
+    global.compNames["logistic-chest-requester-trans"] = "cargo-wagon-requester"
+    global.compNames["roboport-trans"] = "cargo-wagon-roboport"
 
     global.guiTabs = {"logistics", "normal", "itemInfo"}
     global.character = global.character or {}
@@ -236,7 +245,7 @@ end
 --- init player specific global values
 function initPlayer(player)
     local index = player.index
-	
+
     -- gui visibility
     if not global.guiVisible[index] or global.guiVisible[index] == nil then
         global.guiVisible[index] = 0
@@ -260,11 +269,11 @@ function initPlayer(player)
     -- experimental tools - teleport, upgrade chests / too powerfull or not fully tested
     if not global.settings[index].exTools then
         global.settings[index].exTools = false
-    end    
+    end
     -- auto filter settings, automatically filters chest list based on the  previous tab logistics/normal
     if not global.settings[index].autoFilter then
         global.settings[index].autoFilter = true
-    end    
+    end
     -- exclude requesters settings, excludes items in requesters from the totals calculations
     if not global.settings[index].excludeReq then
         global.settings[index].excludeReq = true
@@ -272,15 +281,15 @@ function initPlayer(player)
     -- gui loaded
     if playerHasSystem(player) and (not global.guiLoaded[index] or not player.gui.top["logistics-view-button"]) then
         initGUI(player)
-    end        
+    end
     -- networks edit table
     if not global.networkEdit[index] then
         global.networkEdit[index] = false
-    end   
+    end
     -- networks filter table
     if not global.networksFilter[index] then
         global.networksFilter[index] = {}
-    end    
+    end
     -- current active menu tab
     if not global.currentTab[index] then
         global.currentTab[index] = "logistics"
@@ -297,10 +306,10 @@ function initPlayer(player)
     end
     if not global.itemsPage[index]["networks"] then
         global.itemsPage[index]["networks"] = 1
-    end       
+    end
     if not global.itemsPage[index]["networkInfo"] then
         global.itemsPage[index]["networkInfo"] = 1
-    end    
+    end
     -- current active sort per view type
     if not global.sort[index] then
         global.sort[index] = {}
@@ -313,7 +322,7 @@ function initPlayer(player)
     end
     if not global.sort[index]["networks"] then
         global.sort[index]["networks"] = {by = "waiting", dir = "desc"}
-    end    
+    end
     if not global.sort[index]["networkInfo"] then
         global.sort[index]["networkInfo"] = {by = "pos", dir = "desc"}
     end
@@ -335,7 +344,7 @@ function initPlayer(player)
     if not global.disconnectedFilters[index] then
         global.disconnectedFilters[index] = {}
         global.disconnectedFilters[index]["chests"] = {all = true}
-    end	
+    end
 end
 
 --- init all forces
@@ -348,7 +357,7 @@ end
 --- init force specific global values
 function initForce(force)
     local forceName = force.name
-	
+
     -- hasSystem
     if not global.hasSystem[forceName] then
         global.hasSystem[forceName] = nil
@@ -356,15 +365,15 @@ function initForce(force)
     -- networks data table
     if not global.networks[forceName] then
         global.networks[forceName] = getLogisticNetworks(force, true)
-    end    
+    end
     -- networks count table
     if not global.networksCount[forceName] then
         global.networksCount[forceName] = 0
-    end     
+    end
     -- networks names table
     if not global.networksNames[forceName] then
         global.networksNames[forceName] = {}
-    end 
+    end
     -- out of coverage logistic containers
     if not global.disconnectedChests[forceName] then
         global.disconnectedChests[forceName] = getDisconnectedChests(force)
@@ -388,7 +397,7 @@ function initForce(force)
     -- items in normal and smart containers
     if not global.normalItemsTotal[forceName] then
         global.normalItemsTotal[forceName] = 0
-    end  
+    end
 end
 
 --- Hard reset all settings
@@ -412,11 +421,19 @@ function activateSystem(event)
     if not hasSystem or hasSystem == nil then
         global.hasSystem[forceName] = true
         local players = event.research.force.players
-        for index,player in pairs(players) do 
+        for index,player in pairs(players) do
             if (not global.guiLoaded[index]) then
                 initGUI(player)
             end
         end
+    end
+end
+
+--- Checks if an item is a dummy, that is an item whose type doesn't reflect its actual function
+--- For instance, Factorissimo uses roboports with a 0 radius for its factories
+function isDummyItem(entity)
+    if entity.type == "roboport" and entity.logistic_cell.logistic_radius == 0 then
+        return true
     end
 end
 
@@ -426,6 +443,10 @@ end
 -- If a roboport is built a check will run on the logistics chests table for logistics network coverage
 function entityBuilt(event, entity)
     local forceName = entity.force.name
+
+    if isDummyItem(entity) then
+        return
+    end
 
     if entity.type == "logistic-container" then
         local chests = global.logisticsChests[forceName] or {}
@@ -437,20 +458,20 @@ function entityBuilt(event, entity)
         local network = inLogisticsNetwork(entity, entity.force, true)
 
         if network ~= nil then
-            if not chests[key] then           
+            if not chests[key] then
                 -- find the container network
                 for i,net in pairs(networks) do
                     if net == network then
-                        debugLog("Added Chest # " .. key .. "To Logistics Chests List")                        
+                        debugLog("Added Chest # " .. key .. "To Logistics Chests List")
                         local netIndex = getNetworkIndex(entity.force, net)
                         chests[key] = {}
-                        chests[key]["entity"] = entity                    
+                        chests[key]["entity"] = entity
                         chests[key]["network"] = netIndex
                         chests[key]["type"] = entity.request_slot_count > 0 and "requester" or "provider"
                         break
                     end
-                end            
-                
+                end
+
                 global.logisticsChests[forceName] = chests
             end
         else
@@ -492,6 +513,10 @@ end
 function entityMined(event, entity)
     local forceName = entity.force.name
 
+    if isDummyItem(entity) then
+        return
+    end
+
     if entity.type == "logistic-container" then
         local chests = global.logisticsChests[forceName] or {}
         local disconnected = global.disconnectedChests[forceName] or {}
@@ -524,7 +549,7 @@ function entityMined(event, entity)
         local pos = entity.position
         local net = entity.logistic_network
         local cell = entity.logistic_cell
-        local radius = cell.logistic_radius        
+        local radius = cell.logistic_radius
 
         updateNetworksData(entity, cell)
         getLogisticNetworks(entity.force, true)
@@ -538,9 +563,9 @@ function updateNetworksData(entity, cell)
     local pos = entity.position
     local forceName = entity.force.name
     local networksData = global.networks[forceName]
-    local names = global.networksNames[forceName]      
+    local names = global.networksNames[forceName]
     local networksFilter = global.networksFilter or {}
-    local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")    
+    local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")
 
     -- if the removed cell has no neighbours, remove it from the names list
     if #cell.neighbours == 0 then
@@ -548,9 +573,9 @@ function updateNetworksData(entity, cell)
             names[index] = nil
             global.networksNames[forceName] = names
         end
-        
+
         -- Update network filters
-        for i,playerNetworkFilters in pairs(networksFilter) do 
+        for i,playerNetworkFilters in pairs(networksFilter) do
             if playerNetworkFilters then
                 for key,networkFilter in pairs(playerNetworkFilters) do
                     if key == index then
@@ -560,26 +585,26 @@ function updateNetworksData(entity, cell)
             end
         end
         global.networksFilter = networksFilter
-    -- if the removed cell has neighbours, check if it's owner position was being used as an index for it's network 
+    -- if the removed cell has neighbours, check if it's owner position was being used as an index for it's network
      -- and select a new one if it was, will also update the network name index
-    else              
+    else
         if networksData and networksData[index] then
             for _,netCell in pairs(cell.neighbours) do
                 local cellPos = netCell.owner.position
                 local newIndex = string.gsub(cellPos.x .. "A" .. cellPos.y, "-", "_")
 
                 networksData[newIndex] = networksData[index]
-                networksData[index] = nil                
-                
+                networksData[index] = nil
+
                 -- update the names index if found
                 if names and names[index] and not names[newIndex] then
                     names[newIndex] = names[index]
                     names[index] = nil
                     global.networksNames[forceName] = names
                 end
-                
+
                 -- Update network filters
-                for i,playerNetworkFilters in pairs(networksFilter) do 
+                for i,playerNetworkFilters in pairs(networksFilter) do
                     if playerNetworkFilters then
                         for key,networkFilter in pairs(playerNetworkFilters) do
                             if key == index then
@@ -589,12 +614,12 @@ function updateNetworksData(entity, cell)
                         end
                     end
                 end
-                global.networksFilter = networksFilter                
-                
-                global.networks[forceName] = networksData                
-            end 
-        end     
-    end                 
+                global.networksFilter = networksFilter
+
+                global.networks[forceName] = networksData
+            end
+        end
+    end
 end
 
 --- Check if a network is a player personal network
@@ -628,7 +653,7 @@ function getNetworkIndex(force, net)
     if net and net.cells then
         for _,cell in pairs(net.cells) do
             local pos = cell.owner.position
-            local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")             
+            local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")
             local name = names and names[index]
             if name then
                 return index
@@ -637,7 +662,7 @@ function getNetworkIndex(force, net)
 
         -- if no existing index is found
         local pos = net.cells[1].owner.position
-        local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")   
+        local index = string.gsub(pos.x .. "A" .. pos.y, "-", "_")
         return index
     end
 end
@@ -654,13 +679,13 @@ function getLogisticNetworks(force, full)
     local i = 0
 
     for surface,nets in pairs(networks) do
-        for x,net in pairs(nets) do 
+        for x,net in pairs(nets) do
             -- we should be checking if the network is actually active, using isNetworkActive, but need more testing.
-            if not isPlayerNetwork(net) then                
+            if not isPlayerNetwork(net) then
                 i = i + 1
-                
-                local index = getNetworkIndex(force, net)                                
-                local name = names and names[index] or "Network " .. i                      
+
+                local index = getNetworkIndex(force, net)
+                local name = names and names[index] or "Network " .. i
 
                 networksData[index] = {}
                 networksData[index]["name"] = name
@@ -678,12 +703,12 @@ function getLogisticNetworks(force, full)
                 networksData[index]["bots"]["con"]["available"] = net.available_construction_robots
                 networksData[index]["con"] = net.all_construction_robots
 
-                networksData[index]["cells"] = {} 
-                
+                networksData[index]["cells"] = {}
+
                 local size = 0
                 local port = 0
                 local charging = 0
-                local waiting = 0            
+                local waiting = 0
                 for cei,cell in pairs(net.cells) do
                     networksData[index]["cells"][cei] = {}
                     networksData[index]["cells"][cei]["name"] = cell.owner.name
@@ -757,18 +782,18 @@ function getLogisticNetworks(force, full)
                             chests[key]["type"] = "requester"
                         end
                     end
-                end    
+                end
                 networksCount = networksCount + 1
             end
         end
-    end   
-    
+    end
+
     if full then
         global.logisticsChests[force.name] = chests
-    end 
-    
+    end
+
     global.networks[force.name] = networksData
-    global.networksCount[force.name] = networksCount    
+    global.networksCount[force.name] = networksCount
     return networksData
 end
 
@@ -801,14 +826,14 @@ end
 function checkDisconnectedChests(force)
     local disconnected = global.disconnectedChests[force.name]
 
-	if disconnected ~= nil then
-		for key,chest in pairs(disconnected) do
-			if chest.valid and inLogisticsNetwork(chest, force) then
-				disconnected[key] = nil
-			end
-		end
+    if disconnected ~= nil then
+        for key,chest in pairs(disconnected) do
+            if chest.valid and inLogisticsNetwork(chest, force) then
+                disconnected[key] = nil
+            end
+        end
     end
-    global.disconnectedChests[force.name] = disconnected    
+    global.disconnectedChests[force.name] = disconnected
 end
 
 --- Checks all logistics containers that are not within a logistics network within a given radius
@@ -825,7 +850,7 @@ function findDisconnectedChests(pos, radius, force)
             disconnected[key] = chest
         end
     end
-    global.disconnectedChests[force.name] = disconnected    
+    global.disconnectedChests[force.name] = disconnected
 end
 
 --- Get all items in logistics containers
@@ -847,7 +872,7 @@ function getLogisticsItems(force, index)
             local chest = chest.entity
             -- check if chest is valid and check for network filters
             if chest and chest.valid and chest.name ~= nil and type ~= nil and (networksFilter[network] or networksFilterCount == 0) then
-                
+
                 local inventory = chest.get_inventory(1)
                 for n,v in pairs(inventory.get_contents()) do
                     if not items[n] then
@@ -863,15 +888,15 @@ function getLogisticsItems(force, index)
                     if not items[n][chest.name] then
                         items[n][chest.name] = 0
                     end
-                    
+
                     -- check exclude requesters
-                    if (excludeReq and type ~= "requester") or not excludeReq then  						
+                    if (excludeReq and type ~= "requester") or not excludeReq then
                         items[n]["total"] = items[n]["total"] + v
                         total = total + v
-                    end				
-                    
+                    end
+
                     items[n][chest.name] = items[n][chest.name] + v
-                    
+
                 end
             end
         end
@@ -965,8 +990,8 @@ function getItemInfo(item, player, index, filters)
     local total = {logistics = 0, normal = 0, disconnected = 0, all = 0}
     local info = {chests = {}, total = total}
     local networksFilter = global.networksFilter[index] or {}
-    local networksFilterCount = count(networksFilter)    
-	local excludeReq = global.settings[index].excludeReq
+    local networksFilterCount = count(networksFilter)
+    local excludeReq = global.settings[index].excludeReq
 
     -- get item info
     for type,chests in pairs(types) do
@@ -977,11 +1002,11 @@ function getItemInfo(item, player, index, filters)
                     network = chest.network
                     chest = chest.entity
                 end
-                
+
                 if chest and chest.valid and chest.name ~= nil and chest.type ~= nil and ((type == "logistics" and (networksFilter[network] or networksFilterCount == 0)) or type ~= "logistics") then
-                    
+
                     if filters["chests"][chest.name] or filters["chests"]["all"] then
-                        local itemCount = chest.get_item_count(item)            
+                        local itemCount = chest.get_item_count(item)
 
                         total[type] = total[type] + itemCount
                         total["all"] = total["all"] + itemCount
@@ -1031,7 +1056,7 @@ end
 --- Gets compatible names for mod entities that use invisible proxy containers
 function getCompName(name)
     local compNames = global.compNames
-    for k,n in pairs(compNames) do 
+    for k,n in pairs(compNames) do
         if name == k then
             return n
         end
@@ -1041,14 +1066,14 @@ end
 
 --- Gets localised item/entity name
 function getLocalisedName(name)
-	local locName = name
-	if game.item_prototypes[name] ~= nil then
-		locName = game.item_prototypes[name].localised_name
+    local locName = name
+    if game.item_prototypes[name] ~= nil then
+        locName = game.item_prototypes[name].localised_name
     else
-		if game.entity_prototypes[name] ~= nil then
-			locName = game.entity_prototypes[name].localised_name
-		end 
-	end
+        if game.entity_prototypes[name] ~= nil then
+            locName = game.entity_prototypes[name].localised_name
+        end
+    end
     return locName
 end
 
@@ -1121,9 +1146,16 @@ end
 
 --- moves a player ghost to a position and highlights it
 function viewPosition(player, index, position)
-    local ghost = createGhostController(player, position)
+    if player.character then
+        local ghost = createGhostController(player, position)
 
-    changeCharacter(player, ghost)
+        global.character[index] = player.character
+        player.character = ghost
+    else
+        global.character[index] = player.position
+        player.teleport(position)
+    end
+
     hideGUI(player, index)
 
     local locationFlow = player.gui.center.locationFlow
@@ -1136,18 +1168,26 @@ end
 
 --- moves a player back to it's original character and position
 function resetPosition(player, index)
-    local character = global.character[index]
-    if character ~= nil and player.character.name == "ls-controller" then
-        local locationFlow = player.gui.center.locationFlow
-        if locationFlow ~= nil then
-            locationFlow.destroy()
-        end
+    -- this can be a LuaEntity for normal characters or a Position for gods
+    local oldCharacter = global.character[index]
 
-        if changeCharacter(player, character) then
-            global.character[index] = nil
+    if oldCharacter then
+        if player.character and player.character.name == "ls-controller" then
+            player.character.destroy()
+            player.character = oldCharacter
+            showGUI(player, index)
+        elseif player.character == nil then
+            player.teleport(oldCharacter)
         end
-        showGUI(player, index)
     end
+
+    local locationFlow = player.gui.center.locationFlow
+    if locationFlow ~= nil then
+        locationFlow.destroy()
+    end
+
+    global.character[index] = nil
+    showGUI(player, index)
 end
 
 --- creates a new player ghost controller
@@ -1156,20 +1196,6 @@ function createGhostController(player, position)
     local surface = player.surface
     local entity = surface.create_entity({name="ls-controller", position=position, force=player.force})
     return entity
-end
-
---- changes the player character
-function changeCharacter(player, character)
-    if player.character ~= nil and character ~= nil and player.character.valid and character.valid then
-        if player.character.name ~= "ls-controller" then
-            global.character[player.index] = player.character        
-        elseif player.character.name == "ls-controller" then
-            player.character.destroy()
-        end        
-        player.character = character
-        return true
-    end
-    return false
 end
 
 --- Helper function to get an area where a point intersects with a square
@@ -1245,6 +1271,40 @@ function split(str, sep)
         i = i + 1
     end
     return t
+end
+
+-- Split a version string such as "0.1.2" into a table {0, 1, 2}
+function version_split(ver)
+    local parts = {}
+    for part in ver:gmatch("%d+") do
+        table.insert(parts, tonumber(part))
+    end
+
+    return parts
+end
+
+
+-- Compare two version strings such as "0.1.2" and "0.3.4"
+--
+-- Returns:
+--   1 if v1 > v2
+--  -1 if v1 < v2
+--   0 if v1 == v2
+function version_compare(v1, v2)
+    local v1 = version_split(v1)
+    local v2 = version_split(v2)
+    local len = (#v1 > #v2) and #v1 or #v2
+
+    for i = 1, len do
+        local p1, p2 = v1[i] or 0, v2[i] or 0
+
+        if p1 > p2 then
+            return 1
+        elseif p1 < p2 then
+            return -1
+        end
+    end
+    return 0
 end
 
 -- debugging tools
