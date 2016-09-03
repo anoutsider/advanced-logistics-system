@@ -9,6 +9,13 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.3.1**
+
+ - Various bug fixes and init code imporvement for old and new installs - mickael9
+ - Improvement to the search events and GUI - mickael9 
+ - Fix for Factorissimo and 0 radius roboports - mickael9 
+ - Change default close gui input key to "Shift + ESC" this can be customized from the game options, but if you use a key like "E" it i will break it's default game behaviour
+ 
 **0.3.0**
 
  - Compatibility update for factorio 0.13
