@@ -84,7 +84,7 @@ function on_configuration_changed(data)
     if data.old_version ~= data.new_version then
         -- Game version changed, we better reset chest names
         global.normalChestsNames = nil
-        global.logisticChestsNames = nil
+        global.logisticsChestsNames = nil
 
         initAll()
     end
