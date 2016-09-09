@@ -1238,8 +1238,11 @@ end
 
 --- Format numbers
 function number_format(n) -- credit http://richard.warburton.it
-    local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
-    return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
+	if n then
+		local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
+		return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
+	end
+	return '0'
 end
 
 --- Splits a string by a separator and returns a table
