@@ -9,6 +9,12 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.3.2**
+
+  - Remove chest names preloading
+  - Add null check to number formatting fucntions
+  - Add German Locale
+ 
 **0.3.1**
 
  - Various bug fixes and init code imporvement for old and new installs - mickael9
