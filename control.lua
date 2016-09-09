@@ -82,10 +82,6 @@ end)
 --- handles mod updates
 function on_configuration_changed(data)
     if data.old_version ~= data.new_version then
-        -- Game version changed, we better reset chest names
-        global.normalChestsNames = nil
-        global.logisticsChestsNames = nil
-
         initAll()
     end
 
@@ -178,11 +174,9 @@ function init()
 
 
     global.logisticsChests = global.logisticsChests or {}
-    global.logisticsChestsNames = global.logisticsChestsNames or getLogisticsChestNames()
     global.disconnectedChests = global.disconnectedChests or {}
 
     global.normalChests = global.normalChests or {}
-    global.normalChestsNames = global.normalChestsNames or getNormalChestNames()
 
     global.logisticsItems = global.logisticsItems or {}
     global.logisticsItemsTotal = global.logisticsItemsTotal or {}
@@ -859,7 +853,6 @@ end
 function getLogisticsItems(force, index)
     local items = {}
     local chests = global.logisticsChests[force.name]
-    local names = global.logisticsChestsNames
     local networksFilter = global.networksFilter[index] or {}
     local networksFilterCount = count(networksFilter)
     local excludeReq = global.settings[index].excludeReq
@@ -878,11 +871,6 @@ function getLogisticsItems(force, index)
                     if not items[n] then
                         items[n] = {}
                         items[n]["total"] = 0
-                        for _,name in pairs(names) do
-                            if not items[n][name] then
-                                items[n][name] = 0
-                            end
-                        end
                     end
 
                     if not items[n][chest.name] then
@@ -947,7 +935,6 @@ end
 function getNormalItems(force)
     local items = {}
     local chests = global.normalChests[force.name]
-    local names = global.normalChestsNames
     local total = 0
 
     if chests then
@@ -958,11 +945,6 @@ function getNormalItems(force)
                     if not items[n] then
                         items[n] = {}
                         items[n]["total"] = 0
-                        for _,name in pairs(names) do
-                            if not items[n][name] then
-                                items[n][name] = 0
-                            end
-                        end
                     end
 
                     if not items[n][chest.name] then

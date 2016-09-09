@@ -33,9 +33,9 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             local sort_by_code = global.codeToName[currentTab][sort_by]
             local sort_dir = sort_dir or global.sort[index][currentTab]["dir"]
 
-            local orderfunc = function(t,a,b) if t[b][sort_by_code] ~= nil and t[a][sort_by_code] ~= nil then return t[b][sort_by_code] < t[a][sort_by_code] end end
+            local orderfunc = function(t,a,b) if t[b][sort_by_code] == nil then t[b][sort_by_code] = 0 end if t[a][sort_by_code] == nil then t[a][sort_by_code] = 0 end return t[b][sort_by_code] < t[a][sort_by_code] end
             if sort_dir == "asc" then
-                orderfunc = function(t,a,b) if t[b][sort_by_code] ~= nil and t[a][sort_by_code] ~= nil then return t[b][sort_by_code] > t[a][sort_by_code] end end
+                orderfunc = function(t,a,b) if t[b][sort_by_code] == nil then t[b][sort_by_code] = 0 end if t[a][sort_by_code] == nil then t[a][sort_by_code] = 0 end return t[b][sort_by_code] > t[a][sort_by_code] end
             end
 
             if sort_by == "name" then
