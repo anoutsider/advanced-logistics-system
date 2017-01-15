@@ -3,6 +3,8 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
     local networks = getLogisticNetworks(player.force)
     local names = global.networksNames[player.force.name]
     local networksCount = global.networksCount[player.force.name]
+    getNetworkAtPlayerLocation(player)
+    local currentNetwork = global.currentPlayerNetwork[index]
     global.networkEdit[index] = false
 
     if networksCount > 0 then
@@ -155,10 +157,14 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
 
                     local nameFlowValue = nameFlow.add({type = "flow", name = "networkInfoNameValueFL_" .. key, direction = "horizontal", style = "als_network_value_flow"})
                     local nameFlowEdit = nameFlow.add({type = "flow", name = "networkInfoNameEditFL_" .. key, direction = "horizontal"})
+                    local nameFlowCurrent = nameFlow.add({type = "flow", name = "networkInfoNameCurrentFL_" .. key, direction = "horizontal"})
 
                     nameFlowValue.add({type = "label", name = "networkInfoNameLabel_" .. key, caption = name, style = "label_style"})
                     nameFlowEdit.add({type = "button", name = "networkInfoNameEdit_" .. key, style = "als_button_edit", tooltip = {"tooltips.net-rename"}})
                     nameFlowEdit.add({type = "button", name = "networkInfoNameConfirm_" .. key, style = "als_button_hidden", tooltip = {"tooltips.net-save"}})
+                    if key == currentNetwork then
+                        nameFlowCurrent.add({type = "button", name = "networkInfoNameCurrent_" .. key, style = "als_button_location", tooltip = {"tooltips.net-current"}})
+                    end
 
                     networksTable.add({type = "label", name = "networkInfoPort_" .. key, caption = port_count})
                     networksTable.add({type = "label", name = "networkInfoLog_" .. key, caption = log_count})
