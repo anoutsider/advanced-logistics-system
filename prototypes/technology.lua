@@ -1,5 +1,4 @@
-data:extend(
-{
+data:extend({
     {
         type = "technology",
         name = "advanced-logistics-systems",
@@ -23,8 +22,3 @@ data:extend(
         order = "c-k-c-a",
     }
 })
-
-
-
-
-

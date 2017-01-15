@@ -21,7 +21,7 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
             addNetworksInfoWidget(player, index)
 
             -- add search widget
-                addNetworkSearchWidget(player, index)			
+            addNetworkSearchWidget(player, index)
 
             -- create networks frame
             if player.gui[guiPos].logisticsFrame.contentFrame.networksFrame ~= nil then
@@ -30,17 +30,17 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
 
             local networksFrame = contentFrame.add({type = "frame", name = "networksFrame", style = "als_items_frame", direction = "vertical"})
 
-			-- add network search
-			local searchText = global.searchText[index]["networks"]
-			searchText = searchText and searchText or ""
-			
-			if searchText ~= "" then
-				-- filter networks based on search string
-				networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
-			else
-				networks = networks
-			end	        
-			
+            -- add network search
+            local searchText = global.searchText[index]["networks"]
+            searchText = searchText and searchText or ""
+
+            if searchText ~= "" then
+                -- filter networks based on search string
+                networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
+            else
+                networks = networks
+            end
+
             -- sort settings
             local sort_by = sort_by or global.sort[index][currentTab]["by"]
             local sort_dir = sort_dir or global.sort[index][currentTab]["dir"]
@@ -133,10 +133,10 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
             itemsSortFlow.add({type = "frame", name = "itemsSortHolder", style = "als_sort_holder"})
             itemsSortFlow.add({type = "frame", name = "items_sort", style = "als_sort" .. sortDirStyle})
 
-            -- info column            
-            -- local networksInfoWrapper = networksTable.add({type = "flow", name = "networksInfoWrapper", direction = "horizontal", style = "als_items_info_flow"})	
-            -- networksInfoWrapper.add({type = "label", name = "networkInfo_tools", caption = {"item-info"}})		
-            networksTable.add({type = "label", name = "networkInfo_tools", caption = {"item-info"}})		
+            -- info column
+            -- local networksInfoWrapper = networksTable.add({type = "flow", name = "networksInfoWrapper", direction = "horizontal", style = "als_items_info_flow"})
+            -- networksInfoWrapper.add({type = "label", name = "networkInfo_tools", caption = {"item-info"}})
+            networksTable.add({type = "label", name = "networkInfo_tools", caption = {"item-info"}})
 
             -- get filtered/sorted items
             for key,network in spairs(networks, orderfunc) do
@@ -353,12 +353,12 @@ function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
 
                     current= current + 1
                     if current >= start and current <= max then
-						local spritePath = getItemSprite(player, name)
-						if spritePath then
-							networkTable.add({type = "sprite-button", name = "networkInfoIcon_" .. key, style = "als_item_icon", sprite = spritePath})	
-						else
-							networkTable.add({type = "sprite-button", name = "networkInfoIcon_" .. key, style = "als_item_icon"})	
-						end
+                        local spritePath = getItemSprite(player, name)
+                        if spritePath then
+                            networkTable.add({type = "sprite-button", name = "networkInfoIcon_" .. key, style = "als_item_icon", sprite = spritePath})
+                        else
+                            networkTable.add({type = "sprite-button", name = "networkInfoIcon_" .. key, style = "als_item_icon"})
+                        end
                         networkTable.add({type = "label", name = "networkInfoType_" .. key, caption = getLocalisedName(name)})
                         networkTable.add({type = "label", name = "networkInfoPos_" .. key, caption = pos.x .. " : " .. pos.y})
                         networkTable.add({type = "label", name = "networkInfoCharging_" .. key, caption = charging})
@@ -411,38 +411,38 @@ function showNetworksFilter(player, index)
         end
 
         local networksFilterFrame = player.gui[guiPos].add({type = "frame", name = "networksFilterFrame", direction = "vertical", style = "als_networks_frame"})
-        networksFilterFrame.add({type = "label", name = "networksFilterTitle", caption = {"network-filter-by", filtersTitle} , style = "als_info_label"})       
+        networksFilterFrame.add({type = "label", name = "networksFilterTitle", caption = {"network-filter-by", filtersTitle} , style = "als_info_label"})
 
         -- add networks table
         if player.gui[guiPos].networksFilterFrame.networksTable ~= nil then
             player.gui[guiPos].networksFilterFrame.networksTable.destroy()
         end
 
-		-- add network search
-		local searchText = ""
-		global.searchText[index]["networksFilter"] = searchText
-		
+        -- add network search
+        local searchText = ""
+        global.searchText[index]["networksFilter"] = searchText
+
         local searchFrame = networksFilterFrame.add({type = "frame", name =  "networksSearchFrame", style = "als_search_frame", direction = "horizontal"})
         searchFrame.add({type = "label", name = "networksSearchFrameLabel", style = "als_search_label", caption = {"search-label"}})
-		local searchField = searchFrame.add({type = "textfield", name = "networks-filter-search-field", style = "als_searchfield_style", text = searchText })		        
+        local searchField = searchFrame.add({type = "textfield", name = "networks-filter-search-field", style = "als_searchfield_style", text = searchText })
 
         -- add all networks option
-		local networksAllTable = networksFilterFrame.add({type = "table", name = "networksAllTable", colspan = 2, style = "als_networks_table"})
+        local networksAllTable = networksFilterFrame.add({type = "table", name = "networksAllTable", colspan = 2, style = "als_networks_table"})
         local allFilter = filtersCount > 0 and "false" or "true"
-		local allFilterFlow = networksAllTable.add({type = "flow", name = "allFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
+        local allFilterFlow = networksAllTable.add({type = "flow", name = "allFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
         allFilterFlow.add({type = "checkbox", name = "networksFilter_all", style = "checkbox_style", caption = " ", state = allFilter})
-		local allFilterNameFlow = networksAllTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
+        local allFilterNameFlow = networksAllTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
         allFilterNameFlow.add({type = "label", name = "networksName_all", caption = {"network-all"}, style = "als_info_label"})
-		
+
         -- add networks options
-		local networksTableWrapper = networksFilterFrame.add({type = "scroll-pane", name = "networksTableWrapper", style="als_networks_table_wrapper", vertical_scroll_policy = "always"})
-		local networksTable = networksTableWrapper.add({type = "table", name = "networksTable", colspan = 2, style = "als_networks_table"})
-		
-		local networksFilterFlow = networksTable.add({type = "flow", name = "networkFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
+        local networksTableWrapper = networksFilterFrame.add({type = "scroll-pane", name = "networksTableWrapper", style="als_networks_table_wrapper", vertical_scroll_policy = "always"})
+        local networksTable = networksTableWrapper.add({type = "table", name = "networksTable", colspan = 2, style = "als_networks_table"})
+
+        local networksFilterFlow = networksTable.add({type = "flow", name = "networkFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
         networksFilterFlow.add({type = "label", name = "networksFilterLabel", caption = {"filter"}, style = "label_style"})
-		local networksFilterNameFlow = networksTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
+        local networksFilterNameFlow = networksTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
         networksFilterNameFlow.add({type = "label", name = "networksNameLabel", caption = {"network-name"}, style = "label_style"})
-		
+
         for key,network in pairs(networks) do
             local name = network.name
             local isFilter = networksFilter[key] and "true" or "false"
@@ -459,35 +459,35 @@ end
 
 --- Update network filters table
 function updateNetworkFiltersTable(player, index)
-	local networks = global.networks[player.force.name]
+    local networks = global.networks[player.force.name]
     local networksFilter = global.networksFilter[index]
     local guiPos = global.settings[index].guiPos
     local networksFilterFrame = player.gui[guiPos].networksFilterFrame
     local networksTableWrapper = networksFilterFrame.networksTableWrapper
     local networksTable = networksTableWrapper.networksTable
 
-    if networksTableWrapper ~= nil and networksTable ~= nil and networksTable.children_names ~= nil then	
-		-- search settings
-		local searchText = global.searchText[index]["networksFilter"] or ""
-		if searchText ~= "" then
-			-- filter networks based on search string
-			networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
-		else
-			networks = networks
-		end
-		
-		for _,childName in pairs(networksTable.children_names) do
-			if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then   
-				local key = string.gsub(childName, "networksFilter_", "")
-				if not networks[key] then
-					networksTable[childName].style = "als_network_filter_hidden"
-					networksTable["networksName_" .. key].style = "als_network_name_hidden"
-				else
-					networksTable[childName].style = "checkbox_style"
-					networksTable["networksName_" .. key].style = "als_info_label"
-				end
-			end
-		end				
+    if networksTableWrapper ~= nil and networksTable ~= nil and networksTable.children_names ~= nil then
+        -- search settings
+        local searchText = global.searchText[index]["networksFilter"] or ""
+        if searchText ~= "" then
+            -- filter networks based on search string
+            networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
+        else
+            networks = networks
+        end
+
+        for _,childName in pairs(networksTable.children_names) do
+            if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                local key = string.gsub(childName, "networksFilter_", "")
+                if not networks[key] then
+                    networksTable[childName].style = "als_network_filter_hidden"
+                    networksTable["networksName_" .. key].style = "als_network_name_hidden"
+                else
+                    networksTable[childName].style = "checkbox_style"
+                    networksTable["networksName_" .. key].style = "als_info_label"
+                end
+            end
+        end
     end
 end
 
@@ -523,68 +523,68 @@ end
 
 --- Handle networks filter list event
 function handleNetworksFilterListEvent(player, index, element, updateElement)
-	if element and element.valid then
-		local guiPos = global.settings[index].guiPos
-		local elementName = element.name	
-		
-		-- network filters list
-		if elementName:find("networksFilter_") then			
-			local networksFilterFrame = player.gui[guiPos].networksFilterFrame
-			local networksTable = networksFilterFrame.networksTableWrapper.networksTable
-			local networksAllCheck = networksFilterFrame.networksAllTable.allFilterFlow["networksFilter_all"]
-			local key = string.gsub(elementName, "networksFilter_", "")
-			local state = element.state	and element.state or "false"		
-			local checkAll = false			
-			
-			if updateElement then
-				if state == "false" then
-					element.state = true
-				elseif state == "true" then
-					element.state = false
-				end				
-			end
-			
-			if key == "all" and state then
-				checkAll = true
-			end
+    if element and element.valid then
+        local guiPos = global.settings[index].guiPos
+        local elementName = element.name
 
-			if networksTable and networksTable.children_names ~= nil then
-				-- if filter is checked
-				if key ~= "all" and state then
-					checkAll = true
-					for _,childName in pairs(networksTable.children_names) do
-						if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then							
-							if not networksTable[childName].state then                        
-								checkAll = false
-							end
-						end
-					end 
-				-- if filter is unchecked
-				elseif not state then
-					checkAll = true
-					for _,childName in pairs(networksTable.children_names) do
-						if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
-							if networksTable[childName].state then                        
-								checkAll = false
-							end
-						end
-					end 				
-				end
-				
-				-- if filter by all is selected or all options are selected, unselect all other options or if not all options are selected, unselect filter by all
-				if checkAll then
-					for _,childName in pairs(networksTable.children_names) do
-						if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then                     
-							networksTable[childName].state = false
-						end
-					end	
-					networksAllCheck.state = true
-				else		
-					networksAllCheck.state = false
-				end
-			
-			end
-						
-		end
-	end
+        -- network filters list
+        if elementName:find("networksFilter_") then
+            local networksFilterFrame = player.gui[guiPos].networksFilterFrame
+            local networksTable = networksFilterFrame.networksTableWrapper.networksTable
+            local networksAllCheck = networksFilterFrame.networksAllTable.allFilterFlow["networksFilter_all"]
+            local key = string.gsub(elementName, "networksFilter_", "")
+            local state = element.state    and element.state or "false"
+            local checkAll = false
+
+            if updateElement then
+                if state == "false" then
+                    element.state = true
+                elseif state == "true" then
+                    element.state = false
+                end
+            end
+
+            if key == "all" and state then
+                checkAll = true
+            end
+
+            if networksTable and networksTable.children_names ~= nil then
+                -- if filter is checked
+                if key ~= "all" and state then
+                    checkAll = true
+                    for _,childName in pairs(networksTable.children_names) do
+                        if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                            if not networksTable[childName].state then
+                                checkAll = false
+                            end
+                        end
+                    end
+                -- if filter is unchecked
+                elseif not state then
+                    checkAll = true
+                    for _,childName in pairs(networksTable.children_names) do
+                        if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                            if networksTable[childName].state then
+                                checkAll = false
+                            end
+                        end
+                    end
+                end
+
+                -- if filter by all is selected or all options are selected, unselect all other options or if not all options are selected, unselect filter by all
+                if checkAll then
+                    for _,childName in pairs(networksTable.children_names) do
+                        if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                            networksTable[childName].state = false
+                        end
+                    end
+                    networksAllCheck.state = true
+                else
+                    networksAllCheck.state = false
+                end
+
+            end
+
+        end
+    end
 end

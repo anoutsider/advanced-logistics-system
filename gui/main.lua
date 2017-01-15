@@ -1,10 +1,10 @@
 --- Init GUI and add Logistics View main button
 function initGUI(player, force)
-	if force and player.gui.top["logistics-view-button"] ~= nil then
-		if player.gui.top["logistics-view-button"].style ~= "als_button_main_icon" then
-			player.gui.top["logistics-view-button"].style = "als_button_main_icon"
-		end
-	end
+    if force and player.gui.top["logistics-view-button"] ~= nil then
+        if player.gui.top["logistics-view-button"].style ~= "als_button_main_icon" then
+            player.gui.top["logistics-view-button"].style = "als_button_main_icon"
+        end
+    end
     if not player.gui.top["logistics-view-button"] then
         player.gui.top.add({type = "button", name = "logistics-view-button", style = "als_button_main_icon"})
         global.guiLoaded[player.index] = true
@@ -13,7 +13,7 @@ end
 
 --- Create the GUI
 function createGUI(player, index)
-    
+
     local guiPos = global.settings[index].guiPos
     if player.gui[guiPos].logisticsFrame ~= nil then
         player.gui[guiPos].logisticsFrame.destroy()
@@ -23,10 +23,10 @@ function createGUI(player, index)
         local buttonStyle = currentTab == 'logistics' and "_selected" or ""
 
         -- main frame
-        local logisticsFrame = player.gui[guiPos].add({type = "frame", name = "logisticsFrame", direction = "vertical", style = "als_frame"})        
+        local logisticsFrame = player.gui[guiPos].add({type = "frame", name = "logisticsFrame", direction = "vertical", style = "als_frame"})
         local titleFlow = logisticsFrame.add({type = "flow", name = "titleFlow", direction = "horizontal"})
         titleFlow.add({type = "button", name = "logistics-view-close", caption = {"logistics-view-close"}, style = "als_button_close"})
-        titleFlow.add({type = "label", name="titleLabel", style = "als_title_label", caption = {"logistics-view"}})        
+        titleFlow.add({type = "label", name="titleLabel", style = "als_title_label", caption = {"logistics-view"}})
 
         -- menu flow
         local menuFlow = logisticsFrame.add({type = "flow", name = "menuFlow", direction = "horizontal"})
@@ -34,7 +34,7 @@ function createGUI(player, index)
         buttonStyle = currentTab == 'normal' and "_selected" or ""
         menuFlow.add({type = "button", name = "normalMenuBtn", caption = {"normal-items-button"}, style = "als_button" .. buttonStyle})
         buttonStyle = (currentTab == 'networks' or currentTab == 'networkInfo') and "_selected" or ""
-        menuFlow.add({type = "button", name = "networksMenuBtn", caption = {"networks"}, style = "als_button" .. buttonStyle})        
+        menuFlow.add({type = "button", name = "networksMenuBtn", caption = {"networks"}, style = "als_button" .. buttonStyle})
         buttonStyle = currentTab == 'settings' and "_selected" or ""
         menuFlow.add({type = "button", name = "settingsMenuBtn", caption = {"settings-button"}, style = "als_button" .. buttonStyle})
 
@@ -55,7 +55,7 @@ function showGUI(player, index)
     if global.guiVisible[index] == 0 then
         local currentTab = (global.currentTab[index] == "settings") and "logistics" or global.currentTab[index]
         global.currentTab[index] = currentTab
-        
+
         createGUI(player, index)
 
         -- hide settings gui
@@ -75,7 +75,7 @@ function hideGUI(player, index)
 end
 
 --- Destroy the GUI
-function destroyGUI(player, index)    
+function destroyGUI(player, index)
     if player.gui.top["logistics-view-button"] ~= nil then
         hideGUI(player, index)
         player.gui.top["logistics-view-button"].destroy()
@@ -86,8 +86,8 @@ end
 --- Update main gui content
 function updateGUI(player, index, tab)
     local currentTab = tab or global.currentTab[index]
-    local force = player.force 
-    
+    local force = player.force
+
     if currentTab == "logistics" then
         local items = getLogisticsItems(force, index)
         getNetworkAtPlayerLocation(player)
@@ -96,16 +96,16 @@ function updateGUI(player, index, tab)
         local items = getNormalItems(force)
         updateItemsTable(items, player, index)
     elseif currentTab == "disconnected" then
-        showDisconnectedInfo(player, index) 
+        showDisconnectedInfo(player, index)
     elseif currentTab == "itemInfo" then
         local item = global.currentItem[index]
         if item then
             showItemInfo(item, player, index)
-        end        
+        end
     elseif currentTab == "networks" then
         if not global.networkEdit[index] then
             showNetworksInfo(player, index)
-        end    
+        end
     elseif currentTab == "networkInfo" then
         local network = global.currentNetwork[index]
         if network then
@@ -126,7 +126,6 @@ function clearGUI(player, index)
             end
         end
     end
-
 end
 
 --- Clear menu selection
@@ -165,10 +164,10 @@ end
 
 --- Get item sprite path
 function getItemSprite(player, name)
-	local gui = player.gui
-	local path = "item/" .. name
-	if gui.is_valid_sprite_path(path) then
-		return path
-	end
-	return false
+  local gui = player.gui
+  local path = "item/" .. name
+  if gui.is_valid_sprite_path(path) then
+      return path
+  end
+  return false
 end

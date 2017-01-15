@@ -2,46 +2,44 @@
 is_scalable = false
 
 --Fonts
-data:extend(
-{
-  {
-    type = "font",
-    name = "font-s",
-    from = "default",
-    size = 12
-  },
-  {
-    type = "font",
-    name = "font-m",
-    from = "default",
-    size = 14
-  },
-  {
-    type = "font",
-    name = "font-l",
-    from = "default",
-    size = 16
-  },
-  {
-    type = "font",
-    name = "font-sb",
-    from = "default-semibold",
-    size = 12
-  },
-  {
-    type = "font",
-    name = "font-mb",
-    from = "default-semibold",
-    size = 14
-  },
-  {
-    type = "font",
-    name = "font-lb",
-    from = "default-semibold",
-    size = 16
-  }
-}
-)
+data:extend({
+    {
+        type = "font",
+        name = "font-s",
+        from = "default",
+        size = 12
+    },
+    {
+        type = "font",
+        name = "font-m",
+        from = "default",
+        size = 14
+    },
+    {
+        type = "font",
+        name = "font-l",
+        from = "default",
+        size = 16
+    },
+    {
+        type = "font",
+        name = "font-sb",
+        from = "default-semibold",
+        size = 12
+    },
+    {
+        type = "font",
+        name = "font-mb",
+        from = "default-semibold",
+        size = 14
+    },
+    {
+        type = "font",
+        name = "font-lb",
+        from = "default-semibold",
+        size = 16
+    }
+})
 
 --- Settings GUI
 data.raw["gui-style"].default["als_settings_table"] =
@@ -132,7 +130,7 @@ data.raw["gui-style"].default["als_frame"] =
     right_padding = 4,
     bottom_padding = 10,
     left_padding = 4,
-    scalable = is_scalable, 
+    scalable = is_scalable,
 }
 
 data.raw["gui-style"].default["als_frame_hidden"] =
@@ -149,7 +147,7 @@ data.raw["gui-style"].default["als_title_label"] =
     width = 708,
     align = "center",
     font = "font-lb",
-	scalable = is_scalable,
+    scalable = is_scalable,
     font_color = {r=0.98, g=0.66, b=0.22}
 }
 
@@ -160,7 +158,7 @@ data.raw["gui-style"].default["als_content_frame"] =
     right_padding = 0,
     bottom_padding = 0,
     left_padding = 0,
-	scalable = is_scalable,
+    scalable = is_scalable,
     graphical_set = { type = "none" },
 }
 
@@ -176,11 +174,11 @@ data.raw["gui-style"].default["als_items_table"] =
 {
     type = "table_style",
     minimal_height = 400,
-	--minimal_width = 740,
+    --minimal_width = 740,
     cell_padding = 2,
     horizontal_spacing= 2,
     vertical_spacing= 4,
-	scalable = is_scalable,
+    scalable = is_scalable,
     column_graphical_set =
     {
         type = "composition",
@@ -200,7 +198,7 @@ data.raw["gui-style"].default["als_search_frame"] =
     bottom_padding = 5,
     left_padding = 5,
     minimal_height = 40,
-	scalable = is_scalable,
+    scalable = is_scalable,
     align = "center",
 }
 
@@ -225,8 +223,8 @@ data.raw["gui-style"].default["als_searchfield_style"] =
 {
     type = "textfield_style",
     parent = "textfield_style",
-	height = 20,
-	maximal_height = 20,
+    height = 20,
+    maximal_height = 20,
 }
 
 -- item info
@@ -245,7 +243,7 @@ data.raw["gui-style"].default["als_info_frame"] =
     right_padding = 5,
     bottom_padding = 5,
     left_padding = 5,
-	scalable = is_scalable,
+    scalable = is_scalable,
     minimal_height = 40
 }
 
@@ -266,8 +264,8 @@ data.raw["gui-style"].default["als_filters_frame"] =
     right_padding = 5,
     bottom_padding = 0,
     left_padding = 5,
-	cell_spacing = 5,
-	scalable = is_scalable,
+    cell_spacing = 5,
+    scalable = is_scalable,
     minimal_height = 40
 }
 
@@ -276,22 +274,22 @@ data.raw["gui-style"].default["als_filters_frame"] =
 data.raw["gui-style"].default["als_flow_style"] =
 {
     type = "flow_style",
-	horizontal_spacing = 0,
-	vertical_spacing = 0,	
-	top_padding = 0,
-	right_padding = 0,
-	bottom_padding = 0,
-	left_padding = 0,
+    horizontal_spacing = 0,
+    vertical_spacing = 0,
+    top_padding = 0,
+    right_padding = 0,
+    bottom_padding = 0,
+    left_padding = 0,
     scalable = is_scalable,
 }
 
 data.raw["gui-style"].default["als_table_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 72,
     scalable = is_scalable,
 }
@@ -299,10 +297,10 @@ data.raw["gui-style"].default["als_table_flow"] =
 data.raw["gui-style"].default["als_total_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 82,
     scalable = is_scalable,
 }
@@ -310,10 +308,10 @@ data.raw["gui-style"].default["als_total_flow"] =
 data.raw["gui-style"].default["als_total_w_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 97,
     scalable = is_scalable,
 }
@@ -321,10 +319,10 @@ data.raw["gui-style"].default["als_total_w_flow"] =
 data.raw["gui-style"].default["als_pos_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 82,
     scalable = is_scalable,
 }
@@ -332,10 +330,10 @@ data.raw["gui-style"].default["als_pos_flow"] =
 data.raw["gui-style"].default["als_sort_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 16,
     scalable = is_scalable,
 }
@@ -343,10 +341,10 @@ data.raw["gui-style"].default["als_sort_flow"] =
 data.raw["gui-style"].default["als_icon_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 36,
     scalable = is_scalable,
 }
@@ -354,10 +352,10 @@ data.raw["gui-style"].default["als_icon_flow"] =
 data.raw["gui-style"].default["als_name_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 252,
     scalable = is_scalable,
 }
@@ -365,10 +363,10 @@ data.raw["gui-style"].default["als_name_flow"] =
 data.raw["gui-style"].default["als_items_info_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
-	left_padding = 0,
-	right_padding = 0,
-	top_padding = 5,
+    parent = "als_flow_style",
+    left_padding = 0,
+    right_padding = 0,
+    top_padding = 5,
     minimal_width = 25,
     scalable = is_scalable,
 }
@@ -376,17 +374,17 @@ data.raw["gui-style"].default["als_items_info_flow"] =
 data.raw["gui-style"].default["als_tools_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 6,
     vertical_spacing = 0,
-	left_padding = 0,
-	right_padding = 0,
-	top_padding = 5,
+    left_padding = 0,
+    right_padding = 0,
+    top_padding = 5,
     minimal_width = 206,
     scalable = is_scalable,
 }
 
--- Networks 
+-- Networks
 data.raw["gui-style"].default["als_network_value_flow"] =
 {
     type = "flow_style",
@@ -409,17 +407,17 @@ data.raw["gui-style"].default["als_networks_frame"] =
     right_padding = 5,
     bottom_padding = 5,
     left_padding = 5,
-	cell_spacing = 0,
-	horizontal_spacing = 0,
-	vertial_spacing = 0,
-	scalable = is_scalable,
+    cell_spacing = 0,
+    horizontal_spacing = 0,
+    vertial_spacing = 0,
+    scalable = is_scalable,
 }
 
 data.raw["gui-style"].default["als_networks_table_wrapper"] =
 {
     type = "scroll_pane_style",
-	parent = "scroll_pane_style",
-	maximal_height = 400,
+    parent = "scroll_pane_style",
+    maximal_height = 400,
 }
 
 data.raw["gui-style"].default["als_networks_table"] =
@@ -428,8 +426,8 @@ data.raw["gui-style"].default["als_networks_table"] =
     cell_padding = 5,
     horizontal_spacing = 0,
     vertial_spacing = 0,
-	minimal_width = 400,
-	scalable = is_scalable,
+    minimal_width = 400,
+    scalable = is_scalable,
     column_graphical_set =
     {
         type = "composition",
@@ -443,10 +441,10 @@ data.raw["gui-style"].default["als_networks_table"] =
 data.raw["gui-style"].default["als_network_filter_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
+    parent = "als_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
-	top_padding = 5,
+    top_padding = 5,
     width = 50,
     scalable = is_scalable,
 }
@@ -454,8 +452,8 @@ data.raw["gui-style"].default["als_network_filter_flow"] =
 data.raw["gui-style"].default["als_network_name_flow"] =
 {
     type = "flow_style",
-	parent = "als_flow_style",
-	top_padding = 5,
+    parent = "als_flow_style",
+    top_padding = 5,
     width = 350,
     scalable = is_scalable,
 }
@@ -479,7 +477,7 @@ data.raw["gui-style"].default["als_button"] =
     left_padding = 3,
     font = "font-m",
     hovered_font_color = {r=0.1, g=0.1, b=0.1},
-	scalable = is_scalable,
+    scalable = is_scalable,
     default_graphical_set =
     {
         type = "monolith",
@@ -567,11 +565,11 @@ data.raw["gui-style"].default["als_button_small"] =
     right_padding = 3,
     bottom_padding = 1,
     left_padding = 3,
-	height = 28,
-	--maximal_height = 24,
+    height = 28,
+    --maximal_height = 24,
     font = "font-s",
     hovered_font_color = {r=0.1, g=0.1, b=0.1},
-	scalable = is_scalable,
+    scalable = is_scalable,
     default_graphical_set =
     {
         type = "monolith",
@@ -606,7 +604,7 @@ data.raw["gui-style"].default["als_button_small"] =
             height = 28,
             x = 0
         }
-    }	
+    }
 }
 
 data.raw["gui-style"].default["als_button_small_selected"] =
@@ -1539,11 +1537,11 @@ data.raw["gui-style"].default["als_button_all"] =
     right_padding = 3,
     bottom_padding = 0,
     left_padding = 3,
-	width = 32,
-	height = 32,
+    width = 32,
+    height = 32,
     font = "font-s",
     hovered_font_color = {r=0.1, g=0.1, b=0.1},
-	scalable = is_scalable,
+    scalable = is_scalable,
     default_graphical_set =
     {
         type = "monolith",
@@ -1589,11 +1587,11 @@ data.raw["gui-style"].default["als_button_all_selected"] =
     right_padding = 3,
     bottom_padding = 0,
     left_padding = 3,
-	width = 32,
-	height = 32,
+    width = 32,
+    height = 32,
     font = "font-s",
     hovered_font_color = {r=0.1, g=0.1, b=0.1},
-	scalable = is_scalable,
+    scalable = is_scalable,
     default_graphical_set =
     {
         type = "monolith",
@@ -2802,9 +2800,9 @@ data.raw["gui-style"].default["als_item_icon"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,			
-			x = 0
+            width = 32,
+            height = 32,
+            x = 0
         }
     },
     hovered_graphical_set =
@@ -2814,9 +2812,9 @@ data.raw["gui-style"].default["als_item_icon"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
     clicked_graphical_set =
@@ -2825,9 +2823,9 @@ data.raw["gui-style"].default["als_item_icon"] =
         monolith_image =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
-			width = 32,
-			height = 32,
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
 }
@@ -2846,9 +2844,9 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,			
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
     hovered_graphical_set =
@@ -2858,9 +2856,9 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,
-			x = 0
+            width = 32,
+            height = 32,
+            x = 0
         }
     },
     clicked_graphical_set =
@@ -2869,9 +2867,9 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
         monolith_image =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
-			width = 32,
-			height = 32,
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
 }
@@ -2891,9 +2889,9 @@ data.raw["gui-style"].default["als_item_icon_small"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,			
-			x = 0
+            width = 32,
+            height = 32,
+            x = 0
         }
     },
     hovered_graphical_set =
@@ -2903,9 +2901,9 @@ data.raw["gui-style"].default["als_item_icon_small"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
     clicked_graphical_set =
@@ -2914,9 +2912,9 @@ data.raw["gui-style"].default["als_item_icon_small"] =
         monolith_image =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
-			width = 32,
-			height = 32,
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
 }
@@ -2935,9 +2933,9 @@ data.raw["gui-style"].default["als_item_icon_small_selected"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,			
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
     hovered_graphical_set =
@@ -2947,9 +2945,9 @@ data.raw["gui-style"].default["als_item_icon_small_selected"] =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
             priority = "extra-high-no-scale",
-			width = 32,
-			height = 32,
-			x = 0
+            width = 32,
+            height = 32,
+            x = 0
         }
     },
     clicked_graphical_set =
@@ -2958,9 +2956,9 @@ data.raw["gui-style"].default["als_item_icon_small_selected"] =
         monolith_image =
         {
             filename = "__advanced-logistics-system__/graphics/gui.png",
-			width = 32,
-			height = 32,
-			x = 32
+            width = 32,
+            height = 32,
+            x = 32
         }
     },
 }

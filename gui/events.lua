@@ -1,39 +1,39 @@
 --- Custom Input Events
 script.on_event("ls-toggle-gui", function(event)
 
-	local index = event.player_index
-	local player = game.players[index]
-	local visible = global.guiVisible[index]
+    local index = event.player_index
+    local player = game.players[index]
+    local visible = global.guiVisible[index]
 
-	--- reset player position if in location view mode
-	local locationFlow = player.gui.center.locationFlow
-	if locationFlow ~= nil then
-		resetPosition(player, index)
-	end
+    --- reset player position if in location view mode
+    local locationFlow = player.gui.center.locationFlow
+    if locationFlow ~= nil then
+        resetPosition(player, index)
+    end
 
-	if visible == 0 then
-		getLogisticNetworks(player.force)
-		getNetworkAtPlayerLocation(player)
-		showGUI(player, index)
-	else
-		hideGUI(player, index)
-	end
+    if visible == 0 then
+        getLogisticNetworks(player.force)
+        getNetworkAtPlayerLocation(player)
+        showGUI(player, index)
+    else
+        hideGUI(player, index)
+    end
 end)
 
 script.on_event("ls-close-gui", function(event)
 
-	local index = event.player_index
-	local player = game.players[index]
-	local visible = global.guiVisible[index]
+    local index = event.player_index
+    local player = game.players[index]
+    local visible = global.guiVisible[index]
 
-	if visible ~= 0 then
-		--- reset player position if in location view mode
-		local locationFlow = player.gui.center.locationFlow
-		if locationFlow ~= nil then
-			resetPosition(player, index)
-		end	
-		hideGUI(player, index)
-	end
+    if visible ~= 0 then
+        --- reset player position if in location view mode
+        local locationFlow = player.gui.center.locationFlow
+        if locationFlow ~= nil then
+            resetPosition(player, index)
+        end
+        hideGUI(player, index)
+    end
 end)
 
 --- GUI Events
@@ -41,46 +41,46 @@ end)
 -- Search Events
 script.on_event(defines.events.on_gui_text_changed, function(event)
 
-	local index = event.player_index
-	local player = game.players[index]
-	local visible = global.guiVisible[index]
-	local element = event.element
-	local search_fields = {
-		["logistics-search-field"]       = { name = "logistics",      update = updateGUI },
-		["normal-search-field"]          = { name = "normal",         update = updateGUI },
-		["networks-filter-search-field"] = { name = "networksFilter", update = updateNetworkFiltersTable },
-		["networks-search-field"]        = { name = "networks",       update = showNetworksInfo }
-	}
+        local index = event.player_index
+        local player = game.players[index]
+        local visible = global.guiVisible[index]
+        local element = event.element
+        local search_fields = {
+                ["logistics-search-field"]       = { name = "logistics",      update = updateGUI },
+                ["normal-search-field"]          = { name = "normal",         update = updateGUI },
+                ["networks-filter-search-field"] = { name = "networksFilter", update = updateNetworkFiltersTable },
+                ["networks-search-field"]        = { name = "networks",       update = showNetworksInfo }
+        }
 
-	if not element or not element.valid then
-		return
-	end
+        if not element or not element.valid then
+                return
+        end
 
-	local elementName = element.name
-	local searchText = element.text or ""
-	local field = search_fields[elementName]
+        local elementName = element.name
+        local searchText = element.text or ""
+        local field = search_fields[elementName]
 
-	if not field then
-		return
-	end
+        if not field then
+                return
+        end
 
-	global.searchText[index][field.name] = string.lower(searchText)
+        global.searchText[index][field.name] = string.lower(searchText)
 
-	if searchText == "" or string.len(searchText) >= 3 then
-		field.update(player, index)
-	end
+        if searchText == "" or string.len(searchText) >= 3 then
+                field.update(player, index)
+        end
 end)
 
 -- network filter events
 -- Search Events
 script.on_event(defines.events.on_gui_checked_state_changed, function(event)
 
-	local index = event.player_index
-	local player = game.players[index]
-	local guiPos = global.settings[index].guiPos
-	local element = event.element
+        local index = event.player_index
+        local player = game.players[index]
+        local guiPos = global.settings[index].guiPos
+        local element = event.element
 
-	handleNetworksFilterListEvent(player, index, element, true)
+        handleNetworksFilterListEvent(player, index, element, true)
 end)
 
 script.on_event(defines.events.on_gui_click, function(event)
@@ -268,10 +268,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 
     -- item info table columns sorting event
     elseif event.element.name:find("itemInfo_") ~= nil  then
-		-- disable sorting on tools/info column
-		if event.element.name == "itemInfo_tools" then
-			return
-		end
+        -- disable sorting on tools/info column
+        if event.element.name == "itemInfo_tools" then
+            return
+        end
         local currentTab = global.currentTab[index]
         local currentItem = global.currentItem[index]
         if currentItem then
@@ -342,11 +342,11 @@ script.on_event(defines.events.on_gui_click, function(event)
                         isSelected = event.element.state
                         type = "group"
                     else
-						if filter_by == "all" then
-							isSelected = style.name == "als_button_selected"
-						else
-							isSelected = style.name == "als_item_icon_small_selected"
-						end
+                        if filter_by == "all" then
+                            isSelected = style.name == "als_button_selected"
+                        else
+                            isSelected = style.name == "als_item_icon_small_selected"
+                        end
                     end
 
                     if not isSelected then
@@ -471,10 +471,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 
     -- disconnected table columns sorting event
     elseif event.element.name:find("disconnectedInfo_") ~= nil  then
-		-- disable sorting on tools/info column
-		if event.element.name == "disconnectedInfo_tools" then
-			return
-		end
+        -- disable sorting on tools/info column
+        if event.element.name == "disconnectedInfo_tools" then
+            return
+        end
         local currentTab = global.currentTab[index]
         local name = event.element.name
         local style = event.element.style
@@ -559,11 +559,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 
     -- disconnected table filters event
     elseif event.element.name:find("disconnectedFilter_") ~= nil  then
-		local guiPos = global.settings[index].guiPos
-		local currentTab = global.currentTab[index]       
-		
-		if currentTab == "disconnected" then
-			local filters = global.disconnectedFilters[index]
+        local guiPos = global.settings[index].guiPos
+        local currentTab = global.currentTab[index]
+
+        if currentTab == "disconnected" then
+            local filters = global.disconnectedFilters[index]
             local name = event.element.name
             local style = event.element.style
             local filter_by = string.gsub(name, "disconnectedFilter_", "")
@@ -577,12 +577,12 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                 local filterFrame = filtersFlow.chestsFilterFrame
                 if filterFrame ~= nil then
-					
-					if filter_by == "all" then
-						isSelected = style.name == "als_button_all_selected"
-					else
-						isSelected = style.name == "als_item_icon_small_selected"
-					end
+
+                    if filter_by == "all" then
+                        isSelected = style.name == "als_button_all_selected"
+                    else
+                        isSelected = style.name == "als_item_icon_small_selected"
+                    end
 
                     if not isSelected then
                         if type == "chests" then
@@ -629,7 +629,7 @@ script.on_event(defines.events.on_gui_click, function(event)
                 end
             end
         end
-		
+
     -- location view back button event
     elseif event.element.name == "locationViewBack" then
 
@@ -642,7 +642,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         resetMenu(player, index)
         clearGUI(player, index)
         showNetworksInfo(player, index)
-        
+
     -- networks filter button event
     elseif event.element.name == "networkFiltersFrameView" then
 
@@ -665,10 +665,10 @@ script.on_event(defines.events.on_gui_click, function(event)
 
     -- networks table columns sorting event
     elseif event.element.name:find("networkInfo_") ~= nil  then
-		-- disable sorting on tools/info column
-		if event.element.name == "networkInfo_tools" then
-			return
-		end
+        -- disable sorting on tools/info column
+        if event.element.name == "networkInfo_tools" then
+            return
+        end
         local currentTab = global.currentTab[index]
         local currentNetwork = global.currentNetwork[index]
         local name = event.element.name
@@ -802,7 +802,7 @@ script.on_event(defines.events.on_gui_click, function(event)
                 end
             end
         end
-        
+
     -- network filters apply
     elseif event.element.name == "applyFiltersBtn" then
 
@@ -815,30 +815,30 @@ script.on_event(defines.events.on_gui_click, function(event)
         if networksFilterFrame ~= nil then
             networksFilterFrame.destroy()
         end
-        showGUI(player, index)        
-    
-	-- network filters list name click
-	elseif event.element.name:find("networksName_") ~= nil then	
-        local guiPos = global.settings[index].guiPos
-        local name = event.element.name
-        local key = string.gsub(name, "networksName_", "")
-		local networksFilterFrame = player.gui[guiPos].networksFilterFrame
-		local networksTable = networksFilterFrame.networksTableWrapper.networksTable
-		local networksAllCheck = networksFilterFrame.networksAllTable.allFilterFlow["networksFilter_all"]		
-		local checkElementId = "networksFilter_" .. key
-		local checkElement = false
-		
-		if key == "all" then
-			checkElement = networksAllCheck
-		else
-			checkElement = networksTable[checkElementId]
-		end
-		
-		
-		if checkElement and checkElement ~= nil then
-			handleNetworksFilterListEvent(player, index, checkElement, true)
-		end
-		
+        showGUI(player, index)
+
+    -- network filters list name click
+    elseif event.element.name:find("networksName_") ~= nil then
+    local guiPos = global.settings[index].guiPos
+    local name = event.element.name
+    local key = string.gsub(name, "networksName_", "")
+        local networksFilterFrame = player.gui[guiPos].networksFilterFrame
+        local networksTable = networksFilterFrame.networksTableWrapper.networksTable
+        local networksAllCheck = networksFilterFrame.networksAllTable.allFilterFlow["networksFilter_all"]
+        local checkElementId = "networksFilter_" .. key
+        local checkElement = false
+
+        if key == "all" then
+                checkElement = networksAllCheck
+        else
+                checkElement = networksTable[checkElementId]
+        end
+
+
+        if checkElement and checkElement ~= nil then
+                handleNetworksFilterListEvent(player, index, checkElement, true)
+        end
+
     -- pagination event
     else
 
@@ -858,7 +858,7 @@ script.on_event(defines.events.on_gui_click, function(event)
                     local currentNetwork = global.currentNetwork[index]
                     if currentNetwork then
                         showNetworkInfo(currentNetwork, player, index, page)
-                    end                
+                    end
                 else
                     updateGUI(player, index)
                 end

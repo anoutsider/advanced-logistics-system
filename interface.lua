@@ -6,15 +6,15 @@ remote.add_interface("advanced-logistics-system",
             hideGUI(player, index)
             showSettings(player, index)
         end,
-        
+
         activateSystem = function(player)
             local index = player.index
             local forceName = player.force.name
-			init()
-			initForce(player.force)
+            init()
+            initForce(player.force)
             global.hasSystem[forceName] = true
-			initPlayer(player)
-            initGUI(player, true)                                  
+            initPlayer(player)
+            initGUI(player, true)
         end
     }
 )
