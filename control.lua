@@ -26,6 +26,7 @@ end)
 
 --- Force Related Events
 script.on_event(defines.events.on_force_created, function(event)
+    initAll() -- workaround for https://forums.factorio.com/viewtopic.php?f=7&t=39906
     initForce(event.force)
 end)
 
