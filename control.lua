@@ -130,6 +130,7 @@ function on_configuration_changed(data)
         global.guiVisible[player.index] = 0
 
         if playerHasSystem(player) then
+            getNetworkAtPlayerLocation(player)
             initGUI(player, true)
         end
     end
@@ -171,6 +172,7 @@ function init()
     global.networksNames = global.networksNames or {}
     global.networksFilter = global.networksFilter or {}
     global.currentNetwork = global.currentNetwork or {}
+    global.currentPlayerNetwork = global.currentPlayerNetwork or {}
 
 
     global.logisticsChests = global.logisticsChests or {}
@@ -789,6 +791,17 @@ function getLogisticNetworks(force, full)
     global.networks[force.name] = networksData
     global.networksCount[force.name] = networksCount
     return networksData
+end
+
+--- Get logistic network by player's location
+-- takes player as parameter
+function getNetworkAtPlayerLocation(player)
+    local currentNetwork = player.surface.find_logistic_network_by_position(player.position, player.force)
+
+    global.currentPlayerNetwork[player.index] = currentNetwork and getNetworkIndex(player.force, currentNetwork)
+
+    return currentNetwork
+
 end
 
 --- Get all logistics containers that are not within a logistics network

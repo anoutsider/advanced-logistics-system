@@ -90,6 +90,7 @@ function updateGUI(player, index, tab)
     
     if currentTab == "logistics" then
         local items = getLogisticsItems(force, index)
+        getNetworkAtPlayerLocation(player)
         updateItemsTable(items, player, index)
     elseif currentTab == "normal" then
         local items = getNormalItems(force)

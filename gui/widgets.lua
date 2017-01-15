@@ -387,10 +387,11 @@ function addNetworkFiltersWidget(player, index)
     local force = player.force.name
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
     local filtersFlow = contentFrame["filtersFlow"]
-	local searchFlow = contentFrame["searchFlow"]
+    local searchFlow = contentFrame["searchFlow"]
     local currentTab = global.currentTab[index]
     local filters = global.networksFilter[index]
-    local filtersCount = count(filters)    
+    local filtersCount = count(filters)
+    local currentPlayerNetwork = global.currentPlayerNetwork[index]
     local names =  global.networksNames[force]
     local maxFiltersList = math.min(filtersCount, 2)
 
@@ -418,15 +419,27 @@ function addNetworkFiltersWidget(player, index)
 		end
 		
         networkFiltersFrame = searchFlow.add({type = "frame", name = "networkFiltersFrame", style = "als_info_frame", direction = "horizontal"})
-        networkFiltersFrame.add({type = "label", name = "networkFiltersFrameLabel", style = "als_info_label", caption = {"network-filters"}})
+        networkFiltersFrame.add({type = "label", name = "networkFiltersFrameLabel", style = "als_info_label", caption = {"networks"}})
+
+        local btnStyles = {
+            ['current'] = "als_button_small",
+            ['all'] = "als_button_small",
+            ['filter'] = "als_button_small"
+        }
 
         if filtersCount == 0 then
-            networkFiltersFrame.add({type = "label", name = "networkFiltersFrameValueAll", style = "label_style", caption = {"network-all"}})
-            networkFiltersFrame.add({type = "button", name = "networkFiltersFrameView", caption = {"filter"}, style = "als_button_small"})
+            btnStyles["all"] = "als_button_small_selected"
+        elseif filtersCount == 1 and filters[currentPlayerNetwork] then
+            btnStyles["current"] = "als_button_small_selected"
         else
-            networkFiltersFrame.add({type = "label", name = "networkFiltersFrameCount", style = "als_info_label", caption = "(" .. filtersCount .. ")"})
-            networkFiltersFrame.add({type = "button", name = "networkFiltersFrameView", caption = {"view-filters"}, style = "als_button_small"})
+            btnStyles["filter"] = "als_button_small_selected"
         end
+
+        networkFiltersFrame.add({type = "button", name = "networkFiltersFrameViewAll", caption = {"network-all"}, style = btnStyles["all"]})
+        if currentPlayerNetwork ~= nil then
+            networkFiltersFrame.add({type = "button", name = "networkFiltersFrameViewCurrent", caption = {"network-current"}, style = btnStyles["current"]})
+        end
+        networkFiltersFrame.add({type = "button", name = "networkFiltersFrameView", caption = {"network-filter", filtersCount}, style = btnStyles["filter"]})
 
     elseif currentTab == "itemInfo" then
         local itemFilters = global.itemInfoFilters[index]
@@ -435,9 +448,9 @@ function addNetworkFiltersWidget(player, index)
             networkFiltersFrame = filtersFlow.add({type = "frame", name = "networkFiltersFrame", style = "als_info_frame", direction = "horizontal"})
 
             networkFiltersFrame.add({type = "label", name = "networkFiltersFrameLabel", style = "als_info_label", caption = {"networks"}})
-            if filtersCount > 0 then           
-                networkFiltersFrame.add({type = "label", name = "networkFiltersFrameCount", style = "als_info_label", caption = "(" .. filtersCount .. ")"})            
-            end                
+            if filtersCount > 0 then
+                networkFiltersFrame.add({type = "label", name = "networkFiltersFrameCount", style = "als_info_label", caption = "(" .. filtersCount .. ")"})
+            end
             networkFiltersFrame.add({type = "button", name = "networkFiltersFrameView", caption = {"filter"}, style = "als_button_small"})
         end
     end

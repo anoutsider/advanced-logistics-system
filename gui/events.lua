@@ -13,6 +13,7 @@ script.on_event("ls-toggle-gui", function(event)
 
 	if visible == 0 then
 		getLogisticNetworks(player.force)
+		getNetworkAtPlayerLocation(player)
 		showGUI(player, index)
 	else
 		hideGUI(player, index)
@@ -100,6 +101,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
         if visible == 0 then
             getLogisticNetworks(player.force)
+            getNetworkAtPlayerLocation(player)
             showGUI(player, index)
         else
             hideGUI(player, index)
@@ -180,6 +182,7 @@ script.on_event(defines.events.on_gui_click, function(event)
     elseif event.element.name == "updateLogisticsData" then
 
         getLogisticNetworks(player.force, true)
+        getNetworkAtPlayerLocation(player)
         getDisconnectedChests(player.force)
 
         showGUI(player, index)
@@ -645,6 +648,20 @@ script.on_event(defines.events.on_gui_click, function(event)
 
         hideGUI(player, index)
         showNetworksFilter(player, index)
+
+    elseif event.element.name == "networkFiltersFrameViewAll" then
+
+        global.networksFilter[index] = {}
+        updateGUI(player, index)
+
+    elseif event.element.name == "networkFiltersFrameViewCurrent" then
+
+        local currentPlayerNetwork = global.currentPlayerNetwork[index]
+
+        if currentPlayerNetwork ~= nil then
+          global.networksFilter[index] = {[currentPlayerNetwork] = true}
+          updateGUI(player, index)
+        end
 
     -- networks table columns sorting event
     elseif event.element.name:find("networkInfo_") ~= nil  then
