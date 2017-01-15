@@ -16,8 +16,8 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
             local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
 
             -- add info
-            addNetwroksInfoWidget(player, index)
-			
+            addNetworksInfoWidget(player, index)
+
             -- add search widget
                 addNetworkSearchWidget(player, index)			
 
@@ -204,7 +204,7 @@ function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
                 local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
 
                 -- add info
-                addNetwroksInfoWidget(player, index, network)
+                addNetworksInfoWidget(player, index, network)
 
                 -- create network frame
                 if player.gui[guiPos].logisticsFrame.contentFrame.networkFrame ~= nil then

@@ -633,7 +633,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         resetPosition(player, index)
 
     -- networks view button event
-    elseif event.element.name == "netwroksFrameView" then
+    elseif event.element.name == "networksFrameView" then
 
         global.currentTab[index] = "networks"
         resetMenu(player, index)

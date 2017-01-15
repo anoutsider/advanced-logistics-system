@@ -13,7 +13,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             -- add info widget
                 addItemsInfoWidget(player, index)
                 addDisconnectedInfoWidget(player, index)
-                addNetwroksInfoWidget(player, index)
+                addNetworksInfoWidget(player, index)
 
             -- add search widget
                 addSearchWidget(player, index)

@@ -138,7 +138,7 @@ function addDisconnectedInfoWidget(player, index)
 end
 
 --- Show networks info frame
-function addNetwroksInfoWidget(player, index, network)
+function addNetworksInfoWidget(player, index, network)
     local guiPos = global.settings[index].guiPos
     local force = player.force.name
     local contentFrame = player.gui[guiPos].logisticsFrame.contentFrame
@@ -152,29 +152,29 @@ function addNetwroksInfoWidget(player, index, network)
     end
 
     -- remove networks info frame
-    local netwroksFrame = infoFlow["netwroksFrame"]
-    if netwroksFrame ~= nil then
-        netwroksFrame.destroy()
+    local networksFrame = infoFlow["networksFrame"]
+    if networksFrame ~= nil then
+        networksFrame.destroy()
     end
 
     -- add networks info frame - logistics
     if currentTab == "logistics" and networksCount > 0 then
-        netwroksFrame = infoFlow.add({type = "frame", name = "netwroksFrame", style = "als_info_frame", direction = "horizontal"})
-        netwroksFrame.add({type = "label", name = "netwroksFrameLabel", style = "als_info_label", caption = {"networks"}})
-        netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label_style", caption = ": " .. networksCount})
-        netwroksFrame.add({type = "button", name = "netwroksFrameView", caption = {"view"}, style = "als_button_small"})
+        networksFrame = infoFlow.add({type = "frame", name = "networksFrame", style = "als_info_frame", direction = "horizontal"})
+        networksFrame.add({type = "label", name = "networksFrameLabel", style = "als_info_label", caption = {"networks"}})
+        networksFrame.add({type = "label", name = "networksFrameTotal", style = "label_style", caption = ": " .. networksCount})
+        networksFrame.add({type = "button", name = "networksFrameView", caption = {"view"}, style = "als_button_small"})
     end
 
     -- add networks info frame - networks
     if (currentTab == "networks" or currentTab == "networkInfo") and networksCount > 0 then
 
-        netwroksFrame = infoFlow.add({type = "frame", name = "netwroksFrame", style = "als_info_frame", direction = "horizontal"})
+        networksFrame = infoFlow.add({type = "frame", name = "networksFrame", style = "als_info_frame", direction = "horizontal"})
         if currentTab == "networks" then
-            netwroksFrame.add({type = "label", name = "netwroksFrameLabel", style = "als_info_label", caption = {"networks"}})
-            netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label_style", caption = ": " .. networksCount})
+            networksFrame.add({type = "label", name = "networksFrameLabel", style = "als_info_label", caption = {"networks"}})
+            networksFrame.add({type = "label", name = "networksFrameTotal", style = "label_style", caption = ": " .. networksCount})
         elseif currentTab == "networkInfo" and network then
-            netwroksFrame.add({type = "label", name = "netwroksFrameLabel", style = "als_info_label", caption = {"network-name"}})
-            netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label_style", caption = ": " .. network.name})
+            networksFrame.add({type = "label", name = "networksFrameLabel", style = "als_info_label", caption = {"network-name"}})
+            networksFrame.add({type = "label", name = "networksFrameTotal", style = "label_style", caption = ": " .. network.name})
         end
 
         local logFrame = infoFlow["logFrame"]
