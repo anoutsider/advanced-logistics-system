@@ -47,9 +47,12 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
 
             -- search settings
             local searchText = search or global.searchText[index][currentTab] or ""
+            searchText = escapePattern(searchText)
             if searchText ~= "" then
                 -- filter items based on search string
-                items = table.filter(items, function(v, k, t) return string.find(k, searchText) ~= nil end)
+                items = table.filter(items, function(v, k, t)
+                    return string.find(k, searchText) ~= nil
+                end)
             else
                 items = items
             end
