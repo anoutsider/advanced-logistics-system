@@ -17,9 +17,9 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
 
             -- add info
             addNetwroksInfoWidget(player, index)
-			
+
             -- add search widget
-                addNetworkSearchWidget(player, index)			
+                addNetworkSearchWidget(player, index)
 
             -- create networks frame
             if player.gui[guiPos].logisticsFrame.contentFrame.networksFrame ~= nil then
@@ -28,17 +28,20 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
 
             local networksFrame = contentFrame.add({type = "frame", name = "networksFrame", style = "als_items_frame", direction = "vertical"})
 
-			-- add network search
-			local searchText = global.searchText[index]["networks"]
-			searchText = searchText and searchText or ""
-			
-			if searchText ~= "" then
-				-- filter networks based on search string
-				networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
-			else
-				networks = networks
-			end	        
-			
+            -- add network search
+            local searchText = global.searchText[index]["networks"]
+            searchText = searchText and searchText or ""
+            searchText = escapePattern(searchText)
+
+            if searchText ~= "" then
+                -- filter networks based on search string
+                networks = table.filter(networks, function(v, k, t)
+                    return string.find(string.lower(v.name), searchText) ~= nil
+                end)
+            else
+                networks = networks
+            end
+
             -- sort settings
             local sort_by = sort_by or global.sort[index][currentTab]["by"]
             local sort_dir = sort_dir or global.sort[index][currentTab]["dir"]
@@ -412,31 +415,31 @@ function showNetworksFilter(player, index)
             player.gui[guiPos].networksFilterFrame.networksTable.destroy()
         end
 
-		-- add network search
-		local searchText = ""
-		global.searchText[index]["networksFilter"] = searchText
-		
+        -- add network search
+        local searchText = ""
+        global.searchText[index]["networksFilter"] = searchText
+
         local searchFrame = networksFilterFrame.add({type = "frame", name =  "networksSearchFrame", style = "als_search_frame", direction = "horizontal"})
         searchFrame.add({type = "label", name = "networksSearchFrameLabel", style = "als_search_label", caption = {"search-label"}})
-		local searchField = searchFrame.add({type = "textfield", name = "networks-filter-search-field", style = "als_searchfield_style", text = searchText })		        
+        local searchField = searchFrame.add({type = "textfield", name = "networks-filter-search-field", style = "als_searchfield_style", text = searchText })
 
         -- add all networks option
-		local networksAllTable = networksFilterFrame.add({type = "table", name = "networksAllTable", colspan = 2, style = "als_networks_table"})
+        local networksAllTable = networksFilterFrame.add({type = "table", name = "networksAllTable", colspan = 2, style = "als_networks_table"})
         local allFilter = filtersCount > 0 and "false" or "true"
-		local allFilterFlow = networksAllTable.add({type = "flow", name = "allFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
+        local allFilterFlow = networksAllTable.add({type = "flow", name = "allFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
         allFilterFlow.add({type = "checkbox", name = "networksFilter_all", style = "checkbox_style", caption = " ", state = allFilter})
-		local allFilterNameFlow = networksAllTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
+        local allFilterNameFlow = networksAllTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
         allFilterNameFlow.add({type = "label", name = "networksName_all", caption = {"network-all"}, style = "als_info_label"})
-		
+
         -- add networks options
-		local networksTableWrapper = networksFilterFrame.add({type = "scroll-pane", name = "networksTableWrapper", style="als_networks_table_wrapper", vertical_scroll_policy = "always"})
-		local networksTable = networksTableWrapper.add({type = "table", name = "networksTable", colspan = 2, style = "als_networks_table"})
-		
-		local networksFilterFlow = networksTable.add({type = "flow", name = "networkFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
+        local networksTableWrapper = networksFilterFrame.add({type = "scroll-pane", name = "networksTableWrapper", style="als_networks_table_wrapper", vertical_scroll_policy = "always"})
+        local networksTable = networksTableWrapper.add({type = "table", name = "networksTable", colspan = 2, style = "als_networks_table"})
+
+        local networksFilterFlow = networksTable.add({type = "flow", name = "networkFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
         networksFilterFlow.add({type = "label", name = "networksFilterLabel", caption = {"filter"}, style = "label_style"})
-		local networksFilterNameFlow = networksTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
+        local networksFilterNameFlow = networksTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
         networksFilterNameFlow.add({type = "label", name = "networksNameLabel", caption = {"network-name"}, style = "label_style"})
-		
+
         for key,network in pairs(networks) do
             local name = network.name
             local isFilter = networksFilter[key] and "true" or "false"
@@ -453,35 +456,38 @@ end
 
 --- Update network filters table
 function updateNetworkFiltersTable(player, index)
-	local networks = global.networks[player.force.name]
+    local networks = global.networks[player.force.name]
     local networksFilter = global.networksFilter[index]
     local guiPos = global.settings[index].guiPos
     local networksFilterFrame = player.gui[guiPos].networksFilterFrame
     local networksTableWrapper = networksFilterFrame.networksTableWrapper
     local networksTable = networksTableWrapper.networksTable
 
-    if networksTableWrapper ~= nil and networksTable ~= nil and networksTable.children_names ~= nil then	
-		-- search settings
-		local searchText = global.searchText[index]["networksFilter"] or ""
-		if searchText ~= "" then
-			-- filter networks based on search string
-			networks = table.filter(networks, function(v, k, t) return string.find(string.lower(v.name), searchText) ~= nil end)
-		else
-			networks = networks
-		end
-		
-		for _,childName in pairs(networksTable.children_names) do
-			if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then   
-				local key = string.gsub(childName, "networksFilter_", "")
-				if not networks[key] then
-					networksTable[childName].style = "als_network_filter_hidden"
-					networksTable["networksName_" .. key].style = "als_network_name_hidden"
-				else
-					networksTable[childName].style = "checkbox_style"
-					networksTable["networksName_" .. key].style = "als_info_label"
-				end
-			end
-		end				
+    if networksTableWrapper ~= nil and networksTable ~= nil and networksTable.children_names ~= nil then
+        -- search settings
+        local searchText = global.searchText[index]["networksFilter"] or ""
+        searchText = escapePattern(searchText)
+        if searchText ~= "" then
+            -- filter networks based on search string
+            networks = table.filter(networks, function(v, k, t)
+                return string.find(string.lower(v.name), searchText) ~= nil
+            end)
+        else
+            networks = networks
+        end
+
+        for _,childName in pairs(networksTable.children_names) do
+            if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
+                local key = string.gsub(childName, "networksFilter_", "")
+                if not networks[key] then
+                    networksTable[childName].style = "als_network_filter_hidden"
+                    networksTable["networksName_" .. key].style = "als_network_name_hidden"
+                else
+                    networksTable[childName].style = "checkbox_style"
+                    networksTable["networksName_" .. key].style = "als_info_label"
+                end
+            end
+        end
     end
 end
 

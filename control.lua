@@ -1293,6 +1293,11 @@ function version_compare(v1, v2)
     return 0
 end
 
+-- Escape a search pattern
+function escapePattern(pattern)
+    return string.gsub(pattern, "[^%w]", "%%%0")
+end
+
 -- debugging tools
 function debugLog(msg, force)
     if (DEV or force) and msg then
