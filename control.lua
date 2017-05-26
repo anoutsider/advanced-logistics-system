@@ -1107,6 +1107,13 @@ function upgradeChest(entity, name, player)
         if global.normalChests[forceName] and global.normalChests[forceName][key] then global.normalChests[forceName][key] = nil end
         if global.disconnectedChests[forceName] and global.disconnectedChests[forceName][key] then global.disconnectedChests[forceName][key] = nil end
 
+        -- Let other mods know this entity is being destroyed
+        script.raise_event(defines.events.on_preplayer_mined_item, {
+            entity = entity,
+            player_index = player.index,
+            mod = MOD_NAME,
+        })
+
         entity.destroy()
 
         if content then
@@ -1114,7 +1121,7 @@ function upgradeChest(entity, name, player)
             global.chestsUpgrade[key]["inventory"] = content
         end
 
-        local upgrade = {
+        local upgrade = surface.create_entity{
             name = "entity-ghost",
             inner_name = name,
             position = pos,
@@ -1122,8 +1129,14 @@ function upgradeChest(entity, name, player)
             force = player.force,
         }
 
-        surface.create_entity(upgrade)
-
+        if upgrade then
+            -- Let other mods know this entity is being created
+            script.raise_event(defines.events.on_built_entity, {
+                created_entity = upgrade,
+                player_index = player.index,
+                mod = MOD_NAME,
+            })
+        end
     end
 end
 
