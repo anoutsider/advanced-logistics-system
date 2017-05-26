@@ -9,9 +9,11 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
-**0.5.0**
+**0.5.1**
 
-  - Upgrade for factorio version 0.15.x
+  - Upgrade for factorio version 0.15.x - mickael9
+  - Improve search functionality
+  - Change default GUI input key to "N"
 
 **0.4.0**
 

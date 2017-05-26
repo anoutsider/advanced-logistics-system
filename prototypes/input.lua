@@ -4,7 +4,7 @@ data:extend({
   {
     type = "custom-input",
     name = "ls-toggle-gui",
-    key_sequence = "L"
+    key_sequence = "N"
   },
   {
     type = "custom-input",
