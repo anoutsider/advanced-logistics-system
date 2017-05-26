@@ -142,7 +142,7 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
             -- get filtered/sorted items
             for key,network in spairs(networks, orderfunc) do
                 local items = number_format(network.items)
-                local port_count = number_format(#network.cells)
+                local port_count = number_format(network.port)
                 local log_count = number_format(network.bots.log.available) .. "/" .. number_format(network.bots.log.total)
                 local con_count = number_format(network.bots.con.available) .. "/" .. number_format(network.bots.con.total)
                 local name = names[key] and names[key] or network.name

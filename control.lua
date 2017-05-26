@@ -691,37 +691,30 @@ function getLogisticNetworks(force, full)
                 networksData[index]["bots"]["log"] = {}
                 networksData[index]["bots"]["log"]["total"] = net.all_logistic_robots
                 networksData[index]["bots"]["log"]["available"] = net.available_logistic_robots
-                networksData[index]["log"] = net.all_logistic_robots
 
                 networksData[index]["bots"]["con"] = {}
                 networksData[index]["bots"]["con"]["total"] = net.all_construction_robots
                 networksData[index]["bots"]["con"]["available"] = net.available_construction_robots
-                networksData[index]["con"] = net.all_construction_robots
 
                 networksData[index]["cells"] = {}
 
-                local size = 0
                 local port = 0
                 local charging = 0
                 local waiting = 0
                 for cei,cell in pairs(net.cells) do
                     networksData[index]["cells"][cei] = {}
                     networksData[index]["cells"][cei]["name"] = cell.owner.name
-                    networksData[index]["cells"][cei]["active"] = cell.transmitting
                     networksData[index]["cells"][cei]["pos"] = cell.owner.position
-                    networksData[index]["cells"][cei]["radius"] = cell.logistic_radius
 
                     networksData[index]["cells"][cei]["bots"] = {}
                     networksData[index]["cells"][cei]["bots"]["idle_log"] = cell.stationed_logistic_robot_count
                     networksData[index]["cells"][cei]["bots"]["idle_con"] = cell.stationed_construction_robot_count
                     networksData[index]["cells"][cei]["bots"]["charging"] = cell.charging_robot_count
                     networksData[index]["cells"][cei]["bots"]["waiting"] = cell.to_charge_robot_count
-                    size = size + cell.logistic_radius
                     port = port + 1
                     charging = charging + cell.charging_robot_count
                     waiting = waiting + cell.to_charge_robot_count
                 end
-                networksData[index]["size"] = size * 2
                 networksData[index]["port"] = port
                 networksData[index]["charging"] = charging
                 networksData[index]["waiting"] = waiting
