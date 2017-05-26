@@ -1301,6 +1301,10 @@ end
 
 -- Escape a search pattern
 function escapePattern(pattern)
+    -- remove leading and traling space, then convert spaces to hyphens
+    pattern = string.gsub(pattern, "^%s*(.-)%s*$", "%1")
+    pattern = string.gsub(pattern, "%s+", "-")
+    -- remove special characters
     return string.gsub(pattern, "[^%w]", "%%%0")
 end
 
