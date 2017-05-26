@@ -9,6 +9,10 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 
 Changelog
 -----
+**0.5.0**
+
+  - Upgrade for factorio version 0.15.x
+
 **0.4.0**
 
   - Upgrade for factorio version 0.14.x
