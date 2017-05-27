@@ -3,6 +3,8 @@ TECH_NAME = "advanced-logistics-systems"
 
 require "gui"
 require "interface"
+prometheus = require("prometheus/tarantool-prometheus")
+gauge_objects = prometheus.gauge("factorio_objects_owned", "items owned by player", {"force", "item", "container"})
 
 ---  Enable/Disable Debugging
 local DEV = false
@@ -77,6 +79,9 @@ script.on_event(defines.events.on_tick, function(event)
                     end
                 end
             end
+        end
+        if ( not initdone ) or ( event.tick % 600 == 0 ) then
+            writeMetrics()
         end
 end)
 
@@ -883,6 +888,15 @@ function getLogisticsItems(force, index)
             end
         end
     end
+
+    for item_name, counts in pairs(items) do
+        for container_name, count in pairs(counts) do
+            if container_name ~= "total" then
+                gauge_objects:set(count, {force.name, item_name, container_name})
+            end
+        end
+    end
+
     global.logisticsItems[force.name] = items
     global.logisticsItemsTotal[force.name] = total
     return items
@@ -952,6 +966,15 @@ function getNormalItems(force)
             end
         end
     end
+
+    for item_name, counts in pairs(items) do
+        for container_name, count in pairs(counts) do
+            if container_name ~= "total" then
+                gauge_objects:set(count, {force.name, item_name, container_name})
+            end
+        end
+    end
+
     global.normalItems[force.name] = items
     global.normalItemsTotal[force.name] = total
     return items
@@ -1321,4 +1344,8 @@ function debugLog(msg, force)
                 end
             end
     end
+end
+
+function writeMetrics()
+  game.write_file("metrics/als.prom", prometheus:collect(), false)
 end
