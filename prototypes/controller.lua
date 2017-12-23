@@ -37,6 +37,7 @@ data:extend({
         type = "player",
         name = "ls-controller",
         icon = "__base__/graphics/icons/player.png",
+        icon_size = 32,
         flags = {"pushable", "placeable-player", "placeable-off-grid", "not-repairable", "not-on-map"},
         max_health = 1,
         healing_per_tick = 0,

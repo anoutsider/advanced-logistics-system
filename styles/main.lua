@@ -66,7 +66,7 @@ data.raw["gui-style"].default["als_settings_table"] =
 data.raw["gui-style"].default["als_settings_info_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     align = "left",
     font = "font-s",
 }
@@ -76,7 +76,7 @@ data.raw["gui-style"].default["als_settings_info_label"] =
 data.raw["gui-style"].default["als_location_view"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 100,
     height = 100,
     top_padding = 65,
@@ -145,7 +145,7 @@ data.raw["gui-style"].default["als_frame_hidden"] =
 data.raw["gui-style"].default["als_title_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     width = 708,
     align = "center",
     font = "font-lb",
@@ -214,7 +214,7 @@ data.raw["gui-style"].default["als_search_frame_hidden"] =
 data.raw["gui-style"].default["als_search_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     align = "left",
     top_padding = 0,
     font = "font-mb",
@@ -224,7 +224,7 @@ data.raw["gui-style"].default["als_search_label"] =
 data.raw["gui-style"].default["als_searchfield_style"] =
 {
     type = "textfield_style",
-    parent = "textfield_style",
+    parent = "textfield",
 	height = 20,
 	maximal_height = 20,
 }
@@ -232,7 +232,7 @@ data.raw["gui-style"].default["als_searchfield_style"] =
 -- item info
 data.raw["gui-style"].default["als_info_flow"] =
 {
-    type = "flow_style",
+    type = "horizontal_flow_style",
     horizontal_spacing = 2,
     vertical_spacing = 0,
     scalable = is_scalable,
@@ -252,7 +252,7 @@ data.raw["gui-style"].default["als_info_frame"] =
 data.raw["gui-style"].default["als_info_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     align = "left",
     font = "font-mb",
     font_color = {r=0.98, g=0.66, b=0.22}
@@ -272,10 +272,23 @@ data.raw["gui-style"].default["als_filters_frame"] =
 }
 
 -- items table headers
-
-data.raw["gui-style"].default["als_flow_style"] =
+-- horizontal flow
+data.raw["gui-style"].default["als_h_flow_style"] =
 {
-    type = "flow_style",
+    type = "horizontal_flow_style",
+	horizontal_spacing = 0,
+	vertical_spacing = 0,	
+	top_padding = 0,
+	right_padding = 0,
+	bottom_padding = 0,
+	left_padding = 0,
+    scalable = is_scalable,
+}
+
+-- vertical flow
+data.raw["gui-style"].default["als_v_flow_style"] =
+{
+    type = "vertical_flow_style",
 	horizontal_spacing = 0,
 	vertical_spacing = 0,	
 	top_padding = 0,
@@ -287,8 +300,8 @@ data.raw["gui-style"].default["als_flow_style"] =
 
 data.raw["gui-style"].default["als_table_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -298,8 +311,8 @@ data.raw["gui-style"].default["als_table_flow"] =
 
 data.raw["gui-style"].default["als_total_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -309,8 +322,8 @@ data.raw["gui-style"].default["als_total_flow"] =
 
 data.raw["gui-style"].default["als_total_w_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -320,8 +333,8 @@ data.raw["gui-style"].default["als_total_w_flow"] =
 
 data.raw["gui-style"].default["als_pos_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -331,8 +344,8 @@ data.raw["gui-style"].default["als_pos_flow"] =
 
 data.raw["gui-style"].default["als_sort_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "vertical_flow_style",
+	parent = "als_v_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -342,8 +355,8 @@ data.raw["gui-style"].default["als_sort_flow"] =
 
 data.raw["gui-style"].default["als_icon_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -353,8 +366,8 @@ data.raw["gui-style"].default["als_icon_flow"] =
 
 data.raw["gui-style"].default["als_name_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -364,8 +377,8 @@ data.raw["gui-style"].default["als_name_flow"] =
 
 data.raw["gui-style"].default["als_items_info_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
 	left_padding = 0,
 	right_padding = 0,
 	top_padding = 5,
@@ -375,8 +388,8 @@ data.raw["gui-style"].default["als_items_info_flow"] =
 
 data.raw["gui-style"].default["als_tools_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 6,
     vertical_spacing = 0,
 	left_padding = 0,
@@ -389,8 +402,8 @@ data.raw["gui-style"].default["als_tools_flow"] =
 -- Networks 
 data.raw["gui-style"].default["als_network_value_flow"] =
 {
-    type = "flow_style",
-    parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     scalable = is_scalable,
     width = 188,
 }
@@ -398,7 +411,7 @@ data.raw["gui-style"].default["als_network_value_flow"] =
 data.raw["gui-style"].default["als_network_name_hidden"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     visible = false
 }
 
@@ -418,7 +431,7 @@ data.raw["gui-style"].default["als_networks_frame"] =
 data.raw["gui-style"].default["als_networks_table_wrapper"] =
 {
     type = "scroll_pane_style",
-	parent = "scroll_pane_style",
+	parent = "scroll_pane",
 	maximal_height = 400,
 }
 
@@ -442,8 +455,8 @@ data.raw["gui-style"].default["als_networks_table"] =
 
 data.raw["gui-style"].default["als_network_filter_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -453,8 +466,8 @@ data.raw["gui-style"].default["als_network_filter_flow"] =
 
 data.raw["gui-style"].default["als_network_name_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
 	top_padding = 5,
     width = 350,
     scalable = is_scalable,
@@ -463,7 +476,7 @@ data.raw["gui-style"].default["als_network_name_flow"] =
 data.raw["gui-style"].default["als_network_filter_hidden"] =
 {
     type = "checkbox_style",
-    parent = "checkbox_style",
+    parent = "checkbox",
     visible = false
 }
 
@@ -472,7 +485,7 @@ data.raw["gui-style"].default["als_network_filter_hidden"] =
 data.raw["gui-style"].default["als_button"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     top_padding = 3,
     right_padding = 3,
     bottom_padding = 3,
@@ -654,7 +667,7 @@ data.raw["gui-style"].default["als_button_small_selected"] =
 data.raw["gui-style"].default["als_button_main_icon"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 6,
@@ -705,7 +718,7 @@ data.raw["gui-style"].default["als_button_main_icon"] =
 data.raw["gui-style"].default["als_button_close"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     top_padding = 0,
     right_padding = 0,
     bottom_padding = 0,
@@ -756,7 +769,7 @@ data.raw["gui-style"].default["als_button_close"] =
 data.raw["gui-style"].default["als_button_info"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -808,7 +821,7 @@ data.raw["gui-style"].default["als_button_info"] =
 data.raw["gui-style"].default["als_button_location"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -860,7 +873,7 @@ data.raw["gui-style"].default["als_button_location"] =
 data.raw["gui-style"].default["als_button_teleport"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -912,7 +925,7 @@ data.raw["gui-style"].default["als_button_teleport"] =
 data.raw["gui-style"].default["als_button_delete"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -964,7 +977,7 @@ data.raw["gui-style"].default["als_button_delete"] =
 data.raw["gui-style"].default["als_button_delete_selected"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1016,7 +1029,7 @@ data.raw["gui-style"].default["als_button_delete_selected"] =
 data.raw["gui-style"].default["als_button_up_apc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1068,7 +1081,7 @@ data.raw["gui-style"].default["als_button_up_apc"] =
 data.raw["gui-style"].default["als_button_up_ppc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1120,7 +1133,7 @@ data.raw["gui-style"].default["als_button_up_ppc"] =
 data.raw["gui-style"].default["als_button_up_sc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1173,7 +1186,7 @@ data.raw["gui-style"].default["als_button_up_sc"] =
 data.raw["gui-style"].default["als_button_up_rc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1634,7 +1647,7 @@ data.raw["gui-style"].default["als_button_all_selected"] =
 data.raw["gui-style"].default["als_button_apc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1724,7 +1737,7 @@ data.raw["gui-style"].default["als_button_apc_selected"] =
 data.raw["gui-style"].default["als_button_ppc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1814,7 +1827,7 @@ data.raw["gui-style"].default["als_button_ppc_selected"] =
 data.raw["gui-style"].default["als_button_sc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1904,7 +1917,7 @@ data.raw["gui-style"].default["als_button_sc_selected"] =
 data.raw["gui-style"].default["als_button_rc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1994,7 +2007,7 @@ data.raw["gui-style"].default["als_button_rc_selected"] =
 data.raw["gui-style"].default["als_button_woc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2090,7 +2103,7 @@ data.raw["gui-style"].default["als_button_woc_selected"] =
 data.raw["gui-style"].default["als_button_irc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2186,7 +2199,7 @@ data.raw["gui-style"].default["als_button_irc_selected"] =
 data.raw["gui-style"].default["als_button_stc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2282,7 +2295,7 @@ data.raw["gui-style"].default["als_button_stc_selected"] =
 data.raw["gui-style"].default["als_button_log"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2378,7 +2391,7 @@ data.raw["gui-style"].default["als_button_log_selected"] =
 data.raw["gui-style"].default["als_button_con"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2474,7 +2487,7 @@ data.raw["gui-style"].default["als_button_con_selected"] =
 data.raw["gui-style"].default["als_button_port"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2570,7 +2583,7 @@ data.raw["gui-style"].default["als_button_port_selected"] =
 data.raw["gui-style"].default["als_button_edit"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 5,
@@ -2623,7 +2636,7 @@ data.raw["gui-style"].default["als_button_edit"] =
 data.raw["gui-style"].default["als_button_confirm"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 5,
@@ -2676,7 +2689,7 @@ data.raw["gui-style"].default["als_button_confirm"] =
 data.raw["gui-style"].default["als_button_hidden"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     visible = false,
 }
 
@@ -2685,7 +2698,7 @@ data.raw["gui-style"].default["als_button_hidden"] =
 data.raw["gui-style"].default["als_sort_desc"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 14,
     height = 14,
     top_padding  = 0,
@@ -2711,7 +2724,7 @@ data.raw["gui-style"].default["als_sort_desc"] =
 data.raw["gui-style"].default["als_sort_asc"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 14,
     height = 14,
     top_padding  = 0,
@@ -2737,7 +2750,7 @@ data.raw["gui-style"].default["als_sort_asc"] =
 data.raw["gui-style"].default["als_sort"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 14,
     height = 14,
     top_padding  = 0,
@@ -2763,7 +2776,7 @@ data.raw["gui-style"].default["als_sort"] =
 data.raw["gui-style"].default["als_sort_holder"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 16,
     height = 9,
     top_padding  = 0,
@@ -2791,7 +2804,7 @@ data.raw["gui-style"].default["als_sort_holder"] =
 data.raw["gui-style"].default["als_item_icon"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 36,
     height = 36,
     scalable = is_scalable,
@@ -2835,7 +2848,7 @@ data.raw["gui-style"].default["als_item_icon"] =
 data.raw["gui-style"].default["als_item_icon_selected"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 36,
     height = 36,
     scalable = is_scalable,
@@ -2880,7 +2893,7 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
 data.raw["gui-style"].default["als_item_icon_small"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     scalable = is_scalable,
@@ -2924,7 +2937,7 @@ data.raw["gui-style"].default["als_item_icon_small"] =
 data.raw["gui-style"].default["als_item_icon_small_selected"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     scalable = is_scalable,

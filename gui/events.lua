@@ -335,7 +335,7 @@ script.on_event(defines.events.on_gui_click, function(event)
                 local filterFrame = type == "chests" and filtersFlow.chestsFilterFrame or filtersFlow.typeFilterFrame
                 if filterFrame ~= nil then
 
-                    if style.name == "checkbox_style" then
+                    if style.name == "checkbox" then
                         isSelected = event.element.state
                         type = "group"
                     else
@@ -734,7 +734,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
         nameLabel.caption = value
         nameEdit.destroy()
-        nameLabel.style = "label_style"
+        nameLabel.style = "label"
 
         event.element.style = "als_button_hidden"
         editBtn.style = "als_button_edit"

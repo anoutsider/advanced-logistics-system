@@ -4,6 +4,7 @@ data:extend(
         type = "technology",
         name = "advanced-logistics-systems",
         icon = "__advanced-logistics-system__/graphics/technology/advanced-ls.png",
+        icon_size = 32,
         effects ={},
         prerequisites =
         {
@@ -23,8 +24,3 @@ data:extend(
         order = "c-k-c-a",
     }
 })
-
-
-
-
-

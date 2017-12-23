@@ -96,7 +96,7 @@ function addItemsInfoWidget(player, index)
 
     infoFrame = infoFlow.add({type = "frame", name = currentTab .. "InfoFrame", style = "als_info_frame", direction = "horizontal"})
     infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotalLabel", style = "als_info_label", caption = {"info-total"}})
-    infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotal", style = "label_style", caption = ": " .. number_format(total)})
+    infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotal", style = "label", caption = ": " .. number_format(total)})
 end
 
 --- Show disconnected chests info frame
@@ -130,7 +130,7 @@ function addDisconnectedInfoWidget(player, index)
     if currentTab == "logistics" or currentTab == "disconnected" and disconnectedCount > 0 then
         disconnectedFrame = infoFlow.add({type = "frame", name = "disconnectedFrame", style = "als_info_frame", direction = "horizontal"})
         disconnectedFrame.add({type = "label", name = "disconnectedFrameLabel", style = "als_info_label", caption = {"disconnected-chests"}})
-        disconnectedFrame.add({type = "label", name = "disconnectedFrameTotal", style = "label_style", caption = ": " .. disconnectedCount})
+        disconnectedFrame.add({type = "label", name = "disconnectedFrameTotal", style = "label", caption = ": " .. disconnectedCount})
 		if currentTab == "logistics" then
 			disconnectedFrame.add({type = "button", name = "disconnectedFrameView", caption = {"view"}, style = "als_button_small"})
 		end
@@ -161,7 +161,7 @@ function addNetwroksInfoWidget(player, index, network)
     if currentTab == "logistics" and networksCount > 0 then
         netwroksFrame = infoFlow.add({type = "frame", name = "netwroksFrame", style = "als_info_frame", direction = "horizontal"})
         netwroksFrame.add({type = "label", name = "netwroksFrameLabel", style = "als_info_label", caption = {"networks"}})
-        netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label_style", caption = ": " .. networksCount})
+        netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label", caption = ": " .. networksCount})
         netwroksFrame.add({type = "button", name = "netwroksFrameView", caption = {"view"}, style = "als_button_small"})
     end
 
@@ -171,10 +171,10 @@ function addNetwroksInfoWidget(player, index, network)
         netwroksFrame = infoFlow.add({type = "frame", name = "netwroksFrame", style = "als_info_frame", direction = "horizontal"})
         if currentTab == "networks" then
             netwroksFrame.add({type = "label", name = "netwroksFrameLabel", style = "als_info_label", caption = {"networks"}})
-            netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label_style", caption = ": " .. networksCount})
+            netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label", caption = ": " .. networksCount})
         elseif currentTab == "networkInfo" and network then
             netwroksFrame.add({type = "label", name = "netwroksFrameLabel", style = "als_info_label", caption = {"network-name"}})
-            netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label_style", caption = ": " .. network.name})
+            netwroksFrame.add({type = "label", name = "netwroksFrameTotal", style = "label", caption = ": " .. network.name})
         end
 
         local logFrame = infoFlow["logFrame"]
@@ -232,19 +232,19 @@ function addNetwroksInfoWidget(player, index, network)
 
         logFrame = infoFlow.add({type = "frame", name = "logFrame", style = "als_info_frame", direction = "horizontal"})
         logFrame.add({type = "label", name = "robotsFrameLabelLog", style = "als_info_label", caption = {"network-log"}, tooltip = {"tooltips.net-log-total"}})
-        logFrame.add({type = "label", name = "robotsFrameTotalLog", style = "label_style", caption = ": " .. log_av .. "/" .. log_total})
+        logFrame.add({type = "label", name = "robotsFrameTotalLog", style = "label", caption = ": " .. log_av .. "/" .. log_total})
 
         conFrame = infoFlow.add({type = "frame", name = "conFrame", style = "als_info_frame", direction = "horizontal"})
         conFrame.add({type = "label", name = "robotsFrameLabelCon", style = "als_info_label", caption = {"network-con"}, tooltip = {"tooltips.net-con-total"}})
-        conFrame.add({type = "label", name = "robotsFrameTotalCon", style = "label_style", caption = ": " .. con_av .. "/" .. con_total})
+        conFrame.add({type = "label", name = "robotsFrameTotalCon", style = "label", caption = ": " .. con_av .. "/" .. con_total})
 
         chargingFrame = infoFlow.add({type = "frame", name = "chargingFrame", style = "als_info_frame", direction = "horizontal"})
         chargingFrame.add({type = "label", name = "robotsFrameLabelCharging", style = "als_info_label", caption = {"network-charging"}, tooltip = {"tooltips.net-charging-total"}})
-        chargingFrame.add({type = "label", name = "robotsFrameTotalCharging", style = "label_style", caption = ": " .. charging})
+        chargingFrame.add({type = "label", name = "robotsFrameTotalCharging", style = "label", caption = ": " .. charging})
 
         waitingFrame = infoFlow.add({type = "frame", name = "waitingFrame", style = "als_info_frame", direction = "horizontal"})
         waitingFrame.add({type = "label", name = "robotsFrameLabelWaiting", style = "als_info_label", caption = {"network-waiting"}, tooltip = {"tooltips.net-waiting-total"}})
-        waitingFrame.add({type = "label", name = "robotsFrameTotalWaiting", style = "label_style", caption = ": " .. waiting})
+        waitingFrame.add({type = "label", name = "robotsFrameTotalWaiting", style = "label", caption = ": " .. waiting})
     end
 end
 
@@ -271,7 +271,7 @@ function addItemTotalsInfoWidget(info, player, index)
     -- name
     infoFrameName = infoFlow.add({type = "frame", name = currentTab .. "infoFrameName", style = "als_info_frame", direction = "horizontal"})
     infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameLabel", style = "als_info_label", caption = {"name"}})
-    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameValue", style = "label_style", caption = getLocalisedName(currentItem)})
+    infoFrameName.add({type = "label", name = currentTab .. "infoFrameNameValue", style = "label", caption = getLocalisedName(currentItem)})
 
 
     --add "all" total info frame
@@ -283,7 +283,7 @@ function addItemTotalsInfoWidget(info, player, index)
     -- all
     infoFrameAll = infoFlow.add({type = "frame", name = currentTab .. "InfoFrameAll", style = "als_info_frame", direction = "horizontal"})
     infoFrameAll.add({type = "label", name = currentTab .. "InfoFrameTotalLabel", style = "als_info_label", caption = {"info-total"}})
-    infoFrameAll.add({type = "label", name = currentTab .. "InfoFrameTotalValue", style = "label_style", caption = ": " .. number_format(total.all)})
+    infoFrameAll.add({type = "label", name = currentTab .. "InfoFrameTotalValue", style = "label", caption = ": " .. number_format(total.all)})
 
     for k,v in spairs(total, orderfunc) do
 		if k ~= "all" then
@@ -296,7 +296,7 @@ function addItemTotalsInfoWidget(info, player, index)
 			if v > 0 then
 				infoFrame = infoFlow.add({type = "frame", name = currentTab .. "InfoFrame" .. key, style = "als_info_frame", direction = "horizontal"})
 				infoFrame.add({type = "label", name = currentTab .. "InfoFrameTotalLabel" .. key, style = "als_info_label", caption = {"info-" .. k}})
-				infoFrame.add({type = "label", name = currentTab .. "InfoFrameValue" .. key, style = "label_style", caption = ": " .. number_format(v)})
+				infoFrame.add({type = "label", name = currentTab .. "InfoFrameValue" .. key, style = "label", caption = ": " .. number_format(v)})
 			end
         end
     end
@@ -323,8 +323,8 @@ function addItemFiltersWidget(player, index)
     local normalState = filters["group"]["normal"] ~= nil
     typeFilterFrame = filtersFlow.add({type = "frame", name = "typeFilterFrame", style = "als_filters_frame", direction = "horizontal"})
     typeFilterFrame.add({type = "label", name = "typeFilterFrameLabel", style = "als_info_label", caption = {"filters"}})
-    typeFilterFrame.add({type = "checkbox", name = "itemInfoFilter_logistics", style = "checkbox_style", caption = {"info-logistics"}, state = logisticsState, tooltip = {"tooltips.filter-by-log"}})
-    typeFilterFrame.add({type = "checkbox", name = "itemInfoFilter_normal", style = "checkbox_style", caption = {"info-normal"}, state = normalState, tooltip = {"tooltips.filter-by-norm"}})
+    typeFilterFrame.add({type = "checkbox", name = "itemInfoFilter_logistics", style = "checkbox", caption = {"info-logistics"}, state = logisticsState, tooltip = {"tooltips.filter-by-log"}})
+    typeFilterFrame.add({type = "checkbox", name = "itemInfoFilter_normal", style = "checkbox", caption = {"info-normal"}, state = normalState, tooltip = {"tooltips.filter-by-norm"}})
 
 
     local chestsFilterFrame = filtersFlow["chestsFilterFrame"]
@@ -421,7 +421,7 @@ function addNetworkFiltersWidget(player, index)
         networkFiltersFrame.add({type = "label", name = "networkFiltersFrameLabel", style = "als_info_label", caption = {"network-filters"}})
 
         if filtersCount == 0 then
-            networkFiltersFrame.add({type = "label", name = "networkFiltersFrameValueAll", style = "label_style", caption = {"network-all"}})
+            networkFiltersFrame.add({type = "label", name = "networkFiltersFrameValueAll", style = "label", caption = {"network-all"}})
             networkFiltersFrame.add({type = "button", name = "networkFiltersFrameView", caption = {"filter"}, style = "als_button_small"})
         else
             networkFiltersFrame.add({type = "label", name = "networkFiltersFrameCount", style = "als_info_label", caption = "(" .. filtersCount .. ")"})

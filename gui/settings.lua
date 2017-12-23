@@ -8,27 +8,27 @@ function showSettings(player, index)
             player.gui[guiPos].settingsFrame.destroy()
         end
 
-        local settingsFrame = player.gui[guiPos].add({type = "frame", name = "settingsFrame", direction = "vertical", style = "frame_style"})
+        local settingsFrame = player.gui[guiPos].add({type = "frame", name = "settingsFrame", direction = "vertical", style = "frame"})
         settingsFrame.add({type = "label", name = "generalSettings", caption = {"settings.title"}, style = "als_info_label"})
         -- add settings table
         if player.gui[guiPos].settingsFrame.settingsTable ~= nil then
             player.gui[guiPos].settingsFrame.settingsTable.destroy()
         end
 
-        local settingsTable = settingsFrame.add({type ="table", name = "settingsTable", colspan = 3, style = "als_settings_table"})
+        local settingsTable = settingsFrame.add({type ="table", name = "settingsTable", column_count = 3, style = "als_settings_table"})
 
-        settingsTable.add({type = "label", name = "settingsOptionLabel", caption = {"settings.option"}, style = "label_style"})
-        settingsTable.add({type = "label", name = "settingsValueLabel", caption = {"settings.value"}, style = "label_style"})
-        settingsTable.add({type = "label", name = "settingsInfoLabel", caption = {"settings.info"}, style = "label_style"})
+        settingsTable.add({type = "label", name = "settingsOptionLabel", caption = {"settings.option"}, style = "label"})
+        settingsTable.add({type = "label", name = "settingsValueLabel", caption = {"settings.value"}, style = "label"})
+        settingsTable.add({type = "label", name = "settingsInfoLabel", caption = {"settings.info"}, style = "label"})
 
         --- add settings options
         -- gui position
         local guiPosSettings = global.settings[index].guiPos
         settingsTable.add({type = "label", name = "guiPosLabel", caption = {"settings.gui-pos"}, style = "als_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "guiPosFlow", direction = "horizontal"})
-        settingFlow.add({type = "checkbox", name = "guiPos_left", style = "checkbox_style", caption = "Left", state = guiPosSettings == "left"})
-        settingFlow.add({type = "checkbox", name = "guiPos_top", style = "checkbox_style", caption = "Top", state = guiPosSettings == "top"})
-        settingFlow.add({type = "checkbox", name = "guiPos_center", style = "checkbox_style", caption = "Center", state = guiPosSettings == "center"})
+        settingFlow.add({type = "checkbox", name = "guiPos_left", style = "checkbox", caption = "Left", state = guiPosSettings == "left"})
+        settingFlow.add({type = "checkbox", name = "guiPos_top", style = "checkbox", caption = "Top", state = guiPosSettings == "top"})
+        settingFlow.add({type = "checkbox", name = "guiPos_center", style = "checkbox", caption = "Center", state = guiPosSettings == "center"})
         settingsTable.add({type = "label", name = "guiPosHelp", caption = {"settings.gui-pos-help"}, style = "als_settings_info_label"})
 
         -- refresh interval
@@ -51,21 +51,21 @@ function showSettings(player, index)
         local autoFilterSettings = global.settings[index].autoFilter
         settingsTable.add({type = "label", name = "autoFilterLabel", caption = {"settings.auto-filter"}, style = "als_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "autoFilterFlow", direction = "horizontal"})
-        settingFlow.add({type = "checkbox", name = "autoFilterValue", style = "checkbox_style", caption = {"settings.enable"}, state = autoFilterSettings})
+        settingFlow.add({type = "checkbox", name = "autoFilterValue", style = "checkbox", caption = {"settings.enable"}, state = autoFilterSettings})
         settingsTable.add({type = "label", name = "autoFilterHelp", caption = {"settings.auto-filter-help"}, style = "als_settings_info_label"})
 
         -- exclude requesters
         local excludeReqSettings = global.settings[index].excludeReq
         settingsTable.add({type = "label", name = "excludeReqLabel", caption = {"settings.exclude-req"}, style = "als_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "excludeReqFlow", direction = "horizontal"})
-        settingFlow.add({type = "checkbox", name = "excludeReqValue", style = "checkbox_style", caption = {"settings.enable"}, state = excludeReqSettings})
+        settingFlow.add({type = "checkbox", name = "excludeReqValue", style = "checkbox", caption = {"settings.enable"}, state = excludeReqSettings})
         settingsTable.add({type = "label", name = "excludeReqHelp", caption = {"settings.exclude-req-help"}, style = "als_settings_info_label"})
 
         -- experimental tools
         local exToolsSettings = global.settings[index].exTools
         settingsTable.add({type = "label", name = "exToolsLabel", caption = {"settings.ex-tools"}, style = "als_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "exToolsFlow", direction = "horizontal"})
-        settingFlow.add({type = "checkbox", name = "exToolsValue", style = "checkbox_style", caption = {"settings.enable"}, state = exToolsSettings})
+        settingFlow.add({type = "checkbox", name = "exToolsValue", style = "checkbox", caption = {"settings.enable"}, state = exToolsSettings})
         settingsTable.add({type = "label", name = "exToolsHelp", caption = {"settings.ex-tools-help"}, style = "als_settings_info_label"})
 
         -- logistics data
