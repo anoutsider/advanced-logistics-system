@@ -272,20 +272,6 @@ data.raw["gui-style"].default["als_filters_frame"] =
 }
 
 -- items table headers
-
--- default flow
-data.raw["gui-style"].default["als_flow_style"] =
-{
-    type = "flow_style",
-	horizontal_spacing = 0,
-	vertical_spacing = 0,	
-	top_padding = 0,
-	right_padding = 0,
-	bottom_padding = 0,
-	left_padding = 0,
-    scalable = is_scalable,
-}
-
 -- horizontal flow
 data.raw["gui-style"].default["als_h_flow_style"] =
 {
@@ -416,8 +402,8 @@ data.raw["gui-style"].default["als_tools_flow"] =
 -- Networks 
 data.raw["gui-style"].default["als_network_value_flow"] =
 {
-    type = "flow_style",
-    parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     scalable = is_scalable,
     width = 188,
 }
@@ -469,8 +455,8 @@ data.raw["gui-style"].default["als_networks_table"] =
 
 data.raw["gui-style"].default["als_network_filter_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -480,8 +466,8 @@ data.raw["gui-style"].default["als_network_filter_flow"] =
 
 data.raw["gui-style"].default["als_network_name_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
 	top_padding = 5,
     width = 350,
     scalable = is_scalable,
