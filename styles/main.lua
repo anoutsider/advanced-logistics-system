@@ -232,7 +232,7 @@ data.raw["gui-style"].default["als_searchfield_style"] =
 -- item info
 data.raw["gui-style"].default["als_info_flow"] =
 {
-    type = "flow_style",
+    type = "horizontal_flow_style",
     horizontal_spacing = 2,
     vertical_spacing = 0,
     scalable = is_scalable,
@@ -273,6 +273,7 @@ data.raw["gui-style"].default["als_filters_frame"] =
 
 -- items table headers
 
+-- default flow
 data.raw["gui-style"].default["als_flow_style"] =
 {
     type = "flow_style",
@@ -285,10 +286,36 @@ data.raw["gui-style"].default["als_flow_style"] =
     scalable = is_scalable,
 }
 
+-- horizontal flow
+data.raw["gui-style"].default["als_h_flow_style"] =
+{
+    type = "horizontal_flow_style",
+	horizontal_spacing = 0,
+	vertical_spacing = 0,	
+	top_padding = 0,
+	right_padding = 0,
+	bottom_padding = 0,
+	left_padding = 0,
+    scalable = is_scalable,
+}
+
+-- vertical flow
+data.raw["gui-style"].default["als_v_flow_style"] =
+{
+    type = "vertical_flow_style",
+	horizontal_spacing = 0,
+	vertical_spacing = 0,	
+	top_padding = 0,
+	right_padding = 0,
+	bottom_padding = 0,
+	left_padding = 0,
+    scalable = is_scalable,
+}
+
 data.raw["gui-style"].default["als_table_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -298,8 +325,8 @@ data.raw["gui-style"].default["als_table_flow"] =
 
 data.raw["gui-style"].default["als_total_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -309,8 +336,8 @@ data.raw["gui-style"].default["als_total_flow"] =
 
 data.raw["gui-style"].default["als_total_w_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -320,8 +347,8 @@ data.raw["gui-style"].default["als_total_w_flow"] =
 
 data.raw["gui-style"].default["als_pos_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -331,8 +358,8 @@ data.raw["gui-style"].default["als_pos_flow"] =
 
 data.raw["gui-style"].default["als_sort_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "vertical_flow_style",
+	parent = "als_v_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -342,8 +369,8 @@ data.raw["gui-style"].default["als_sort_flow"] =
 
 data.raw["gui-style"].default["als_icon_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -353,8 +380,8 @@ data.raw["gui-style"].default["als_icon_flow"] =
 
 data.raw["gui-style"].default["als_name_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -364,8 +391,8 @@ data.raw["gui-style"].default["als_name_flow"] =
 
 data.raw["gui-style"].default["als_items_info_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
 	left_padding = 0,
 	right_padding = 0,
 	top_padding = 5,
@@ -375,8 +402,8 @@ data.raw["gui-style"].default["als_items_info_flow"] =
 
 data.raw["gui-style"].default["als_tools_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 6,
     vertical_spacing = 0,
 	left_padding = 0,
