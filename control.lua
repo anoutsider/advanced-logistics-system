@@ -39,7 +39,7 @@ script.on_event(defines.events.on_robot_built_entity, function(event)
     entityBuilt(event, event.created_entity)
 end)
 
-script.on_event(defines.events.on_preplayer_mined_item, function(event)
+script.on_event(defines.events.on_pre_player_mined_item, function(event)
     entityMined(event, event.entity)
 end)
 
