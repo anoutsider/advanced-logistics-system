@@ -365,7 +365,7 @@ function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
 
                         local toolsFlow = networkTable["networkInfoTools_" .. key]
                         if toolsFlow == nil then
-                            toolsFlow = networkTable.add({type = "flow", name = "networkInfoTools_" .. key, direction = "horizontal", style = "horizontal_flow"})
+                            toolsFlow = networkTable.add({type = "flow", name = "networkInfoTools_" .. key, direction = "horizontal"})
                         end
                         toolsFlow.add({type = "button", name = "networkAction_location_" .. key, style = "als_button_location", tooltip = {"tooltips.tools-location"}})
                         if exTools then toolsFlow.add({type = "button", name = "networkAction_teleport_" .. key, style = "als_button_teleport", tooltip = {"tooltips.tools-teleport"}}) end
