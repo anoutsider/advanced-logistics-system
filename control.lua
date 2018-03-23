@@ -1101,7 +1101,7 @@ function upgradeChest(entity, name, player)
         if global.disconnectedChests[forceName] and global.disconnectedChests[forceName][key] then global.disconnectedChests[forceName][key] = nil end
 
         -- Let other mods know this entity is being destroyed
-        script.raise_event(defines.events.on_preplayer_mined_item, {
+        script.raise_event(defines.events.on_pre_player_mined_item, {
             entity = entity,
             player_index = player.index,
             mod = MOD_NAME,
