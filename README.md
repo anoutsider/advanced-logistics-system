@@ -10,6 +10,10 @@ Forum Link : [Advanced Logistics System](http://www.factorioforums.com/forum/vie
 Changelog
 -----
 
+**0.6.1**
+
+  - Upgrade for factorio version 0.16.8+ - lingo
+
 **0.6.0**
 
   - Upgrade for factorio version 0.16.x - FrancoisH
