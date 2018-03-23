@@ -761,15 +761,15 @@ function getLogisticNetworks(force, full)
                         end
                     end
 
-                    for x,chest in pairs(net.full_or_satisfied_requesters) do
-                        local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
-                        if not chests[key] and chest.type == "logistic-container" then
-                            chests[key] = {}
-                            chests[key]["entity"] = chest
-                            chests[key]["network"] = index
-                            chests[key]["type"] = "requester"
-                        end
-                    end
+                    -- for x,chest in pairs(net.full_or_satisfied_requesters) do
+                    --     local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    --     if not chests[key] and chest.type == "logistic-container" then
+                    --         chests[key] = {}
+                    --         chests[key]["entity"] = chest
+                    --         chests[key]["network"] = index
+                    --         chests[key]["type"] = "requester"
+                    --     end
+                    -- end
                 end
                 networksCount = networksCount + 1
             end
