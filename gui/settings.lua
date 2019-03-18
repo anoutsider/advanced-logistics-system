@@ -84,7 +84,7 @@ end
 function hideSettings(player, index)
     local guiPos = global.settings[index].guiPos
     if player.gui[guiPos].settingsFrame ~= nil then
-        player.gui[guiPos].settingsFrame.style = "als_frame_hidden"
+        player.gui[guiPos].settingsFrame.visible = false
     end
 end
 

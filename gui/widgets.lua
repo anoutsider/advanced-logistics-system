@@ -84,7 +84,7 @@ function addItemsInfoWidget(player, index)
 
     for _,tab in pairs(global.guiTabs) do
         if tab ~= currentTab and infoFlow[tab .. "InfoFrame"] ~= nil then
-            infoFlow[tab .. "InfoFrame"].style = "als_frame_hidden"
+            infoFlow[tab .. "InfoFrame"].visible = false
         end
     end
 
