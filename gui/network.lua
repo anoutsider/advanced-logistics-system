@@ -161,7 +161,7 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
 
                     nameFlowValue.add({type = "label", name = "networkInfoNameLabel_" .. key, caption = name, style = "label"})
                     nameFlowEdit.add({type = "button", name = "networkInfoNameEdit_" .. key, style = "als_button_edit", tooltip = {"tooltips.net-rename"}})
-                    nameFlowEdit.add({type = "button", name = "networkInfoNameConfirm_" .. key, style = "als_button_hidden", tooltip = {"tooltips.net-save"}})
+                    nameFlowEdit.add({type = "button", name = "networkInfoNameConfirm_" .. key, style = "als_button_confirm", visible=false, tooltip = {"tooltips.net-save"}})
 
                     networksTable.add({type = "label", name = "networkInfoPort_" .. key, caption = port_count})
                     networksTable.add({type = "label", name = "networkInfoLog_" .. key, caption = log_count})
@@ -480,11 +480,11 @@ function updateNetworkFiltersTable(player, index)
             if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
                 local key = string.gsub(childName, "networksFilter_", "")
                 if not networks[key] then
-                    networksTable[childName].style = "als_network_filter_hidden"
-                    networksTable["networksName_" .. key].style = "als_network_name_hidden"
+                    networksTable[childName].visible = false
+                    networksTable["networksName_" .. key].visible = false
                 else
-                    networksTable[childName].style = "checkbox"
-                    networksTable["networksName_" .. key].style = "als_info_label"
+                    networksTable[childName].visible = true
+                    networksTable["networksName_" .. key].visible = true
                 end
             end
         end

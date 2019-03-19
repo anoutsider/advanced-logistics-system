@@ -18,8 +18,8 @@ function addSearchWidget(player, index)
 	
     for _,tab in pairs(global.guiTabs) do	
         if tab ~= currentTab and searchFlow[tab .. "SearchFrame"] ~= nil then
-			searchFlow[tab .. "SearchFrame"].style = "als_search_frame_hidden"
-				
+			searchFlow[tab .. "SearchFrame"].visible = false
+
 			-- remove old search frame
 			local oldSearchFrame = contentFrame[tab .. "SearchFrame"]
 			if oldSearchFrame ~= nil then
@@ -35,6 +35,7 @@ function addSearchWidget(player, index)
         searchFrame.add({type = "label", name = currentTab .. "SearchFrameLabel", style = "als_search_label", caption = {"search-label"}})
     end
     searchFrame.style = "als_search_frame"
+    searchFrame.visible = true
 
     --add search field
     local searchField = searchFlow[currentTab .. "SearchFrame"][currentTab .. "-search-field"]

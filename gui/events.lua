@@ -703,7 +703,8 @@ script.on_event(defines.events.on_gui_click, function(event)
     elseif event.element.name:find("networkInfoNameEdit_") ~= nil  then
 
         global.networkEdit[index] = true
-        event.element.style = "als_button_hidden"
+        -- event.element.style = "als_button_hidden"
+        event.element.visible = false
 
         local name = event.element.name
         local key = string.gsub(name, "networkInfoNameEdit_", "")
@@ -714,10 +715,12 @@ script.on_event(defines.events.on_gui_click, function(event)
         local value = nameLabel.caption
 
 
-        nameLabel.style = "als_network_name_hidden"
+        -- nameLabel.style = "als_network_name_hidden"
+        nameLabel.visible = false
         local nameEdit = nameFlow["networkInfoNameValueFL_" .. key].add({type = "textfield", name = "networkInfoNameValue_" .. key, text = value })
         nameEdit.text = value
         confirmBtn.style = "als_button_confirm"
+        confirmBtn.visible = true
 
     -- networks table name column save event
     elseif event.element.name:find("networkInfoNameConfirm_") ~= nil  then
@@ -734,10 +737,13 @@ script.on_event(defines.events.on_gui_click, function(event)
 
         nameLabel.caption = value
         nameEdit.destroy()
-        nameLabel.style = "label"
+        -- nameLabel.style = "label"
+        nameLabel.visible = true
 
-        event.element.style = "als_button_hidden"
+        -- event.element.style = "als_button_hidden"
+        event.element.visible = false
         editBtn.style = "als_button_edit"
+        editBtn.visible = true
         names[key] = value
         global.networksNames[player.force.name] = names
         global.networkEdit[index] = false

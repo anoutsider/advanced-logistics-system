@@ -188,13 +188,6 @@ data.raw["gui-style"].default["als_search_frame"] =
     align = "center",
 }
 
-data.raw["gui-style"].default["als_search_frame_hidden"] =
-{
-    type = "frame_style",
-    parent = "als_search_frame",
-    visible = false
-}
-
 data.raw["gui-style"].default["als_search_label"] =
 {
     type = "label_style",
@@ -392,13 +385,6 @@ data.raw["gui-style"].default["als_network_value_flow"] =
     width = 188,
 }
 
-data.raw["gui-style"].default["als_network_name_hidden"] =
-{
-    type = "label_style",
-    parent = "label",
-    visible = false
-}
-
 data.raw["gui-style"].default["als_networks_frame"] =
 {
     type = "frame_style",
@@ -455,13 +441,6 @@ data.raw["gui-style"].default["als_network_name_flow"] =
 	top_padding = 5,
     width = 350,
     scalable = is_scalable,
-}
-
-data.raw["gui-style"].default["als_network_filter_hidden"] =
-{
-    type = "checkbox_style",
-    parent = "checkbox",
-    visible = false
 }
 
 -- Buttons
@@ -2285,12 +2264,6 @@ data.raw["gui-style"].default["als_button_confirm"] =
     }
 }
 
-data.raw["gui-style"].default["als_button_hidden"] =
-{
-    type = "button_style",
-    parent = "button",
-    visible = false,
-}
 
 
 -- sort controls
