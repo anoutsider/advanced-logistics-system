@@ -32,7 +32,7 @@ function addSearchWidget(player, index)
     local searchFrame = searchFlow[currentTab .. "SearchFrame"]
     if searchFrame == nil then
         searchFrame = searchFlow.add({type = "frame", name = currentTab .. "SearchFrame", style = "als_search_frame", direction = "horizontal"})
-        searchFrame.add({type = "label", name = currentTab .. "SearchFrameLabel", style = "als_search_label", caption = {"search-label"}})
+        searchFrame.add({type = "sprite-button", name = currentTab .. "SearchFrameLabel", style = "tool_button", sprite = "utility/search_icon"})
     end
     searchFrame.style = "als_search_frame"
     searchFrame.visible = true
@@ -60,7 +60,7 @@ function addNetworkSearchWidget(player, index)
     local searchFrame = searchFlow["networksSearchFrame"]
     if searchFrame == nil then
         searchFrame = searchFlow.add({type = "frame", name = "networksSearchFrame", style = "als_search_frame", direction = "horizontal"})
-        searchFrame.add({type = "label", name = "networksSearchFrameLabel", style = "als_search_label", caption = {"search-label"}})
+        searchFrame.add({type = "sprite-button", name = "networksSearchFrameLabel", style = "tool_button", sprite = "utility/search_icon"})
     end
 
     --add search field

@@ -420,7 +420,7 @@ function showNetworksFilter(player, index)
         global.searchText[index]["networksFilter"] = searchText
 
         local searchFrame = networksFilterFrame.add({type = "frame", name =  "networksSearchFrame", style = "als_search_frame", direction = "horizontal"})
-        searchFrame.add({type = "label", name = "networksSearchFrameLabel", style = "als_search_label", caption = {"search-label"}})
+        searchFrame.add({type = "sprite-button", name = "networksSearchFrameLabel", style = "tool_button", sprite = "utility/search_icon"})
         local searchField = searchFrame.add({type = "textfield", name = "networks-filter-search-field", style = "als_searchfield_style", text = searchText })
 
         -- add all networks option
