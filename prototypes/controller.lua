@@ -32,7 +32,7 @@ lsanimations = {
 }
 
 
-lsplayer = table.deepcopy(data.raw.player.player)
+lsplayer = table.deepcopy(data.raw.character.character)
 lsplayer.name = 'ls-controller'
 lsplayer.max_health = 1
 lsplayer.healing_per_tick = 0
