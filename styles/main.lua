@@ -87,7 +87,7 @@ data.raw["gui-style"].default["als_location_view"] =
     default_font_color = {r=0.98, g=0.66, b=0.22},
     default_graphical_set =
     {
-        filename = "__advanced-logistics-system__/graphics/location.png",
+        filename = "__advanced-logistics-system-fork__/graphics/location.png",
         priority = "extra-high-no-scale",
         width = 100,
         height = 100,
@@ -96,7 +96,7 @@ data.raw["gui-style"].default["als_location_view"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/location-hover.png",
+            filename = "__advanced-logistics-system-fork__/graphics/location-hover.png",
             priority = "extra-high-no-scale",
             width = 100,
             height = 100,
@@ -105,7 +105,7 @@ data.raw["gui-style"].default["als_location_view"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/location-hover.png",
+            filename = "__advanced-logistics-system-fork__/graphics/location-hover.png",
             width = 100,
             height = 100,
             x = 0
@@ -459,7 +459,7 @@ data.raw["gui-style"].default["als_button"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -468,7 +468,7 @@ data.raw["gui-style"].default["als_button"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -477,7 +477,7 @@ data.raw["gui-style"].default["als_button"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -492,7 +492,7 @@ data.raw["gui-style"].default["als_button_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -501,7 +501,7 @@ data.raw["gui-style"].default["als_button_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -510,7 +510,7 @@ data.raw["gui-style"].default["als_button_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -533,7 +533,7 @@ data.raw["gui-style"].default["als_button_small"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
@@ -542,7 +542,7 @@ data.raw["gui-style"].default["als_button_small"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
@@ -551,7 +551,7 @@ data.raw["gui-style"].default["als_button_small"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 28,
             x = 0
@@ -566,7 +566,7 @@ data.raw["gui-style"].default["als_button_small_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
@@ -575,7 +575,7 @@ data.raw["gui-style"].default["als_button_small_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
@@ -584,7 +584,7 @@ data.raw["gui-style"].default["als_button_small_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 28,
             x = 0
@@ -605,7 +605,7 @@ data.raw["gui-style"].default["als_button_main_icon"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -615,7 +615,7 @@ data.raw["gui-style"].default["als_button_main_icon"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -625,7 +625,7 @@ data.raw["gui-style"].default["als_button_main_icon"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 288,
@@ -649,7 +649,7 @@ data.raw["gui-style"].default["als_button_close"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 16,
             height = 16,
@@ -658,7 +658,7 @@ data.raw["gui-style"].default["als_button_close"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 16,
             height = 16,
@@ -667,7 +667,7 @@ data.raw["gui-style"].default["als_button_close"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 16,
             height = 16,
             x = 0
@@ -690,7 +690,7 @@ data.raw["gui-style"].default["als_button_info"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -700,7 +700,7 @@ data.raw["gui-style"].default["als_button_info"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -710,7 +710,7 @@ data.raw["gui-style"].default["als_button_info"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 357,
@@ -733,7 +733,7 @@ data.raw["gui-style"].default["als_button_location"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -743,7 +743,7 @@ data.raw["gui-style"].default["als_button_location"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -753,7 +753,7 @@ data.raw["gui-style"].default["als_button_location"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 37,
@@ -776,7 +776,7 @@ data.raw["gui-style"].default["als_button_teleport"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -786,7 +786,7 @@ data.raw["gui-style"].default["als_button_teleport"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -796,7 +796,7 @@ data.raw["gui-style"].default["als_button_teleport"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 165,
@@ -819,7 +819,7 @@ data.raw["gui-style"].default["als_button_delete"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -829,7 +829,7 @@ data.raw["gui-style"].default["als_button_delete"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -839,7 +839,7 @@ data.raw["gui-style"].default["als_button_delete"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 101,
@@ -862,7 +862,7 @@ data.raw["gui-style"].default["als_button_delete_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -872,7 +872,7 @@ data.raw["gui-style"].default["als_button_delete_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -884,7 +884,7 @@ data.raw["gui-style"].default["als_button_delete_selected"] =
 --        type = "monolith",
 --            monolith_image =
 --            {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 101,
@@ -907,7 +907,7 @@ data.raw["gui-style"].default["als_button_up_apc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -917,7 +917,7 @@ data.raw["gui-style"].default["als_button_up_apc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -927,7 +927,7 @@ data.raw["gui-style"].default["als_button_up_apc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
@@ -950,7 +950,7 @@ data.raw["gui-style"].default["als_button_up_ppc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -960,7 +960,7 @@ data.raw["gui-style"].default["als_button_up_ppc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -970,7 +970,7 @@ data.raw["gui-style"].default["als_button_up_ppc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
@@ -993,7 +993,7 @@ data.raw["gui-style"].default["als_button_up_sc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -1003,7 +1003,7 @@ data.raw["gui-style"].default["als_button_up_sc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -1013,7 +1013,7 @@ data.raw["gui-style"].default["als_button_up_sc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
@@ -1037,7 +1037,7 @@ data.raw["gui-style"].default["als_button_up_rc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -1047,7 +1047,7 @@ data.raw["gui-style"].default["als_button_up_rc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -1057,7 +1057,7 @@ data.raw["gui-style"].default["als_button_up_rc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
@@ -1082,7 +1082,7 @@ data.raw["gui-style"].default["als_button_name"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1091,7 +1091,7 @@ data.raw["gui-style"].default["als_button_name"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1100,7 +1100,7 @@ data.raw["gui-style"].default["als_button_name"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -1115,7 +1115,7 @@ data.raw["gui-style"].default["als_button_name_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1124,7 +1124,7 @@ data.raw["gui-style"].default["als_button_name_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1133,7 +1133,7 @@ data.raw["gui-style"].default["als_button_name_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -1156,7 +1156,7 @@ data.raw["gui-style"].default["als_button_total"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1165,7 +1165,7 @@ data.raw["gui-style"].default["als_button_total"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1174,7 +1174,7 @@ data.raw["gui-style"].default["als_button_total"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -1189,7 +1189,7 @@ data.raw["gui-style"].default["als_button_total_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1198,7 +1198,7 @@ data.raw["gui-style"].default["als_button_total_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1207,7 +1207,7 @@ data.raw["gui-style"].default["als_button_total_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -1354,7 +1354,7 @@ data.raw["gui-style"].default["als_button_all"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1363,7 +1363,7 @@ data.raw["gui-style"].default["als_button_all"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1372,7 +1372,7 @@ data.raw["gui-style"].default["als_button_all"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -1395,7 +1395,7 @@ data.raw["gui-style"].default["als_button_all_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1404,7 +1404,7 @@ data.raw["gui-style"].default["als_button_all_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1413,7 +1413,7 @@ data.raw["gui-style"].default["als_button_all_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
@@ -1435,7 +1435,7 @@ data.raw["gui-style"].default["als_button_apc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1444,7 +1444,7 @@ data.raw["gui-style"].default["als_button_apc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1453,7 +1453,7 @@ data.raw["gui-style"].default["als_button_apc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64
@@ -1467,7 +1467,7 @@ data.raw["gui-style"].default["als_button_apc_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1476,7 +1476,7 @@ data.raw["gui-style"].default["als_button_apc_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1485,7 +1485,7 @@ data.raw["gui-style"].default["als_button_apc_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64
@@ -1507,7 +1507,7 @@ data.raw["gui-style"].default["als_button_ppc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1516,7 +1516,7 @@ data.raw["gui-style"].default["als_button_ppc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1525,7 +1525,7 @@ data.raw["gui-style"].default["als_button_ppc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128
@@ -1539,7 +1539,7 @@ data.raw["gui-style"].default["als_button_ppc_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1548,7 +1548,7 @@ data.raw["gui-style"].default["als_button_ppc_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1557,7 +1557,7 @@ data.raw["gui-style"].default["als_button_ppc_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128
@@ -1579,7 +1579,7 @@ data.raw["gui-style"].default["als_button_sc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1588,7 +1588,7 @@ data.raw["gui-style"].default["als_button_sc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1597,7 +1597,7 @@ data.raw["gui-style"].default["als_button_sc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 192
@@ -1611,7 +1611,7 @@ data.raw["gui-style"].default["als_button_sc_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1620,7 +1620,7 @@ data.raw["gui-style"].default["als_button_sc_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1629,7 +1629,7 @@ data.raw["gui-style"].default["als_button_sc_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 192
@@ -1651,7 +1651,7 @@ data.raw["gui-style"].default["als_button_rc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1660,7 +1660,7 @@ data.raw["gui-style"].default["als_button_rc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1669,7 +1669,7 @@ data.raw["gui-style"].default["als_button_rc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 256
@@ -1683,7 +1683,7 @@ data.raw["gui-style"].default["als_button_rc_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1692,7 +1692,7 @@ data.raw["gui-style"].default["als_button_rc_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1701,7 +1701,7 @@ data.raw["gui-style"].default["als_button_rc_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 256
@@ -1723,7 +1723,7 @@ data.raw["gui-style"].default["als_button_woc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1733,7 +1733,7 @@ data.raw["gui-style"].default["als_button_woc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1743,7 +1743,7 @@ data.raw["gui-style"].default["als_button_woc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0,
@@ -1758,7 +1758,7 @@ data.raw["gui-style"].default["als_button_woc_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1768,7 +1768,7 @@ data.raw["gui-style"].default["als_button_woc_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1778,7 +1778,7 @@ data.raw["gui-style"].default["als_button_woc_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0,
@@ -1801,7 +1801,7 @@ data.raw["gui-style"].default["als_button_irc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1811,7 +1811,7 @@ data.raw["gui-style"].default["als_button_irc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1821,7 +1821,7 @@ data.raw["gui-style"].default["als_button_irc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64,
@@ -1836,7 +1836,7 @@ data.raw["gui-style"].default["als_button_irc_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1846,7 +1846,7 @@ data.raw["gui-style"].default["als_button_irc_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1856,7 +1856,7 @@ data.raw["gui-style"].default["als_button_irc_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64,
@@ -1879,7 +1879,7 @@ data.raw["gui-style"].default["als_button_stc"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1889,7 +1889,7 @@ data.raw["gui-style"].default["als_button_stc"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1899,7 +1899,7 @@ data.raw["gui-style"].default["als_button_stc"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128,
@@ -1914,7 +1914,7 @@ data.raw["gui-style"].default["als_button_stc_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1924,7 +1924,7 @@ data.raw["gui-style"].default["als_button_stc_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1934,7 +1934,7 @@ data.raw["gui-style"].default["als_button_stc_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128,
@@ -1957,7 +1957,7 @@ data.raw["gui-style"].default["als_button_log"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1967,7 +1967,7 @@ data.raw["gui-style"].default["als_button_log"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -1977,7 +1977,7 @@ data.raw["gui-style"].default["als_button_log"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 160,
@@ -1992,7 +1992,7 @@ data.raw["gui-style"].default["als_button_log_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2002,7 +2002,7 @@ data.raw["gui-style"].default["als_button_log_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2012,7 +2012,7 @@ data.raw["gui-style"].default["als_button_log_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128,
@@ -2035,7 +2035,7 @@ data.raw["gui-style"].default["als_button_con"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2045,7 +2045,7 @@ data.raw["gui-style"].default["als_button_con"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2055,7 +2055,7 @@ data.raw["gui-style"].default["als_button_con"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 224,
@@ -2070,7 +2070,7 @@ data.raw["gui-style"].default["als_button_con_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2080,7 +2080,7 @@ data.raw["gui-style"].default["als_button_con_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2090,7 +2090,7 @@ data.raw["gui-style"].default["als_button_con_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 192,
@@ -2113,7 +2113,7 @@ data.raw["gui-style"].default["als_button_port"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2123,7 +2123,7 @@ data.raw["gui-style"].default["als_button_port"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2133,7 +2133,7 @@ data.raw["gui-style"].default["als_button_port"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 288,
@@ -2148,7 +2148,7 @@ data.raw["gui-style"].default["als_button_port_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2158,7 +2158,7 @@ data.raw["gui-style"].default["als_button_port_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
@@ -2168,7 +2168,7 @@ data.raw["gui-style"].default["als_button_port_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 256,
@@ -2192,7 +2192,7 @@ data.raw["gui-style"].default["als_button_edit"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -2202,7 +2202,7 @@ data.raw["gui-style"].default["als_button_edit"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -2212,7 +2212,7 @@ data.raw["gui-style"].default["als_button_edit"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 37,
@@ -2236,7 +2236,7 @@ data.raw["gui-style"].default["als_button_confirm"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -2246,7 +2246,7 @@ data.raw["gui-style"].default["als_button_confirm"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
@@ -2256,7 +2256,7 @@ data.raw["gui-style"].default["als_button_confirm"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 101,
@@ -2281,7 +2281,7 @@ data.raw["gui-style"].default["als_sort_desc"] =
     graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 14,
             height = 14,
@@ -2304,7 +2304,7 @@ data.raw["gui-style"].default["als_sort_asc"] =
     graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 14,
             height = 14,
@@ -2327,7 +2327,7 @@ data.raw["gui-style"].default["als_sort"] =
     graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 14,
             height = 14,
@@ -2350,7 +2350,7 @@ data.raw["gui-style"].default["als_sort_holder"] =
     graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 16,
             height = 32,
@@ -2371,7 +2371,7 @@ data.raw["gui-style"].default["als_item_icon"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2380,7 +2380,7 @@ data.raw["gui-style"].default["als_item_icon"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2389,7 +2389,7 @@ data.raw["gui-style"].default["als_item_icon"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32
@@ -2406,7 +2406,7 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2415,7 +2415,7 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2424,7 +2424,7 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32
@@ -2442,7 +2442,7 @@ data.raw["gui-style"].default["als_item_icon_small"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2451,7 +2451,7 @@ data.raw["gui-style"].default["als_item_icon_small"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2460,7 +2460,7 @@ data.raw["gui-style"].default["als_item_icon_small"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32
@@ -2477,7 +2477,7 @@ data.raw["gui-style"].default["als_item_icon_small_selected"] =
     default_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2486,7 +2486,7 @@ data.raw["gui-style"].default["als_item_icon_small_selected"] =
     hovered_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
@@ -2495,7 +2495,7 @@ data.raw["gui-style"].default["als_item_icon_small_selected"] =
     clicked_graphical_set =
     {
 
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32

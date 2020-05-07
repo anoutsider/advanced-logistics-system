@@ -5,7 +5,7 @@
   "title": "Advanced Logistics System Fork",
   "author": "anoutsider",
   "description": "Extended Logistics Network View and Monitoring",
-  "homepage": "https://github.com/anoutsider/advanced-logistics-system",
+  "homepage": "https://github.com/lingo/advanced-logistics-system",
   "dependencies": [
     "base >= 0.18.0"
   ]

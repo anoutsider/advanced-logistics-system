@@ -9,7 +9,7 @@ data:extend({
   {
     type = "custom-input",
     name = "ls-close-gui",
-	consuming = "game-only",
+    consuming = "game-only",
     key_sequence = "SHIFT + ESCAPE"
   }
 })
