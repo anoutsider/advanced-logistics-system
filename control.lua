@@ -1,4 +1,4 @@
-MOD_NAME = "advanced-logistics-system-fork"
+MOD_NAME = "advanced-logistics-system-2"
 TECH_NAME = "advanced-logistics-systems"
 
 require "gui"

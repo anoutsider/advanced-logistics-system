@@ -3,7 +3,7 @@ data:extend(
     {
         type = "technology",
         name = "advanced-logistics-systems",
-        icon = "__advanced-logistics-system-fork__/graphics/technology/advanced-ls.png",
+        icon = "__advanced-logistics-system-2__/graphics/technology/advanced-ls.png",
         icon_size = 32,
         effects ={},
         prerequisites =
