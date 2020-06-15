@@ -30,7 +30,7 @@ script.on_event("ls-close-gui", function(event)
 		local locationFlow = player.gui.center.locationFlow
 		if locationFlow ~= nil then
 			resetPosition(player, index)
-		end	
+		end
 		hideGUI(player, index)
 	end
 end)
@@ -426,7 +426,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         if itemInfo["chests"][key] then
             if action == "teleport" then
                 local pos = itemInfo["chests"][key].pos
-                local new_pos = surface.find_non_colliding_position("player", {pos.x, pos.y}, 10, 1)
+                local new_pos = surface.find_non_colliding_position("character", {pos.x, pos.y}, 10, 1)
                 if new_pos then
                     player.teleport(new_pos)
                     hideGUI(player, index)
@@ -524,7 +524,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         if chests and chests[key] then
             if action == "teleport" then
                 local pos = chests[key].position
-                local new_pos = surface.find_non_colliding_position("player", {pos.x, pos.y}, 10, 1)
+                local new_pos = surface.find_non_colliding_position("character", {pos.x, pos.y}, 10, 1)
                 if new_pos then
                     player.teleport(new_pos)
                     hideGUI(player, index)
@@ -557,8 +557,8 @@ script.on_event(defines.events.on_gui_click, function(event)
     -- disconnected table filters event
     elseif event.element.name:find("disconnectedFilter_") ~= nil  then
 		local guiPos = global.settings[index].guiPos
-		local currentTab = global.currentTab[index]       
-		
+		local currentTab = global.currentTab[index]
+
 		if currentTab == "disconnected" then
 			local filters = global.disconnectedFilters[index]
             local name = event.element.name
@@ -574,7 +574,7 @@ script.on_event(defines.events.on_gui_click, function(event)
 
                 local filterFrame = filtersFlow.chestsFilterFrame
                 if filterFrame ~= nil then
-					
+
 					if filter_by == "all" then
 						isSelected = style.name == "als_button_all_selected"
 					else
@@ -626,7 +626,7 @@ script.on_event(defines.events.on_gui_click, function(event)
                 end
             end
         end
-		
+
     -- location view back button event
     elseif event.element.name == "locationViewBack" then
 
@@ -639,7 +639,7 @@ script.on_event(defines.events.on_gui_click, function(event)
         resetMenu(player, index)
         clearGUI(player, index)
         showNetworksInfo(player, index)
-        
+
     -- networks filter button event
     elseif event.element.name == "networkFiltersFrameView" then
 
@@ -778,7 +778,7 @@ script.on_event(defines.events.on_gui_click, function(event)
             if network["cells"][key] then
                 if action == "teleport" then
                     local pos = network["cells"][key].pos
-                    local new_pos = surface.find_non_colliding_position("player", {pos.x, pos.y}, 10, 1)
+                    local new_pos = surface.find_non_colliding_position("character", {pos.x, pos.y}, 10, 1)
                     if new_pos then
                         player.teleport(new_pos)
                         hideGUI(player, index)
@@ -791,7 +791,7 @@ script.on_event(defines.events.on_gui_click, function(event)
                 end
             end
         end
-        
+
     -- network filters apply
     elseif event.element.name == "applyFiltersBtn" then
 
@@ -804,30 +804,30 @@ script.on_event(defines.events.on_gui_click, function(event)
         if networksFilterFrame ~= nil then
             networksFilterFrame.destroy()
         end
-        showGUI(player, index)        
-    
+        showGUI(player, index)
+
 	-- network filters list name click
-	elseif event.element.name:find("networksName_") ~= nil then	
+	elseif event.element.name:find("networksName_") ~= nil then
         local guiPos = global.settings[index].guiPos
         local name = event.element.name
         local key = string.gsub(name, "networksName_", "")
 		local networksFilterFrame = player.gui[guiPos].networksFilterFrame
 		local networksTable = networksFilterFrame.networksTableWrapper.networksTable
-		local networksAllCheck = networksFilterFrame.networksAllTable.allFilterFlow["networksFilter_all"]		
+		local networksAllCheck = networksFilterFrame.networksAllTable.allFilterFlow["networksFilter_all"]
 		local checkElementId = "networksFilter_" .. key
 		local checkElement = false
-		
+
 		if key == "all" then
 			checkElement = networksAllCheck
 		else
 			checkElement = networksTable[checkElementId]
 		end
-		
-		
+
+
 		if checkElement and checkElement ~= nil then
 			handleNetworksFilterListEvent(player, index, checkElement, true)
 		end
-		
+
     -- pagination event
     else
 
@@ -847,7 +847,7 @@ script.on_event(defines.events.on_gui_click, function(event)
                     local currentNetwork = global.currentNetwork[index]
                     if currentNetwork then
                         showNetworkInfo(currentNetwork, player, index, page)
-                    end                
+                    end
                 else
                     updateGUI(player, index)
                 end
