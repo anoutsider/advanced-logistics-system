@@ -36,7 +36,7 @@ function showSettings(player, index)
         settingsTable.add({type = "label", name = "refreshIntervalLabel", caption = {"settings.refresh-interval"}, style = "als_info_label"})
         local settingFlow = settingsTable.add({type = "flow", name = "refreshIntervalFlow", direction = "horizontal"})
         local settingsField = settingFlow.add({type = "textfield", name = "refreshIntervalValue", text = refreshInterval })
-        settingsField.text = refreshInterval
+        settingsField.text = tostring(refreshInterval)
         settingFlow.add({type = "label", name = "refreshIntervalSecLabel", caption = "secs", style = "als_info_label"})
         settingsTable.add({type = "label", name = "refreshIntervalHelp", caption = {"settings.refresh-interval-help"}, style = "als_settings_info_label"})
 
@@ -44,7 +44,7 @@ function showSettings(player, index)
         local itemsPerPage = global.settings[index].itemsPerPage
         settingsTable.add({type = "label", name = "itemsPerPageLabel", caption = {"settings.items-per-page"}, style = "als_info_label"})
         local settingsField = settingsTable.add({type = "textfield", name = "itemsPerPageValue", text = itemsPerPage })
-        settingsField.text = itemsPerPage
+        settingsField.text = tostring(itemsPerPage)
         settingsTable.add({type = "label", name = "itemsPerPageHelp", caption = {"settings.items-per-page-help"}, style = "als_settings_info_label"})
 
         -- auto filter
