@@ -1,5 +1,5 @@
 --- Remote interface functions
-remote.add_interface("advanced-logistics-system-2",
+remote.add_interface("advanced-logistics-system-fork",
     {
         showSettings = function(player)
             local index = player.index

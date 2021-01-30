@@ -106,7 +106,7 @@ Changelog
  - Added a new settings option "Auto Filter" when Enabled automatically filter "Item Info" views based on the previous tab whether it's "Logistics/Normal" - Enabled by default
  - Added a new settings option "Exclude Requesters" when Enabled items in requester chests will not be included in the totals calculation - Enabled by default
  - Remove item requirement - no longer a config option
- - Added a remote interface function "ShowSettings" to force open the settings panel, ex: remote.call("advanced-logistics-system-2","showSettings",game.local_player)
+ - Added a remote interface function "ShowSettings" to force open the settings panel, ex: remote.call("advanced-logistics-system-fork","showSettings",game.local_player)
 
 **0.2.5**
 

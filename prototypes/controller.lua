@@ -1,5 +1,5 @@
 emptyAnimations =       {
-    filename = "__advanced-logistics-system-2__/graphics/trans.png",
+    filename = "__advanced-logistics-system-fork__/graphics/trans.png",
     priority = "medium",
     width = 1,
     height = 1,
@@ -53,14 +53,14 @@ lsplayer.order="z"
 lsplayer.eat =
 {
     {
-        filename = "__advanced-logistics-system-2__/sound/empty.ogg",
+        filename = "__advanced-logistics-system-fork__/sound/empty.ogg",
         volume = 1
     }
 }
 lsplayer.heartbeat =
 {
     {
-        filename = "__advanced-logistics-system-2__/sound/empty.ogg"
+        filename = "__advanced-logistics-system-fork__/sound/empty.ogg"
     }
 }
 lsplayer.animations = lsanimations
