@@ -4,7 +4,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
         local guiPos = global.settings[index].guiPos
         local currentTab = global.currentTab[index]	
 		local iconsCount = count(global.codeToName[currentTab])
-        local colspan =  iconsCount + 2
+        local column_count =  iconsCount + 2
 		
         if player.gui[guiPos].logisticsFrame ~= nil and player.gui[guiPos].logisticsFrame.contentFrame ~= nil then
 
@@ -72,7 +72,7 @@ function updateItemsTable(items, player, index, page, search, sort_by, sort_dir)
             if player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable ~= nil then
                 player.gui[guiPos].logisticsFrame.contentFrame.itemsFrame.itemsTable.destroy()
             end
-            itemsTable = itemsFrame.add({type = "table", name = "itemsTable", colspan = colspan, style = "als_items_table"})
+            itemsTable = itemsFrame.add({type = "table", name = "itemsTable", column_count = column_count, style = "als_items_table"})
             
             -- set items table dynamic height
             --itemsTable.style.minimal_height = itemsPerPage * 49
@@ -241,7 +241,7 @@ function showItemInfo(item, player, index, page, sort_by, sort_dir)
             end
 
             if chestsCount > 0 then
-                itemInfoTable = itemInfoFrame.add({type ="table", name = "itemInfoTable", colspan = 5, style = "als_items_table"})
+                itemInfoTable = itemInfoFrame.add({type ="table", name = "itemInfoTable", column_count = 5, style = "als_items_table"})
 				
                 -- chest image column
                 itemInfoTable.add({type = "flow", name = "itemInfo_icon", caption = " ", style = "als_icon_flow"})
@@ -414,7 +414,7 @@ function showDisconnectedInfo(player, index, page, sort_by, sort_dir)
                 player.gui[guiPos].logisticsFrame.contentFrame.disconnectedFrame.disconnectedTable.destroy()
             end
 
-            disconnectedTable = disconnectedFrame.add({type ="table", name = "disconnectedTable", colspan = 5, style = "als_items_table"})
+            disconnectedTable = disconnectedFrame.add({type ="table", name = "disconnectedTable", column_count = 5, style = "als_items_table"})
 
             -- chest image column
             disconnectedTable.add({type = "flow", name = "disconnectedInfo_icon", caption = " ", style = "als_icon_flow"})

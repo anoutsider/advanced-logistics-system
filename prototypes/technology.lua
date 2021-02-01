@@ -3,7 +3,8 @@ data:extend(
     {
         type = "technology",
         name = "advanced-logistics-systems",
-        icon = "__advanced-logistics-system__/graphics/technology/advanced-ls.png",
+        icon = "__advanced-logistics-system-fork__/graphics/technology/advanced-ls.png",
+        icon_size = 256,
         effects ={},
         prerequisites =
         {
@@ -15,16 +16,11 @@ data:extend(
             count = 100,
             ingredients =
             {
-                {"science-pack-1", 1},
-                {"science-pack-2", 1},
+                {"automation-science-pack", 1},
+                {"logistic-science-pack", 1},
             },
             time = 30
         },
         order = "c-k-c-a",
     }
 })
-
-
-
-
-

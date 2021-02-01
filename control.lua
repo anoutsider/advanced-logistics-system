@@ -1,4 +1,4 @@
-MOD_NAME = "advanced-logistics-system"
+MOD_NAME = "advanced-logistics-system-fork"
 TECH_NAME = "advanced-logistics-systems"
 
 require "gui"
@@ -39,7 +39,7 @@ script.on_event(defines.events.on_robot_built_entity, function(event)
     entityBuilt(event, event.created_entity)
 end)
 
-script.on_event(defines.events.on_preplayer_mined_item, function(event)
+script.on_event(defines.events.on_pre_player_mined_item, function(event)
     entityMined(event, event.entity)
 end)
 
@@ -761,15 +761,15 @@ function getLogisticNetworks(force, full)
                         end
                     end
 
-                    for x,chest in pairs(net.full_or_satisfied_requesters) do
-                        local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
-                        if not chests[key] and chest.type == "logistic-container" then
-                            chests[key] = {}
-                            chests[key]["entity"] = chest
-                            chests[key]["network"] = index
-                            chests[key]["type"] = "requester"
-                        end
-                    end
+                    -- for x,chest in pairs(net.full_or_satisfied_requesters) do
+                    --     local key = string.gsub(chest.position.x.."A"..chest.position.y, "-", "_")
+                    --     if not chests[key] and chest.type == "logistic-container" then
+                    --         chests[key] = {}
+                    --         chests[key]["entity"] = chest
+                    --         chests[key]["network"] = index
+                    --         chests[key]["type"] = "requester"
+                    --     end
+                    -- end
                 end
                 networksCount = networksCount + 1
             end
@@ -1100,14 +1100,12 @@ function upgradeChest(entity, name, player)
         if global.normalChests[forceName] and global.normalChests[forceName][key] then global.normalChests[forceName][key] = nil end
         if global.disconnectedChests[forceName] and global.disconnectedChests[forceName][key] then global.disconnectedChests[forceName][key] = nil end
 
-        -- Let other mods know this entity is being destroyed
-        script.raise_event(defines.events.on_preplayer_mined_item, {
-            entity = entity,
-            player_index = player.index,
-            mod = MOD_NAME,
-        })
-
         entity.destroy()
+
+        -- Let other mods know this entity is being destroyed
+        script.raise_event(defines.events.script_raised_destroy, {
+            entity = entity,
+        })
 
         if content then
             global.chestsUpgrade[key] = {}
@@ -1124,10 +1122,8 @@ function upgradeChest(entity, name, player)
 
         if upgrade then
             -- Let other mods know this entity is being created
-            script.raise_event(defines.events.on_built_entity, {
-                created_entity = upgrade,
-                player_index = player.index,
-                mod = MOD_NAME,
+            script.raise_event(defines.events.script_raised_built, {
+                entity = upgrade,
             })
         end
     end

@@ -1,10 +1,12 @@
 {
-    "name": "advanced-logistics-system",
-    "version": "0.5.1",
-    "factorio_version": "0.15",
-    "title": "Advanced Logistics System",
-    "author": "anoutsider",
-    "description": "Extended Logistics Network View and Monitoring",
-    "homepage": "https://github.com/anoutsider/advanced-logistics-system",
-    "dependencies": ["base >= 0.15.0"]
+  "name": "advanced-logistics-system-fork",
+  "version": "3.0.0",
+  "factorio_version": "1.1",
+  "title": "Advanced Logistics System Fork",
+  "author": "anoutsider",
+  "description": "Extended Logistics Network View and Monitoring",
+  "homepage": "https://github.com/lingo/advanced-logistics-system",
+  "dependencies": [
+    "base >= 1.1"
+  ]
 }

@@ -66,7 +66,7 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
                 player.gui[guiPos].logisticsFrame.contentFrame.networksFrame.networksTable.destroy()
             end
 
-            networksTable = networksFrame.add({type ="table", name = "networksTable", colspan = 7, style = "als_items_table"})
+            networksTable = networksFrame.add({type ="table", name = "networksTable", column_count = 7, style = "als_items_table"})
 
             -- network name column
             local isSelected = sort_by == 'name'
@@ -159,9 +159,9 @@ function showNetworksInfo(player, index, page, sort_by, sort_dir)
                     local nameFlowValue = nameFlow.add({type = "flow", name = "networkInfoNameValueFL_" .. key, direction = "horizontal", style = "als_network_value_flow"})
                     local nameFlowEdit = nameFlow.add({type = "flow", name = "networkInfoNameEditFL_" .. key, direction = "horizontal"})
 
-                    nameFlowValue.add({type = "label", name = "networkInfoNameLabel_" .. key, caption = name, style = "label_style"})
+                    nameFlowValue.add({type = "label", name = "networkInfoNameLabel_" .. key, caption = name, style = "label"})
                     nameFlowEdit.add({type = "button", name = "networkInfoNameEdit_" .. key, style = "als_button_edit", tooltip = {"tooltips.net-rename"}})
-                    nameFlowEdit.add({type = "button", name = "networkInfoNameConfirm_" .. key, style = "als_button_hidden", tooltip = {"tooltips.net-save"}})
+                    nameFlowEdit.add({type = "button", name = "networkInfoNameConfirm_" .. key, style = "als_button_confirm", visible=false, tooltip = {"tooltips.net-save"}})
 
                     networksTable.add({type = "label", name = "networkInfoPort_" .. key, caption = port_count})
                     networksTable.add({type = "label", name = "networkInfoLog_" .. key, caption = log_count})
@@ -261,7 +261,7 @@ function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
                     player.gui[guiPos].logisticsFrame.contentFrame.networkFrame.networkTable.destroy()
                 end
 
-                networkTable = networkFrame.add({type = "table", name = "networkTable", colspan = 8, style = "als_items_table"})
+                networkTable = networkFrame.add({type = "table", name = "networkTable", column_count = 8, style = "als_items_table"})
 
                 -- set items table dynamic height
                 networkTable.style.minimal_height = itemsPerPage * 49
@@ -365,7 +365,7 @@ function showNetworkInfo(net, player, index, page, sort_by, sort_dir)
 
                         local toolsFlow = networkTable["networkInfoTools_" .. key]
                         if toolsFlow == nil then
-                            toolsFlow = networkTable.add({type = "flow", name = "networkInfoTools_" .. key, direction = "horizontal", style = "flow_style"})
+                            toolsFlow = networkTable.add({type = "flow", name = "networkInfoTools_" .. key, direction = "horizontal"})
                         end
                         toolsFlow.add({type = "button", name = "networkAction_location_" .. key, style = "als_button_location", tooltip = {"tooltips.tools-location"}})
                         if exTools then toolsFlow.add({type = "button", name = "networkAction_teleport_" .. key, style = "als_button_teleport", tooltip = {"tooltips.tools-teleport"}}) end
@@ -420,30 +420,30 @@ function showNetworksFilter(player, index)
         global.searchText[index]["networksFilter"] = searchText
 
         local searchFrame = networksFilterFrame.add({type = "frame", name =  "networksSearchFrame", style = "als_search_frame", direction = "horizontal"})
-        searchFrame.add({type = "label", name = "networksSearchFrameLabel", style = "als_search_label", caption = {"search-label"}})
+        searchFrame.add({type = "sprite-button", name = "networksSearchFrameLabel", style = "tool_button", sprite = "utility/search_icon"})
         local searchField = searchFrame.add({type = "textfield", name = "networks-filter-search-field", style = "als_searchfield_style", text = searchText })
 
         -- add all networks option
-        local networksAllTable = networksFilterFrame.add({type = "table", name = "networksAllTable", colspan = 2, style = "als_networks_table"})
+        local networksAllTable = networksFilterFrame.add({type = "table", name = "networksAllTable", column_count = 2, style = "als_networks_table"})
         local allFilter = filtersCount > 0 and "false" or "true"
         local allFilterFlow = networksAllTable.add({type = "flow", name = "allFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
-        allFilterFlow.add({type = "checkbox", name = "networksFilter_all", style = "checkbox_style", caption = " ", state = allFilter})
+        allFilterFlow.add({type = "checkbox", name = "networksFilter_all", style = "checkbox", caption = " ", state = allFilter})
         local allFilterNameFlow = networksAllTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
         allFilterNameFlow.add({type = "label", name = "networksName_all", caption = {"network-all"}, style = "als_info_label"})
 
         -- add networks options
         local networksTableWrapper = networksFilterFrame.add({type = "scroll-pane", name = "networksTableWrapper", style="als_networks_table_wrapper", vertical_scroll_policy = "always"})
-        local networksTable = networksTableWrapper.add({type = "table", name = "networksTable", colspan = 2, style = "als_networks_table"})
+        local networksTable = networksTableWrapper.add({type = "table", name = "networksTable", column_count = 2, style = "als_networks_table"})
 
         local networksFilterFlow = networksTable.add({type = "flow", name = "networkFilterFlow", direction = "horizontal", style = "als_network_filter_flow"})
-        networksFilterFlow.add({type = "label", name = "networksFilterLabel", caption = {"filter"}, style = "label_style"})
+        networksFilterFlow.add({type = "label", name = "networksFilterLabel", caption = {"filter"}, style = "label"})
         local networksFilterNameFlow = networksTable.add({type = "flow", name = "allFilterNameFlow", direction = "horizontal", style = "als_network_name_flow"})
-        networksFilterNameFlow.add({type = "label", name = "networksNameLabel", caption = {"network-name"}, style = "label_style"})
+        networksFilterNameFlow.add({type = "label", name = "networksNameLabel", caption = {"network-name"}, style = "label"})
 
         for key,network in pairs(networks) do
             local name = network.name
             local isFilter = networksFilter[key] and "true" or "false"
-            networksTable.add({type = "checkbox", name = "networksFilter_" .. key, style = "checkbox_style", caption = " ", state = isFilter})
+            networksTable.add({type = "checkbox", name = "networksFilter_" .. key, style = "checkbox", caption = " ", state = isFilter})
             networksTable.add({type = "label", name = "networksName_" .. key, caption = name, style = "als_info_label"})
         end
 
@@ -480,11 +480,11 @@ function updateNetworkFiltersTable(player, index)
             if networksTable[childName] ~= nil and networksTable[childName].name:find("networksFilter_") ~= nil then
                 local key = string.gsub(childName, "networksFilter_", "")
                 if not networks[key] then
-                    networksTable[childName].style = "als_network_filter_hidden"
-                    networksTable["networksName_" .. key].style = "als_network_name_hidden"
+                    networksTable[childName].visible = false
+                    networksTable["networksName_" .. key].visible = false
                 else
-                    networksTable[childName].style = "checkbox_style"
-                    networksTable["networksName_" .. key].style = "als_info_label"
+                    networksTable[childName].visible = true
+                    networksTable["networksName_" .. key].visible = true
                 end
             end
         end

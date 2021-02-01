@@ -66,7 +66,7 @@ data.raw["gui-style"].default["als_settings_table"] =
 data.raw["gui-style"].default["als_settings_info_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     align = "left",
     font = "font-s",
 }
@@ -76,7 +76,7 @@ data.raw["gui-style"].default["als_settings_info_label"] =
 data.raw["gui-style"].default["als_location_view"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 100,
     height = 100,
     top_padding = 65,
@@ -87,38 +87,28 @@ data.raw["gui-style"].default["als_location_view"] =
     default_font_color = {r=0.98, g=0.66, b=0.22},
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/location.png",
-            priority = "extra-high-no-scale",
-            width = 100,
-            height = 100,
-            x = 0
-        }
+        filename = "__advanced-logistics-system-fork__/graphics/location.png",
+        priority = "extra-high-no-scale",
+        width = 100,
+        height = 100,
+        x = 0
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/location-hover.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/location-hover.png",
             priority = "extra-high-no-scale",
             width = 100,
             height = 100,
             x = 0
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/location-hover.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/location-hover.png",
             width = 100,
             height = 100,
             x = 0
-        }
     }
 }
 
@@ -132,20 +122,14 @@ data.raw["gui-style"].default["als_frame"] =
     right_padding = 4,
     bottom_padding = 10,
     left_padding = 4,
-    scalable = is_scalable, 
+    scalable = is_scalable,
 }
 
-data.raw["gui-style"].default["als_frame_hidden"] =
-{
-    type = "frame_style",
-    parent = "als_frame",
-    visible = false
-}
 
 data.raw["gui-style"].default["als_title_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     width = 708,
     align = "center",
     font = "font-lb",
@@ -204,17 +188,10 @@ data.raw["gui-style"].default["als_search_frame"] =
     align = "center",
 }
 
-data.raw["gui-style"].default["als_search_frame_hidden"] =
-{
-    type = "frame_style",
-    parent = "als_search_frame",
-    visible = false
-}
-
 data.raw["gui-style"].default["als_search_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     align = "left",
     top_padding = 0,
     font = "font-mb",
@@ -223,8 +200,8 @@ data.raw["gui-style"].default["als_search_label"] =
 
 data.raw["gui-style"].default["als_searchfield_style"] =
 {
-    type = "textfield_style",
-    parent = "textfield_style",
+    type = "textbox_style",
+    parent = "textbox",
 	height = 20,
 	maximal_height = 20,
 }
@@ -232,7 +209,7 @@ data.raw["gui-style"].default["als_searchfield_style"] =
 -- item info
 data.raw["gui-style"].default["als_info_flow"] =
 {
-    type = "flow_style",
+    type = "horizontal_flow_style",
     horizontal_spacing = 2,
     vertical_spacing = 0,
     scalable = is_scalable,
@@ -252,7 +229,7 @@ data.raw["gui-style"].default["als_info_frame"] =
 data.raw["gui-style"].default["als_info_label"] =
 {
     type = "label_style",
-    parent = "label_style",
+    parent = "label",
     align = "left",
     font = "font-mb",
     font_color = {r=0.98, g=0.66, b=0.22}
@@ -272,12 +249,25 @@ data.raw["gui-style"].default["als_filters_frame"] =
 }
 
 -- items table headers
-
-data.raw["gui-style"].default["als_flow_style"] =
+-- horizontal flow
+data.raw["gui-style"].default["als_h_flow_style"] =
 {
-    type = "flow_style",
+    type = "horizontal_flow_style",
 	horizontal_spacing = 0,
-	vertical_spacing = 0,	
+	vertical_spacing = 0,
+	top_padding = 0,
+	right_padding = 0,
+	bottom_padding = 0,
+	left_padding = 0,
+    scalable = is_scalable,
+}
+
+-- vertical flow
+data.raw["gui-style"].default["als_v_flow_style"] =
+{
+    type = "vertical_flow_style",
+	horizontal_spacing = 0,
+	vertical_spacing = 0,
 	top_padding = 0,
 	right_padding = 0,
 	bottom_padding = 0,
@@ -287,8 +277,8 @@ data.raw["gui-style"].default["als_flow_style"] =
 
 data.raw["gui-style"].default["als_table_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -298,8 +288,8 @@ data.raw["gui-style"].default["als_table_flow"] =
 
 data.raw["gui-style"].default["als_total_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -309,8 +299,8 @@ data.raw["gui-style"].default["als_total_flow"] =
 
 data.raw["gui-style"].default["als_total_w_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -320,8 +310,8 @@ data.raw["gui-style"].default["als_total_w_flow"] =
 
 data.raw["gui-style"].default["als_pos_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -331,8 +321,8 @@ data.raw["gui-style"].default["als_pos_flow"] =
 
 data.raw["gui-style"].default["als_sort_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "vertical_flow_style",
+	parent = "als_v_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -342,8 +332,8 @@ data.raw["gui-style"].default["als_sort_flow"] =
 
 data.raw["gui-style"].default["als_icon_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -353,8 +343,8 @@ data.raw["gui-style"].default["als_icon_flow"] =
 
 data.raw["gui-style"].default["als_name_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 4,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -364,8 +354,8 @@ data.raw["gui-style"].default["als_name_flow"] =
 
 data.raw["gui-style"].default["als_items_info_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
 	left_padding = 0,
 	right_padding = 0,
 	top_padding = 5,
@@ -375,8 +365,8 @@ data.raw["gui-style"].default["als_items_info_flow"] =
 
 data.raw["gui-style"].default["als_tools_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 6,
     vertical_spacing = 0,
 	left_padding = 0,
@@ -386,20 +376,13 @@ data.raw["gui-style"].default["als_tools_flow"] =
     scalable = is_scalable,
 }
 
--- Networks 
+-- Networks
 data.raw["gui-style"].default["als_network_value_flow"] =
 {
-    type = "flow_style",
-    parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     scalable = is_scalable,
     width = 188,
-}
-
-data.raw["gui-style"].default["als_network_name_hidden"] =
-{
-    type = "label_style",
-    parent = "label_style",
-    visible = false
 }
 
 data.raw["gui-style"].default["als_networks_frame"] =
@@ -418,7 +401,7 @@ data.raw["gui-style"].default["als_networks_frame"] =
 data.raw["gui-style"].default["als_networks_table_wrapper"] =
 {
     type = "scroll_pane_style",
-	parent = "scroll_pane_style",
+	parent = "scroll_pane",
 	maximal_height = 400,
 }
 
@@ -442,8 +425,8 @@ data.raw["gui-style"].default["als_networks_table"] =
 
 data.raw["gui-style"].default["als_network_filter_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
     horizontal_spacing = 0,
     vertical_spacing = 0,
 	top_padding = 5,
@@ -453,18 +436,11 @@ data.raw["gui-style"].default["als_network_filter_flow"] =
 
 data.raw["gui-style"].default["als_network_name_flow"] =
 {
-    type = "flow_style",
-	parent = "als_flow_style",
+    type = "horizontal_flow_style",
+	parent = "als_h_flow_style",
 	top_padding = 5,
     width = 350,
     scalable = is_scalable,
-}
-
-data.raw["gui-style"].default["als_network_filter_hidden"] =
-{
-    type = "checkbox_style",
-    parent = "checkbox_style",
-    visible = false
 }
 
 -- Buttons
@@ -472,7 +448,7 @@ data.raw["gui-style"].default["als_network_filter_hidden"] =
 data.raw["gui-style"].default["als_button"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     top_padding = 3,
     right_padding = 3,
     bottom_padding = 3,
@@ -482,38 +458,29 @@ data.raw["gui-style"].default["als_button"] =
 	scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
@@ -524,38 +491,29 @@ data.raw["gui-style"].default["als_button_selected"] =
     default_font_color = {r=0.1, g=0.1, b=0.1},
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
@@ -574,39 +532,30 @@ data.raw["gui-style"].default["als_button_small"] =
 	scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
             x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
             x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 28,
             x = 0
-        }
-    }	
+    }
 }
 
 data.raw["gui-style"].default["als_button_small_selected"] =
@@ -616,45 +565,36 @@ data.raw["gui-style"].default["als_button_small_selected"] =
     default_font_color = {r=0.1, g=0.1, b=0.1},
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
             x = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 28,
             x = 0
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 28,
             x = 0
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_main_icon"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 6,
@@ -664,48 +604,39 @@ data.raw["gui-style"].default["als_button_main_icon"] =
     font = "font-m",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 256,
             y = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 288,
             y = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 288,
             y = 32
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_close"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     top_padding = 0,
     right_padding = 0,
     bottom_padding = 0,
@@ -717,38 +648,29 @@ data.raw["gui-style"].default["als_button_close"] =
     hovered_font_color = {r=0.1, g=0.1, b=0.1},
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 16,
             height = 16,
             x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 16,
             height = 16,
             x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 16,
             height = 16,
             x = 0
-        }
     }
 }
 
@@ -756,7 +678,7 @@ data.raw["gui-style"].default["als_button_close"] =
 data.raw["gui-style"].default["als_button_info"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -767,48 +689,39 @@ data.raw["gui-style"].default["als_button_info"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 325,
             y= 37
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 357,
             y= 37
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 357,
             y= 37
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_location"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -819,48 +732,39 @@ data.raw["gui-style"].default["als_button_location"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 5,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 37,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 37,
             y= 69
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_teleport"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -871,48 +775,39 @@ data.raw["gui-style"].default["als_button_teleport"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 133,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 165,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 165,
             y= 69
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_delete"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -923,48 +818,39 @@ data.raw["gui-style"].default["als_button_delete"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 69,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 101,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 101,
             y= 69
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_delete_selected"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -975,48 +861,41 @@ data.raw["gui-style"].default["als_button_delete_selected"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 101,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 69,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-            monolith_image =
-            {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+--        type = "monolith",
+--            monolith_image =
+--            {
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 101,
             y= 69
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_up_apc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1027,48 +906,39 @@ data.raw["gui-style"].default["als_button_up_apc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 197,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_up_ppc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1079,48 +949,39 @@ data.raw["gui-style"].default["als_button_up_ppc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 229,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_up_sc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1131,41 +992,32 @@ data.raw["gui-style"].default["als_button_up_sc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 261,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     }
 }
 
@@ -1173,7 +1025,7 @@ data.raw["gui-style"].default["als_button_up_sc"] =
 data.raw["gui-style"].default["als_button_up_rc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 0,
@@ -1184,41 +1036,32 @@ data.raw["gui-style"].default["als_button_up_rc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 293,
             y= 69
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 325,
             y= 69
-        }
     }
 }
 
@@ -1238,38 +1081,29 @@ data.raw["gui-style"].default["als_button_name"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
@@ -1280,38 +1114,29 @@ data.raw["gui-style"].default["als_button_name_selected"] =
     default_font_color = {r=0.1, g=0.1, b=0.1},
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
@@ -1330,38 +1155,29 @@ data.raw["gui-style"].default["als_button_total"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
@@ -1372,38 +1188,29 @@ data.raw["gui-style"].default["als_button_total_selected"] =
     default_font_color = {r=0.1, g=0.1, b=0.1},
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
@@ -1546,38 +1353,29 @@ data.raw["gui-style"].default["als_button_all"] =
 	scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
@@ -1596,45 +1394,36 @@ data.raw["gui-style"].default["als_button_all_selected"] =
 	scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_apc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1645,38 +1434,29 @@ data.raw["gui-style"].default["als_button_apc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 64
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 96
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64
-        }
     }
 }
 
@@ -1686,45 +1466,36 @@ data.raw["gui-style"].default["als_button_apc_selected"] =
     parent = "als_button_apc",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 96
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 64
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_ppc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1735,38 +1506,29 @@ data.raw["gui-style"].default["als_button_ppc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 128
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 160
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128
-        }
     }
 }
 
@@ -1776,45 +1538,36 @@ data.raw["gui-style"].default["als_button_ppc_selected"] =
     parent = "als_button_ppc",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 160
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 128
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_sc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1825,38 +1578,29 @@ data.raw["gui-style"].default["als_button_sc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 192
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 224
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 192
-        }
     }
 }
 
@@ -1866,45 +1610,36 @@ data.raw["gui-style"].default["als_button_sc_selected"] =
     parent = "als_button_sc",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 224
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 192
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 192
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_rc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -1915,38 +1650,29 @@ data.raw["gui-style"].default["als_button_rc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 256
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 288
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 256
-        }
     }
 }
 
@@ -1956,45 +1682,36 @@ data.raw["gui-style"].default["als_button_rc_selected"] =
     parent = "als_button_rc",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 288
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 256
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 256
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_woc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2005,41 +1722,32 @@ data.raw["gui-style"].default["als_button_woc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0,
             y = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32,
             y = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0,
             y = 32
-        }
     }
 }
 
@@ -2049,48 +1757,39 @@ data.raw["gui-style"].default["als_button_woc_selected"] =
     parent = "als_button_woc",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 32,
             y = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 0,
             y = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 0,
             y = 32
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_irc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2101,41 +1800,32 @@ data.raw["gui-style"].default["als_button_irc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 64,
             y = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 96,
             y = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64,
             y = 32
-        }
     }
 }
 
@@ -2145,48 +1835,39 @@ data.raw["gui-style"].default["als_button_irc_selected"] =
     parent = "als_button_irc",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 96,
             y = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 64,
             y = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 64,
             y = 32
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_stc"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2197,41 +1878,32 @@ data.raw["gui-style"].default["als_button_stc"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 128,
             y = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 160,
             y = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128,
             y = 32
-        }
     }
 }
 
@@ -2241,48 +1913,39 @@ data.raw["gui-style"].default["als_button_stc_selected"] =
     parent = "als_button_stc",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 160,
             y = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 128,
             y = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128,
             y = 32
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_log"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2293,41 +1956,32 @@ data.raw["gui-style"].default["als_button_log"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 128,
             y = 96
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 160,
             y = 96
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 160,
             y = 96
-        }
     }
 }
 
@@ -2337,48 +1991,39 @@ data.raw["gui-style"].default["als_button_log_selected"] =
     parent = "als_button_log",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 160,
             y = 96
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 128,
             y = 96
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 128,
             y = 96
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_con"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2389,41 +2034,32 @@ data.raw["gui-style"].default["als_button_con"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 192,
             y = 96
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 224,
             y = 96
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 224,
             y = 96
-        }
     }
 }
 
@@ -2433,48 +2069,39 @@ data.raw["gui-style"].default["als_button_con_selected"] =
     parent = "als_button_con",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 224,
             y = 96
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 192,
             y = 96
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 192,
             y = 96
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_port"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     top_padding = 0,
@@ -2485,41 +2112,32 @@ data.raw["gui-style"].default["als_button_port"] =
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 256,
             y = 96
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 288,
             y = 96
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 288,
             y = 96
-        }
     }
 }
 
@@ -2529,48 +2147,39 @@ data.raw["gui-style"].default["als_button_port_selected"] =
     parent = "als_button_port",
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 288,
             y = 96
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 32,
             height = 32,
             x = 256,
             y = 96
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 32,
             height = 32,
             x = 256,
             y = 96
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_edit"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 5,
@@ -2582,48 +2191,39 @@ data.raw["gui-style"].default["als_button_edit"] =
     visible = true,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 5,
             y= 101
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 37,
             y= 101
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 37,
             y= 101
-        }
     }
 }
 
 data.raw["gui-style"].default["als_button_confirm"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 22,
     height = 23,
     top_padding = 5,
@@ -2635,57 +2235,42 @@ data.raw["gui-style"].default["als_button_confirm"] =
     visible = true,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 69,
             y= 101
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 22,
             height = 23,
             x = 101,
             y= 101
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             width = 22,
             height = 23,
             x = 101,
             y= 101
-        }
     }
 }
 
-data.raw["gui-style"].default["als_button_hidden"] =
-{
-    type = "button_style",
-    parent = "button_style",
-    visible = false,
-}
 
 
 -- sort controls
 data.raw["gui-style"].default["als_sort_desc"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 14,
     height = 14,
     top_padding  = 0,
@@ -2695,23 +2280,20 @@ data.raw["gui-style"].default["als_sort_desc"] =
     scalable = is_scalable,
     graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 14,
             height = 14,
             x = 322,
             y = 9
-        }
     }
 }
 
 data.raw["gui-style"].default["als_sort_asc"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 14,
     height = 14,
     top_padding  = 0,
@@ -2721,23 +2303,20 @@ data.raw["gui-style"].default["als_sort_asc"] =
     scalable = is_scalable,
     graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 14,
             height = 14,
             x = 338,
             y = 9
-        }
     }
 }
 
 data.raw["gui-style"].default["als_sort"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 14,
     height = 14,
     top_padding  = 0,
@@ -2747,23 +2326,20 @@ data.raw["gui-style"].default["als_sort"] =
     scalable = is_scalable,
     graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 14,
             height = 14,
             x = 352,
             y = 64
-        }
     }
 }
 
 data.raw["gui-style"].default["als_sort_holder"] =
 {
     type = "frame_style",
-    parent = "frame_style",
+    parent = "frame",
     width = 16,
     height = 9,
     top_padding  = 0,
@@ -2773,16 +2349,13 @@ data.raw["gui-style"].default["als_sort_holder"] =
     scalable = is_scalable,
     graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
             width = 16,
             height = 32,
             x = 352,
             y = 64
-        }
     }
 }
 
@@ -2791,88 +2364,70 @@ data.raw["gui-style"].default["als_sort_holder"] =
 data.raw["gui-style"].default["als_item_icon"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 36,
     height = 36,
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
-			height = 32,			
+			height = 32,
 			x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
 			x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32
-        }
     },
 }
 
 data.raw["gui-style"].default["als_item_icon_selected"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 36,
     height = 36,
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
-			height = 32,			
+			height = 32,
 			x = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
 			x = 0
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32
-        }
     },
 }
 
@@ -2880,87 +2435,69 @@ data.raw["gui-style"].default["als_item_icon_selected"] =
 data.raw["gui-style"].default["als_item_icon_small"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
-			height = 32,			
+			height = 32,
 			x = 0
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
 			x = 32
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32
-        }
     },
 }
 
 data.raw["gui-style"].default["als_item_icon_small_selected"] =
 {
     type = "button_style",
-    parent = "button_style",
+    parent = "button",
     width = 32,
     height = 32,
     scalable = is_scalable,
     default_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
-			height = 32,			
+			height = 32,
 			x = 32
-        }
     },
     hovered_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
             priority = "extra-high-no-scale",
 			width = 32,
 			height = 32,
 			x = 0
-        }
     },
     clicked_graphical_set =
     {
-        type = "monolith",
-        monolith_image =
-        {
-            filename = "__advanced-logistics-system__/graphics/gui.png",
+
+            filename = "__advanced-logistics-system-fork__/graphics/gui.png",
 			width = 32,
 			height = 32,
 			x = 32
-        }
     },
 }

@@ -69,7 +69,7 @@ end
 function hideGUI(player, index)
     local guiPos = global.settings[index].guiPos
     if player.gui[guiPos].logisticsFrame ~= nil then
-        player.gui[guiPos].logisticsFrame.style = "als_frame_hidden"
+        player.gui[guiPos].logisticsFrame.visible = false
         global.guiVisible[index] = 0
     end
 end
